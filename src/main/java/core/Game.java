@@ -2,11 +2,14 @@ package core;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,8 @@ public class Game extends javafx.application.Application {
         stage.setScene(new Scene(root));
         stage.setTitle("Winkel Simulatie");
         stage.show();
+
+
 
         new AnimationTimer() {
             private long previousTime = 0;

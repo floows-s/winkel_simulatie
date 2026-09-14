@@ -3,6 +3,6 @@ module com.example.winkel_simulatie {
     requires javafx.fxml;
 
 
-    opens com.example.winkel_simulatie to javafx.fxml;
-    exports com.example.winkel_simulatie;
+    opens core to javafx.fxml;
+    exports core;
 }

@@ -33,7 +33,17 @@ public class Game extends javafx.application.Application {
         stage.setTitle("Winkel Simulatie");
         stage.show();
 
-
+        /*
+        * TODO:
+        *  Nadenken over: wat gaat simulatie allemaal doen? Wat is zijn verantwoordelijkheid?
+        *  Bijv vakkenvullers naar juiste schap sturen die gevuld moet worden?
+        *  Nieuwe customers aanmaken?
+        *  Stats bijhouden?
+        *
+        *  Want customer stuurt zich zelf aan via een soort statemachine. Niet persee door de simulatie
+        *
+        * */
+        simulation.Start();
 
         new AnimationTimer() {
             private long previousTime = 0;
@@ -54,7 +64,6 @@ public class Game extends javafx.application.Application {
         }.start();
 
 
-        simulation.Start();
     }
 
     private void Update(double delta){

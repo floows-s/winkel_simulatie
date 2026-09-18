@@ -2,48 +2,35 @@ package core;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game extends javafx.application.Application {
+    // CONSTANTS
     public final int WIDTH = 1280;
     public final int HEIGHT = 720;
 
-    private List<GameObject> gameObjects = new ArrayList<GameObject>();
+    // OBJECTS
+    private Queue<Object> removalQueue = new ArrayDeque<Object>();
 
-    private Simulation simulation = new Simulation(this);
+    private List<Renderable> renderables = new ArrayList<Renderable>();
+    private List<Updatable> updatables = new ArrayList<Updatable>();
+
+    // GRAPHICS
+    private Canvas canvas;
+    private GraphicsContext graphicsContext;
+
+    // SIMULATION
+    private Simulation simulation;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Canvas canvas = new Canvas(WIDTH, HEIGHT);
-        GraphicsContext g = canvas.getGraphicsContext2D();
-
-        Pane root = new Pane(canvas);
-
-        stage.setScene(new Scene(root));
-        stage.setTitle("Winkel Simulatie");
-        stage.show();
-
-        /*
-        * TODO:
-        *  Nadenken over: wat gaat simulatie allemaal doen? Wat is zijn verantwoordelijkheid?
-        *  Bijv vakkenvullers naar juiste schap sturen die gevuld moet worden?
-        *  Nieuwe customers aanmaken?
-        *  Stats bijhouden?
-        *
-        *  Want customer stuurt zich zelf aan via een soort statemachine. Niet persee door de simulatie
-        *
-        * */
-        simulation.Start();
+        setup(stage);
 
         new AnimationTimer() {
             private long previousTime = 0;
@@ -55,31 +42,81 @@ public class Game extends javafx.application.Application {
                     return;
                 }
 
-                double dt = (now - previousTime) / 1_000_000_000.0;
+                double dt = (now - previousTime) / 1e9;
                 previousTime = now;
 
-                Update(dt);
-                Render(g);
+                update(dt, now);
+                handleRemovalQueue(removalQueue);
+                render(graphicsContext);
             }
         }.start();
-
-
     }
 
-    private void Update(double delta){
-        for(GameObject obj: gameObjects){
-            obj.Update(delta);
+    public void setup(Stage stage){
+        canvas = new Canvas(WIDTH, HEIGHT);
+        graphicsContext = canvas.getGraphicsContext2D();
+
+        simulation = new Simulation(this);
+        addObject(simulation);
+
+        Pane root = new Pane(canvas);
+        stage.setScene(new Scene(root));
+        stage.setTitle("Winkel Simulatie");
+        stage.show();
+    }
+
+    private void update(double delta, long now){
+        for(Updatable obj: updatables){
+            obj.update(delta, now);
         }
     }
 
-    private void Render(GraphicsContext g){
-        for(GameObject obj: gameObjects){
-            obj.Render(g);
+    private void render(GraphicsContext g){
+        g.clearRect(0, 0, WIDTH, HEIGHT);
+
+        for(Renderable obj: renderables){
+            obj.render(g);
+        }
+    }
+
+    private void handleRemovalQueue(Queue<Object> queue){
+        while(!queue.isEmpty()){
+            Object obj = queue.poll();
+
+            if(obj instanceof Renderable rObj){
+                if(!renderables.remove(rObj)) {
+                    System.out.println("Error: Failed to remove Renderable object, not found. (" + obj + ")");
+                }
+            }
+
+            if(obj instanceof Updatable uObj){
+                if(!updatables.remove(uObj)) {
+                    System.out.println("Error: Failed to remove Updatable object, not found. (" + obj + ")");
+                }
+            }
+        }
+    }
+
+    public void addObject(Object obj){
+        boolean validInterface = false;
+
+        if(obj instanceof Renderable){
+            validInterface = true;
+            renderables.add((Renderable) obj);
         }
 
+        if(obj instanceof Updatable){
+            validInterface = true;
+            updatables.add((Updatable) obj);
+        }
+
+        if(!validInterface){
+            System.out.println("Warning: a object without the appropriate type was attempted to be added (" + obj + ")");
+        }
     }
 
-    public void AddObject(GameObject obj){
-        gameObjects.add(obj);
+    public void removeObject(Object obj){
+        removalQueue.add(obj);
     }
+
 }

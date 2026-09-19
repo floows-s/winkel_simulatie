@@ -1,8 +1,11 @@
 package core;
 
 import objects.customer.Customer;
+import objects.shelf.Shelf;
+import objects.shelf.ShelfData;
 import utilities.Randomizer;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,41 +30,15 @@ public class Simulation implements Updatable{
 
     private void setup(){
 
-        Customer c1 = new Customer(0, 0);
-        game.addObject(c1);
-        cs.add(c1);
+        ShelfData sd = ShelfData.fromJson(Path.of("/json", "shelfs", "shelf-1.json").toString());
+        Shelf s = new Shelf(sd);
 
-        Customer c2 = new Customer(0, 300);
-        game.addObject(c2);
-        cs.add(c2);
-
-
-        Customer c3 = new Customer(0, 500);
-        game.addObject(c3);
-        cs.add(c3);
-
+        game.addObject(s);
     }
 
 
-    private long start_time = 0;
-    private List<Customer> cs = new ArrayList<Customer>();
-
     @Override
     public void update(double delta, long now) {
-        if(start_time == 0){
-            start_time = now;
-        }
 
-        double passed_time_sec = (now - start_time) / 1E9;
-
-        float threshold = 2;
-        int divide = (int)threshold * cs.size();
-        double time_in_sec = now / 1E9;
-        if(passed_time_sec > threshold){
-            game.removeObject(cs.get((divide/(int)time_in_sec) - 1));
-            start_time = now;
-        }
-
-        System.out.println("Passed time: " + passed_time_sec);
     }
 }

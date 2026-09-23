@@ -30,7 +30,7 @@ public class Simulation implements Updatable{
 
     private void setup(){
 
-        ShelfData sd = ShelfData.fromJson(Path.of("/json", "shelfs", "shelf-1.json").toString());
+        ShelfData sd = ShelfData.fromJson("/json/shelfs/shelf-1.json");
         Shelf s = new Shelf(sd);
 
         game.addObject(s);

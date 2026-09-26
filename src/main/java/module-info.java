@@ -3,6 +3,8 @@ module com.example.winkel_simulatie {
     requires javafx.fxml;
     requires java.desktop;
     requires com.google.gson;
+    requires jdk.jshell;
+    requires java.sql;
 
 
     opens core to javafx.fxml;

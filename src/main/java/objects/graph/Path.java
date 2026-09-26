@@ -8,6 +8,7 @@ public class Path {
 
     private final List<Vertex> vertices;
     private final ListIterator<Vertex> iterator;
+    private Vertex current = null;
 
     public Path(List<Vertex> vertices){
         this.vertices = vertices;
@@ -15,10 +16,16 @@ public class Path {
     }
 
     public Vertex next(){
-        return this.iterator.next();
+        this.current = this.iterator.next();
+        return this.current;
+    }
+
+    public Vertex current(){
+        return this.current; // Todo: clone?
     }
 
     public Vertex previous(){
-        return this.iterator.previous();
+        this.current = this.iterator.previous();
+        return this.current;
     }
 }

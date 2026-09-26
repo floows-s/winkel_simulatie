@@ -1,7 +1,9 @@
 package core;
 
+import objects.customer.Customer;
 import objects.graph.Edge;
 import objects.graph.Graph;
+import objects.graph.Path;
 import objects.graph.Vertex;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
@@ -48,11 +50,38 @@ public class Simulation implements Updatable{
         Vertex v_3 = new Vertex(
                 3,
                 new Point(305, 331),
-                Arrays.asList(new Edge(1), new Edge(2))
+                Arrays.asList(new Edge(1), new Edge(2), new Edge(4))
         );
 
-        graph = new Graph(Arrays.asList(v_1, v_2, v_3));
+        Vertex v_4 = new Vertex(
+                4,
+                new Point(109, 335),
+                Arrays.asList(new Edge(5))
+        );
+
+        Vertex v_5 = new Vertex(
+                5,
+                new Point(156, 485),
+                Arrays.asList(new Edge(6))
+        );
+
+        Vertex v_6 = new Vertex(
+                6,
+                new Point(294, 421),
+                Arrays.asList()
+        );
+
+
+
+        graph = new Graph(Arrays.asList(v_1, v_2, v_3, v_4, v_5, v_6));
         game.addObject(graph);
+
+        Path p = new Path(
+                Arrays.asList(v_1, v_2, v_3, v_1, v_4, v_5, v_6)
+        );
+
+        Customer c = new Customer(0, 0, p);
+        game.addObject(c);
     }
 
 

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
 
-public class jsonFileParser {
+public class JsonFileParser {
 
     /// Load object of type T from JSON file.
     /// @param fileURI Path to the JSON file with serialized object.
@@ -18,9 +18,9 @@ public class jsonFileParser {
         // Read file
         String file;
 
-        try(InputStream i = jsonFileParser.class.getResourceAsStream(fileURI)){
+        try(InputStream i = JsonFileParser.class.getResourceAsStream(fileURI)){
             if(i == null){
-                System.out.println("Error: Couldn't load " + typeClass.getName() + ". Failed to get resource.");
+                System.out.println("Error: Couldn't load " + typeClass.getName() + ". Failed to get resource. Resource not found or open to caller module.");
                 return null;
             }
 

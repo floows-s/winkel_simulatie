@@ -10,6 +10,8 @@ public class Shelf implements Renderable, Updatable {
 
     private float x;
     private float y;
+    private final int width = 240;
+    private final int height = 255;
 
     public Shelf(ShelfData data){
         if(sprite == null){
@@ -22,7 +24,7 @@ public class Shelf implements Renderable, Updatable {
 
     @Override
     public void render(GraphicsContext g) {
-        g.drawImage(sprite, x, y);
+        g.drawImage(sprite, x, y, width, height);
     }
 
     @Override

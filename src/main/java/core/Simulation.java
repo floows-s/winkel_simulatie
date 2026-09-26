@@ -1,11 +1,9 @@
 package core;
 
-import objects.customer.Customer;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
-import utilities.Randomizer;
+import utilities.JsonFileParser;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +27,20 @@ public class Simulation implements Updatable{
      * */
 
     private void setup(){
+        // Shelf's
+        ShelfData[] shelfL = JsonFileParser.loadObjectFromFile("/json/shelfs/shelfs.json", ShelfData[].class);
 
-        ShelfData sd = ShelfData.fromJson("/json/shelfs/shelf-1.json");
-        Shelf s = new Shelf(sd);
+        for(ShelfData d : shelfL){
+            Shelf s = new Shelf(d);
+            game.addObject(s);
+        }
 
-        game.addObject(s);
+        //
+
+
+
     }
+
 
 
     @Override

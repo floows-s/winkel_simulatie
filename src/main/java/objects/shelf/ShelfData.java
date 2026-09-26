@@ -1,7 +1,7 @@
 package objects.shelf;
 
 
-import utilities.jsonFileParser;
+import utilities.JsonFileParser;
 
 
 public class ShelfData {
@@ -12,7 +12,7 @@ public class ShelfData {
     /// @param jsonFileUri Path to the JSON file with serialized ShelfData.
     /// @return The parsed ShelfData filled with data from the given JSON file. Or NULL if there was an error.
     public static ShelfData fromJson(String jsonFileUri){
-        return jsonFileParser.loadObjectFromFile(jsonFileUri, ShelfData.class);
+        return JsonFileParser.loadObjectFromFile(jsonFileUri, ShelfData.class);
     }
 
 

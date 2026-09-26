@@ -34,7 +34,6 @@ public class Graph implements Renderable {
 
     @Override
     public void render(GraphicsContext g) {
-        // TODO
         g.setFill(VERTEX_COLOR);
         g.setStroke(LINE_COLOR);
         g.setLineWidth(LINE_WIDTH);

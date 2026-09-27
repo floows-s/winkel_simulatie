@@ -1,6 +1,7 @@
 package objects.shelf;
 
 import core.Renderable;
+import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -10,8 +11,8 @@ public class Shelf implements Renderable, Updatable {
 
     private float x;
     private float y;
-    private final int width = 240;
-    private final int height = 255;
+    private final int WIDTH = 70;
+    private final int HEIGHT = 85;
 
     public Shelf(ShelfData data){
         if(sprite == null){
@@ -24,11 +25,14 @@ public class Shelf implements Renderable, Updatable {
 
     @Override
     public void render(GraphicsContext g) {
-        g.drawImage(sprite, x, y, width, height);
+        float x_center = x - WIDTH / 2;
+        float y_center = y - HEIGHT / 2;
+
+        g.drawImage(sprite, x_center, y_center, WIDTH, HEIGHT);
     }
 
     @Override
-    public void update(double delta, long now) {
+    public void update(double delta, long now, Simulation s) {
 
     }
 

@@ -17,19 +17,25 @@ public class Graph implements Renderable {
     private final Color LINE_COLOR = Color.BLUEVIOLET;
     private final int LINE_WIDTH = 3;
 
-    private final Map<Integer, Vertex> vertices = new HashMap<>();
+    private final Map<VertexID, Vertex> vertices = new HashMap<>();
 
     public Graph(List<Vertex> vertices){
-        mapVertices(vertices);
+        mapVerticesToID(vertices, this.vertices);
     }
 
-    private void mapVertices(List<Vertex> vertices){
+    private void mapVerticesToID(List<Vertex> vertices, Map<VertexID, Vertex> map){
         for(Vertex v : vertices){
-            this.vertices.put(
+            map.put(
                     v.id(),
                     v
             );
         }
+    }
+
+    /// Gets the Vertex associated with the given ID.
+    /// @return The found Vertex or null if there is none found.
+    public Vertex get(VertexID id){
+        return vertices.get(id);
     }
 
     @Override
@@ -60,8 +66,12 @@ public class Graph implements Renderable {
     private void drawEdges(Vertex v, GraphicsContext g){
         for(Edge e : v.edges()){
             Vertex to = vertices.get(e.to());
-            // TODO: Right now its drawing edges which may be already drawn. This can be optimized.
+            if(to == null){
+                System.out.println("[Graph] Warning: Vertex with ID [" + e.to() + "] not found. Skipping edge drawing.");
+                continue;
+            }
 
+            // TODO: Right now its drawing edges which may be already drawn. This can be optimized.
             g.strokeLine(
                     v.location().x(),
                     v.location().y(),

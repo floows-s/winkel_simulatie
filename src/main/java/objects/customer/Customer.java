@@ -2,15 +2,20 @@ package objects.customer;
 
 import core.Point;
 import core.Renderable;
+import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import objects.graph.Graph;
 import objects.graph.Path;
 import objects.graph.Vertex;
+import objects.graph.VertexID;
 
 public class Customer implements Renderable, Updatable {
-    private final int walkingSpeed = 300;
+    private final int walkingSpeed = 100;
     private static Image sprite = null;
+    public final int WIDTH = 60;
+    public final int HEIGHT = 60;
 
     private float x;
     private float y;
@@ -27,17 +32,23 @@ public class Customer implements Renderable, Updatable {
         this.path = path;
     }
 
-    @Override
-    public void update(double delta, long now){
+    private void followPath(Path path, Graph graph, double delta){
+        if(path.isFinished()){
+            System.out.println("Customer: No more steps to take. Path completed!");
+            return;
+        }
 
-        Vertex v;
-        if(path.current() == null){
-            v = path.next();
-        }else{
-            v = path.current();
+        VertexID currentStep = path.currentOrNext();
+
+        Vertex v = graph.get(currentStep);
+        if(v == null){
+            System.out.println("FollowPath: Vertex with ID [" + currentStep + "] not found in given Graph. Skipping step.");
+            path.next();
+            return;
         }
 
         Point p = v.location();
+
         float dx = (p.x() - x);
         float dy = (p.y() - y);
         double distance = Math.sqrt(dx * dx + dy * dy);
@@ -57,10 +68,16 @@ public class Customer implements Renderable, Updatable {
     }
 
     @Override
-    public void render(GraphicsContext g){
-        g.drawImage(sprite, x, y, 50, 50);
+    public void update(double delta, long now, Simulation s){
+        followPath(path, s.graph, delta);
+    }
 
-        // Draw image for shopping cart x amount of pixels in front of customer
+    @Override
+    public void render(GraphicsContext g){
+        float x_center = x - WIDTH / 2;
+        float y_center = y - HEIGHT / 2;
+
+        g.drawImage(sprite, x_center, y_center, WIDTH, HEIGHT);
     }
 
     @Override

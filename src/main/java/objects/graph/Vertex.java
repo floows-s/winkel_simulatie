@@ -9,11 +9,15 @@ import java.util.List;
  * @param location On the canvas
  * @param edges    Outgoing
  */
-public record Vertex(int id, Point location, List<Edge> edges) {
-    public Vertex(int id, Point location, List<Edge> edges) {
+public record Vertex(VertexID id, Point location, List<Edge> edges) {
+    public Vertex(VertexID id, Point location, List<Edge> edges) {
         this.id = id;
         this.location = location;
         this.edges = List.copyOf(edges); // TODO: deep copy?
+    }
+
+    public Vertex(Vertex v) {
+        this(v.id, v.location, List.copyOf(v.edges));
     }
 
     @Override

@@ -1,10 +1,7 @@
 package core;
 
 import objects.customer.Customer;
-import objects.graph.Edge;
-import objects.graph.Graph;
-import objects.graph.Path;
-import objects.graph.Vertex;
+import objects.graph.*;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
 import utilities.JsonFileParser;
@@ -14,80 +11,62 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Simulation implements Updatable{
+public class Simulation{
     private final Game game;
-    private Graph graph;
+    public Graph graph;
 
     Simulation(Game game){
         this.game = game;
         setup();
     }
 
-    /*
-     * TODO:
-     *  Nadenken over: wat gaat simulatie allemaal doen? Wat is zijn verantwoordelijkheid?
-     *  Bijv vakkenvullers naar juiste schap sturen die gevuld moet worden?
-     *  Nieuwe customers aanmaken?
-     *  Stats bijhouden?
-     *
-     *  Want customer stuurt zich zelf aan via een soort statemachine. Niet persee door de simulatie
-     *
-     * */
 
     private void setup(){
-        Vertex v_1 = new Vertex(
-                1,
-                new Point(233, 143),
-                Arrays.asList(new Edge(2), new Edge(3))
-        );
+        setupGraph();
 
-        Vertex v_2 = new Vertex(
-                2,
-                new Point(463, 182),
-                Arrays.asList(new Edge(1), new Edge(3))
-        );
+        Shelf s1 = new Shelf(new ShelfData(new Point(785, 333)));
+        Shelf s2 = new Shelf(new ShelfData(new Point(805, 210)));
 
-        Vertex v_3 = new Vertex(
-                3,
-                new Point(305, 331),
-                Arrays.asList(new Edge(1), new Edge(2), new Edge(4))
-        );
+        game.addObject(s1);
+        game.addObject(s2);
 
-        Vertex v_4 = new Vertex(
-                4,
-                new Point(109, 335),
-                Arrays.asList(new Edge(5))
-        );
-
-        Vertex v_5 = new Vertex(
-                5,
-                new Point(156, 485),
-                Arrays.asList(new Edge(6))
-        );
-
-        Vertex v_6 = new Vertex(
-                6,
-                new Point(294, 421),
-                Arrays.asList()
-        );
-
-
-
-        graph = new Graph(Arrays.asList(v_1, v_2, v_3, v_4, v_5, v_6));
-        game.addObject(graph);
-
-        Path p = new Path(
-                Arrays.asList(v_1, v_2, v_3, v_1, v_4, v_5, v_6)
-        );
-
-        Customer c = new Customer(0, 0, p);
+        Path p = new Path(Arrays.asList(VertexID.ENTRANCE, VertexID.SHELF_1, VertexID.SHELF_2, VertexID.SHELF_1, VertexID.SHELF_2, VertexID.CHECKOUT_1, VertexID.CHECKOUT_2, VertexID.EXIT));
+        Customer c = new Customer(854, 548, p);
         game.addObject(c);
     }
 
+    private void setupGraph(){
+        Vertex v_enterance = new Vertex(
+                VertexID.ENTRANCE,
+                new Point(709, 454),
+                Arrays.asList(new Edge(VertexID.SHELF_1))
+        );
 
+        Vertex v_shelf_1 = new Vertex(
+                VertexID.SHELF_1,
+                new Point(709, 337),
+                Arrays.asList(new Edge(VertexID.SHELF_2), new Edge(VertexID.ENTRANCE))
+        );
 
-    @Override
-    public void update(double delta, long now) {
+        Vertex v_shelf_2 = new Vertex(
+                VertexID.SHELF_2,
+                new Point(709, 218),
+                Arrays.asList(new Edge(VertexID.CHECKOUT_1), new Edge(VertexID.SHELF_1))
+        );
 
+        Vertex v_checkout = new Vertex(
+                VertexID.CHECKOUT_1,
+                new Point(536, 222),
+                Arrays.asList(new Edge(VertexID.SHELF_2), new Edge(VertexID.EXIT))
+        );
+
+        Vertex v_exit = new Vertex(
+                VertexID.EXIT,
+                new Point(546, 453),
+                Arrays.asList(new Edge(VertexID.CHECKOUT_1))
+        );
+
+        graph = new Graph(Arrays.asList(v_enterance, v_shelf_1, v_shelf_2, v_checkout, v_exit));
+        game.addObject(graph);
     }
 }

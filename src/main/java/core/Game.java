@@ -49,7 +49,7 @@ public class Game extends javafx.application.Application {
                 double dt = (now - previousTime) / 1e9;
                 previousTime = now;
 
-                update(dt, now);
+                update(dt, now, simulation);
                 handleRemovalQueue(removalQueue);
                 render(graphicsContext);
             }
@@ -61,12 +61,9 @@ public class Game extends javafx.application.Application {
         graphicsContext = canvas.getGraphicsContext2D();
 
         canvas.setOnMouseClicked(event -> {
-            System.out.println(
-                    "x : " + event.getX() + "\n" +
-                    "y: " + event.getY() + "\n"
-            );
-
             String mouse_cords_json = "\n\"x\": " + event.getX() + ", \n\"y\": " + event.getY() + "\n";
+
+            System.out.println(mouse_cords_json);
 
             StringSelection stringSelection = new StringSelection(mouse_cords_json);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -74,7 +71,6 @@ public class Game extends javafx.application.Application {
         });
 
         simulation = new Simulation(this);
-        addObject(simulation);
 
         Pane root = new Pane(canvas);
         stage.setScene(new Scene(root));
@@ -82,9 +78,9 @@ public class Game extends javafx.application.Application {
         stage.show();
     }
 
-    private void update(double delta, long now){
+    private void update(double delta, long now, Simulation s){
         for(Updatable obj: updatables){
-            obj.update(delta, now);
+            obj.update(delta, now, simulation);
         }
     }
 

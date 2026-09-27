@@ -1,7 +1,7 @@
 package objects.graph;
 
-public record Edge(int to, float weight) {
-    public Edge(int to) {
+public record Edge(VertexID to, float weight) {
+    public Edge(VertexID to) {
         this(to, 1);
     }
 }

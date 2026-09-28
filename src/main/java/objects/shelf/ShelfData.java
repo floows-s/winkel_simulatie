@@ -7,6 +7,7 @@ import utilities.JsonFileParser;
 public class ShelfData {
     private float x;
     private float y;
+    private String type;
 
     /// Load ShelfData from JSON file.
     /// @param jsonFileUri Path to the JSON file with serialized ShelfData.
@@ -23,4 +24,6 @@ public class ShelfData {
     public float getY() {
         return y;
     }
+
+    public String getType() {return type;}
 }

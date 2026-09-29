@@ -4,6 +4,8 @@ import core.Point;
 import core.Renderable;
 import core.Simulation;
 import core.Updatable;
+import core.logger.Logger;
+import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.graph.Graph;
@@ -13,9 +15,11 @@ import objects.graph.VertexID;
 
 public class Customer implements Renderable, Updatable {
     private final int walkingSpeed = 100;
-    private static Image sprite = null;
     public final int WIDTH = 60;
     public final int HEIGHT = 60;
+    private static Image sprite = null;
+
+    private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
     private float x;
     private float y;
@@ -34,7 +38,7 @@ public class Customer implements Renderable, Updatable {
 
     private void followPath(Path path, Graph graph, double delta){
         if(path.isFinished()){
-            System.out.println("Customer: No more steps to take. Path completed!");
+            log.logInfo("No more steps to take. Path completed!");
             return;
         }
 
@@ -42,7 +46,7 @@ public class Customer implements Renderable, Updatable {
 
         Vertex v = graph.get(currentStep);
         if(v == null){
-            System.out.println("FollowPath: Vertex with ID [" + currentStep + "] not found in given Graph. Skipping step.");
+            log.logWarning("Vertex with ID [" + currentStep + "] not found in given Graph. Skipping step.");
             path.next();
             return;
         }

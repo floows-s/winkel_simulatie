@@ -1,5 +1,7 @@
 package core;
 
+import core.logger.Logger;
+import core.logger.TagLogger;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,11 +21,14 @@ public class Game extends javafx.application.Application {
     public final int WIDTH = 1280;
     public final int HEIGHT = 720;
 
-    // OBJECTS
-    private Queue<Object> removalQueue = new ArrayDeque<Object>();
+    // LOGGER
+    private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
-    private List<Renderable> renderables = new ArrayList<Renderable>();
-    private List<Updatable> updatables = new ArrayList<Updatable>();
+    // OBJECTS
+    private final Queue<Object> removalQueue = new ArrayDeque<>();
+
+    private final List<Renderable> renderables = new ArrayList<>();
+    private final List<Updatable> updatables = new ArrayList<>();
 
     // GRAPHICS
     private Canvas canvas;
@@ -33,7 +38,7 @@ public class Game extends javafx.application.Application {
     private Simulation simulation;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         setup(stage);
 
         new AnimationTimer() {
@@ -63,7 +68,7 @@ public class Game extends javafx.application.Application {
         canvas.setOnMouseClicked(event -> {
             String mouse_cords_json = "\n\"x\": " + event.getX() + ", \n\"y\": " + event.getY() + "\n";
 
-            System.out.println(mouse_cords_json);
+            log.logInfo(mouse_cords_json);
 
             StringSelection stringSelection = new StringSelection(mouse_cords_json);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -80,7 +85,7 @@ public class Game extends javafx.application.Application {
 
     private void update(double delta, long now, Simulation s){
         for(Updatable obj: updatables){
-            obj.update(delta, now, simulation);
+            obj.update(delta, now, s);
         }
     }
 
@@ -98,13 +103,13 @@ public class Game extends javafx.application.Application {
 
             if(obj instanceof Renderable rObj){
                 if(!renderables.remove(rObj)) {
-                    System.out.println("Error: Failed to remove Renderable object, not found. (" + obj + ")");
+                    log.logError("Failed to remove Renderable object, not found. (" + obj + ")");
                 }
             }
 
             if(obj instanceof Updatable uObj){
                 if(!updatables.remove(uObj)) {
-                    System.out.println("Error: Failed to remove Updatable object, not found. (" + obj + ")");
+                    log.logError("Failed to remove Updatable object, not found. (" + obj + ")");
                 }
             }
         }
@@ -124,7 +129,7 @@ public class Game extends javafx.application.Application {
         }
 
         if(!validInterface){
-            System.out.println("Warning: a object without the appropriate type was attempted to be added (" + obj + ")");
+            log.logWarning("An object without the appropriate type was attempted to be added (" + obj + ")");
         }
     }
 

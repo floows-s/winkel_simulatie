@@ -2,6 +2,8 @@ package objects.graph;
 
 import core.Point;
 import core.Renderable;
+import core.logger.Logger;
+import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -10,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Graph implements Renderable {
-
     private final Color VERTEX_COLOR = Color.BLUEVIOLET;
     private final int VERTEX_DIAMETER = 30;
-
     private final Color LINE_COLOR = Color.BLUEVIOLET;
     private final int LINE_WIDTH = 3;
+
+    private final Logger log = new TagLogger(this.getClass().toString());
 
     private final Map<VertexID, Vertex> vertices = new HashMap<>();
 
@@ -64,10 +66,12 @@ public class Graph implements Renderable {
     }
 
     private void drawEdges(Vertex v, GraphicsContext g){
+
+
         for(Edge e : v.edges()){
             Vertex to = vertices.get(e.to());
             if(to == null){
-                System.out.println("[Graph] Warning: Vertex with ID [" + e.to() + "] not found. Skipping edge drawing.");
+                log.logWarning("Vertex with ID [" + e.to() + "] not found. Skipping edge drawing.");
                 continue;
             }
 

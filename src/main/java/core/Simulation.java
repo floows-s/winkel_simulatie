@@ -10,6 +10,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class Simulation{
     private final Game game;
@@ -66,7 +67,7 @@ public class Simulation{
                 Arrays.asList(new Edge(VertexID.CHECKOUT_1))
         );
 
-        graph = new Graph(Arrays.asList(v_enterance, v_shelf_1, v_shelf_2, v_checkout, v_exit));
+        graph = new Graph(Set.of(v_enterance, v_shelf_1, v_shelf_2, v_checkout, v_exit));
         game.addObject(graph);
     }
 }

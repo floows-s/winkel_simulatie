@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Graph implements Renderable {
     private final Color VERTEX_COLOR = Color.BLUEVIOLET;
@@ -21,16 +22,18 @@ public class Graph implements Renderable {
 
     private final Map<VertexID, Vertex> vertices = new HashMap<>();
 
-    public Graph(List<Vertex> vertices){
+    public Graph(Set<Vertex> vertices){
         mapVerticesToID(vertices, this.vertices);
     }
 
-    private void mapVerticesToID(List<Vertex> vertices, Map<VertexID, Vertex> map){
+    private void mapVerticesToID(Set<Vertex> vertices, Map<VertexID, Vertex> map){
         for(Vertex v : vertices){
             map.put(
                     v.id(),
                     v
             );
+
+            // TODO [TEST]: Create test to test there isn't duplicate entry's
         }
     }
 
@@ -65,9 +68,8 @@ public class Graph implements Renderable {
         }
     }
 
+    /// Draw the outgoing edges for the given Vertex.
     private void drawEdges(Vertex v, GraphicsContext g){
-
-
         for(Edge e : v.edges()){
             Vertex to = vertices.get(e.to());
             if(to == null){

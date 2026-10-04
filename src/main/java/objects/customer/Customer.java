@@ -9,7 +9,7 @@ import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.graph.Graph;
-import objects.graph.Path;
+import objects.path.Path;
 import objects.graph.Vertex;
 import objects.graph.VertexID;
 

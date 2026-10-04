@@ -2,14 +2,11 @@ package core;
 
 import objects.customer.Customer;
 import objects.graph.*;
+import objects.path.Path;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
-import utilities.JsonFileParser;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 public class Simulation{

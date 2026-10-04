@@ -6,6 +6,7 @@ import core.logger.Logger;
 import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import objects.path.Path;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,17 @@ public class Graph implements Renderable {
     /// @return The found Vertex or null if there is none found.
     public Vertex get(VertexID id){
         return vertices.get(id);
+    }
+
+
+    public Path getShortestPath(VertexID from, VertexID to){
+        return null;
+    }
+
+    /// A set of vertices // TODO give more useful info
+    /// @return A set of vertices
+    public Set<Vertex> toSet(){
+        return Set.copyOf(vertices.values()); // TODO: deep copy
     }
 
     @Override

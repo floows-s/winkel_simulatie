@@ -1,20 +1,30 @@
-package objects.graph;
+package objects.path;
 
-import java.util.Iterator;
+import objects.graph.VertexID;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class Path {
 
-    private final List<VertexID> vertices;
-    private final ListIterator<VertexID> iterator;
-    private VertexID current = null;
+    protected final List<VertexID> vertices;
+    protected final ListIterator<VertexID> iterator;
+    protected VertexID current = null;
+
+    public Path(VertexID... vertices) {
+        this.vertices = Arrays.stream(vertices).toList();
+        this.iterator = this.vertices.listIterator();
+    }
 
     public Path(List<VertexID> vertices){
         this.vertices = vertices;
         this.iterator = this.vertices.listIterator();
     }
+
+
 
     /// Check if there is no next element in the path.
     /// @return if path is finished.
@@ -68,5 +78,9 @@ public class Path {
 
     public boolean hasPrevious(){
         return this.iterator.hasPrevious();
+    }
+
+    public List<VertexID> toList(){
+        return List.copyOf(this.vertices); // Note: VertexID is an enum. No need to deep copy.
     }
 }

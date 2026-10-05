@@ -1,10 +1,11 @@
 package core;
 
-import objects.Product.Product;
+import objects.box.box;
+import objects.product.Product;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
 import utilities.JsonFileParser;
-import objects.BackGround.BackgroundLoader;
+import objects.background.BackgroundLoader;
 
 public class Simulation implements Updatable{
     private final Game game;
@@ -26,6 +27,7 @@ public class Simulation implements Updatable{
         Product bread = new Product("Bread", Shelf.ShelfType.WOOD, 10);
         Product pizza = new Product("Pizza", Shelf.ShelfType.METAL, 10);
         Product meat  = new Product("Meat", Shelf.ShelfType.COOL, 10);
+        box box = new box();
 
         // create shelf and products
         for(ShelfData d : shelfL){
@@ -42,6 +44,17 @@ public class Simulation implements Updatable{
             s.AddProduct(bread);
             s.AddProduct(pizza);
             s.AddProduct(meat);
+
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+            s.AddProduct(box);
+
 
             game.addObject(s);
         }

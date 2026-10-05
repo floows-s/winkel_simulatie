@@ -1,4 +1,4 @@
-package objects.Product;
+package objects.product;
 
 import javafx.scene.image.Image;
 import objects.shelf.Shelf;
@@ -25,9 +25,23 @@ public class Product {
 
     }
 
+
+
+    /// returns the sprite as an Image
+    /// @return
     public Image GetSprite(){
         return sprite;
     }
 
+    /// returns the price of the product as a double
+    /// @return
+    public double GetPrice(){
+        return price;
+    }
 
+    /// returns the type as a ShelfType
+    /// @return
+    public Shelf.ShelfType getType() {
+        return type;
+    }
 }

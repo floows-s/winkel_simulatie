@@ -1,6 +1,6 @@
 package objects.shelf;
 
-import objects.Product.Product;
+import objects.product.Product;
 import core.Renderable;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,7 +25,8 @@ public class Shelf implements Renderable, Updatable {
     public enum ShelfType {
         WOOD,
         METAL,
-        COOL
+        COOL,
+        STORAGE
     }
 
     /// Constructor reads the data from shelfs.json
@@ -47,6 +48,12 @@ public class Shelf implements Renderable, Updatable {
 
     }
 
+    /// returns type of current shelf
+    /// @return
+    public ShelfType getType() {
+        return type;
+    }
+
     /// Adds a product to the shelf, if the shelf is full prints error message
     /// @param p is the product that needs to be added
     public void AddProduct(Product p){
@@ -62,15 +69,17 @@ public class Shelf implements Renderable, Updatable {
         }
     }
 
-    /// removes a product from the list products
+    /// removes a product from the list products and returns said product
     /// TODO needs to remove the current sprite
     /// @param i is the location of the current product in the shelf starting at 0
-    public void RemoveProduct(int i){
+    public Product RemoveProduct(int i){
         if(products[i] != null){
             products[i] = null;
+            return products[i];
         }
         else{
             System.out.println("This location is already empty");
+            return null;
         }
     }
 
@@ -117,7 +126,6 @@ public class Shelf implements Renderable, Updatable {
 
     @Override
     public void update(double delta, long now) {
-
     }
 
     @Override

@@ -118,5 +118,46 @@
     "x": 827,
     "y": 401,
     "type": "COOL"
+  },
+  {
+    "x": 157,
+    "y": 50,
+    "type": "STORAGE"
+  },
+  {
+    "x": 287,
+    "y": 50,
+    "type": "STORAGE"
+  },
+  {
+    "x": 157,
+    "y": 144,
+    "type": "STORAGE"
+  },
+  {
+    "x": 287,
+    "y": 144,
+    "type": "STORAGE"
+  },
+  {
+    "x": 157,
+    "y": 403,
+    "type": "STORAGE"
+  },
+  {
+    "x": 287,
+    "y": 403,
+    "type": "STORAGE"
+  },
+  {
+    "x": 157,
+    "y": 512,
+    "type": "STORAGE"
+  },
+  {
+    "x": 287,
+    "y": 512,
+    "type": "STORAGE"
   }
+
 ]

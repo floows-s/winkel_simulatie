@@ -1,4 +1,4 @@
-package objects.BackGround;
+package objects.background;
 import core.Renderable;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 public class BackgroundLoader implements Renderable {
     // ==== VARIABLES ====
     Image backGround = new Image(getClass()
-            .getResource("/images/background/StoreFloor.png")
+            .getResource("/images/background/StoreFloor2.png")
             .toExternalForm());
 
     @Override

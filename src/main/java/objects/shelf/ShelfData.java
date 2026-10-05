@@ -1,13 +1,13 @@
 package objects.shelf;
 
-
 import utilities.JsonFileParser;
+
 
 
 public class ShelfData {
     private float x;
     private float y;
-    private String type;
+    private Shelf.ShelfType type;
 
     /// Load ShelfData from JSON file.
     /// @param jsonFileUri Path to the JSON file with serialized ShelfData.
@@ -25,5 +25,5 @@ public class ShelfData {
         return y;
     }
 
-    public String getType() {return type;}
+    public Shelf.ShelfType getType() {return type;}
 }

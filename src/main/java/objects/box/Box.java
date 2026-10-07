@@ -3,9 +3,7 @@ package objects.box;
 import objects.product.Product;
 import objects.shelf.Shelf;
 
-import java.util.List;
-
-public class box extends Product{
+public class Box extends Product{
 
     // ==== VARIABLES ====
     private final Product[] products = new Product[30];
@@ -13,7 +11,7 @@ public class box extends Product{
 
     /// Creates a box with the name Box and type STORAGE and price 0
     ///
-    public box() {
+    public Box() {
         super("Box", Shelf.ShelfType.STORAGE, 0);
     }
 

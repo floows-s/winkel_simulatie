@@ -8,7 +8,7 @@ public class Product {
     private Image sprite;
     private String name;
     public Shelf.ShelfType type;
-    private double price;
+    public double price;
 
     /// Constructor
     /// @param name string the same name as the sprite name or else no sprite will load

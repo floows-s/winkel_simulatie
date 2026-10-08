@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+//TODO: def update this and make more clear, make more queue like, Like get next step, or something like that
 public class Path {
 
     protected final List<VertexID> vertices;

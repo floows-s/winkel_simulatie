@@ -3,10 +3,12 @@ package core;
 import objects.customer.Customer;
 import objects.graph.*;
 import objects.path.Path;
+import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class Simulation{
@@ -28,9 +30,12 @@ public class Simulation{
         game.addObject(s1);
         game.addObject(s2);
 
-        Path p = new Path(Arrays.asList(VertexID.ENTRANCE, VertexID.SHELF_1, VertexID.SHELF_2, VertexID.SHELF_1, VertexID.SHELF_2, VertexID.CHECKOUT_1, VertexID.CHECKOUT_2, VertexID.EXIT));
-        Customer c = new Customer(854, 548, p);
-        game.addObject(c);
+//        Path p = new Path(Arrays.asList(VertexID.ENTRANCE, VertexID.SHELF_1, VertexID.SHELF_2, VertexID.SHELF_1, VertexID.SHELF_2, VertexID.CHECKOUT_1, VertexID.EXIT));
+        Path p = graph.getShortestPath(VertexID.ENTRANCE, VertexID.EXIT);
+
+//        Customer c = new Customer(854, 548, p);
+//        game.addObject(c);
+
     }
 
     private void setupGraph(){
@@ -64,7 +69,13 @@ public class Simulation{
                 Arrays.asList(new Edge(VertexID.CHECKOUT_1))
         );
 
-        graph = new Graph(Set.of(v_enterance, v_shelf_1, v_shelf_2, v_checkout, v_exit));
+        Set<Vertex> vertices = Set.of(v_enterance, v_shelf_1, v_shelf_2, v_checkout, v_exit);
+
+        graph = new Graph(
+                vertices,
+                new DijkstraCachePathFinderStrategy()
+        );
+
         game.addObject(graph);
     }
 }

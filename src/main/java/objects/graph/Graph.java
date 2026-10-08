@@ -7,9 +7,9 @@ import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import objects.path.Path;
+import objects.path.pathfinder.PathFinderStrategy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,10 +20,12 @@ public class Graph implements Renderable {
     private final int LINE_WIDTH = 3;
 
     private final Logger log = new TagLogger(this.getClass().toString());
+    private final PathFinderStrategy pathFinder;
 
     private final Map<VertexID, Vertex> vertices = new HashMap<>();
 
-    public Graph(Set<Vertex> vertices){
+    public Graph(Set<Vertex> vertices, PathFinderStrategy pathFinder){
+        this.pathFinder = pathFinder;
         mapVerticesToID(vertices, this.vertices);
     }
 
@@ -45,8 +47,9 @@ public class Graph implements Renderable {
     }
 
 
+    // TODO: description
     public Path getShortestPath(VertexID from, VertexID to){
-        return null;
+        return pathFinder.find(this, from, to);
     }
 
     /// A set of vertices // TODO give more useful info

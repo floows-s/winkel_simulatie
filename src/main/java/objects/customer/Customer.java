@@ -14,9 +14,9 @@ import objects.graph.Vertex;
 import objects.graph.VertexID;
 
 public class Customer implements Renderable, Updatable {
-    private final int walkingSpeed = 100;
     public final int WIDTH = 60;
     public final int HEIGHT = 60;
+    private final int walkingSpeed = 100;
     private static Image sprite = null;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
@@ -36,7 +36,7 @@ public class Customer implements Renderable, Updatable {
         this.path = path;
     }
 
-    private void followPath(Path path, Graph graph, double delta){
+    private void takeStepOnPath(Path path, Graph graph, double delta){
         if(path.isFinished()){
             log.logInfo("No more steps to take. Path completed!");
             return;
@@ -73,7 +73,7 @@ public class Customer implements Renderable, Updatable {
 
     @Override
     public void update(double delta, long now, Simulation s){
-        followPath(path, s.graph, delta);
+        takeStepOnPath(path, s.graph, delta);
     }
 
     @Override

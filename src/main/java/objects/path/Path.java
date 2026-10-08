@@ -2,10 +2,7 @@ package objects.path;
 
 import objects.graph.VertexID;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //TODO: def update this and make more clear, make more queue like, Like get next step, or something like that
@@ -13,7 +10,7 @@ public class Path {
 
     protected final List<VertexID> vertices;
     protected final ListIterator<VertexID> iterator;
-    protected VertexID current = null;
+    protected VertexID current;
 
     public Path(VertexID... vertices) {
         this.vertices = Arrays.stream(vertices).toList();
@@ -21,7 +18,7 @@ public class Path {
     }
 
     public Path(List<VertexID> vertices){
-        this.vertices = vertices;
+        this.vertices = List.copyOf(vertices);
         this.iterator = this.vertices.listIterator();
     }
 

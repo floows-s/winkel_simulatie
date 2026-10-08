@@ -1,6 +1,7 @@
 package objects.path.pathfinder.dijkstracache;
 
-import javafx.util.Pair;
+import core.logger.Logger;
+import core.logger.TagLogger;
 import objects.graph.Edge;
 import objects.graph.Graph;
 import objects.graph.Vertex;
@@ -12,42 +13,91 @@ import java.util.*;
 
 public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
-    private record cacheEntryKey (VertexID from, VertexID to){}
+    private record cacheEntryKey (VertexID source, VertexID target){}
     private final Map<cacheEntryKey, Path> cache = new HashMap<>();
 
+    private final Logger log = new TagLogger(getClass().getSimpleName());
+
     /// Calculates the shortest path between two vertices using Dijkstra's algorithm.
-    /// It will hold the calculated shortest path's in a cache so you don't need to worry about repeated calculations.
-    ///
-    /// @return The shortest path
+    /// <p>
+    /// It will hold the calculated shortest path's in a cache so you don't need target worry about repeated calculations.
+    /// @return The shortest path from {@code source} to {@code target}
     @Override
-    public Path find(Graph graph, VertexID from, VertexID to) {
-        if(from.equals(to)){
-            // From one vertex to the same vertex is the shortest path, a path with no steps...
+    public Path find(Graph graph, VertexID source, VertexID target) {
+        // Pre-check's
+
+        if(source.equals(target)){
+            // From one vertex target the same vertex is the shortest path: A path with no steps...
             return new Path(new ArrayList<>());
         }
 
-        return findCache(graph, from, to);
+        { // Check if given VertexID's is a part of given graph
+            Vertex sourceVertex = graph.get(source);
+            Vertex targetVertex = graph.get(target);
+
+            if(sourceVertex == null || targetVertex == null){
+                log.logError("Given source or target VertexID is not part of the given Graph. Can't find shortest path.");
+                return new Path(new ArrayList<>());
+            }
+        }
+
+        return findCache(graph, source, target);
     }
 
-    private Path findCache(Graph graph, VertexID from, VertexID to){
-        cacheEntryKey key = new cacheEntryKey(from, to);
+    /// First check's the cache if the shortest path has already been found.
+    /// If not, it will find the shortest path and update the cache.
+    /// @return The shortest path from {@code source} to {@code target}
+    private Path findCache(Graph graph, VertexID source, VertexID target){
+        cacheEntryKey key = new cacheEntryKey(source, target);
 
         if(!cache.containsKey(key)){
-            List<Path> foundPaths = dijkstraAlgorithm(graph, from, to);
+            Path foundPath = dijkstraAlgorithm(graph, source, target);
+            List<Path> subPaths = extractSubPathsFromPath(foundPath, source);
 
-            UpdateCache(from, foundPaths);
+            UpdateCache(source, subPaths);
             printCache();
         }
 
         return cache.get(key);
     }
 
+    List<Path> extractSubPathsFromPath(Path path, VertexID source){
+        ArrayList<Path> subPaths = new ArrayList<>();
+
+        List<VertexID> currentPath = new ArrayList<>();
+        for(VertexID vID : path.toList()){
+            currentPath.add(vID);
+
+            if(vID.equals(source)) continue;
+
+            subPaths.add(
+                    new Path(currentPath)
+            );
+        }
+
+        return subPaths;
+    }
+
+    void UpdateCache(VertexID source, List<Path> paths){
+        for(Path path : paths){
+            List<VertexID> vertices = path.toList(); // TODO: update this? Make in Path class getLast and getFirst??
+            VertexID to = vertices.getLast();
+
+            cache.put(
+                    new cacheEntryKey(source, to),
+                    path
+            );
+        }
+    }
+
+    /// Print the cache to System.out.
+    /// Used for debugging.
     private void printCache(){
         for(var entry : cache.entrySet()){
             cacheEntryKey key = entry.getKey();
             Path value = entry.getValue();
 
-            System.out.print("From: [" + key.from() + "] To: [" + key.to() +  "] Path: ");
+            System.out.print("From: [" + key.source() + "] To: [" + key.target() +  "] Path: ");
 
             for(VertexID vID : value.toList()){
                 System.out.print("[" + vID + "] ");
@@ -57,96 +107,78 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
         }
     }
 
-    // TODO: look at this maybe rename??
-    private record State(VertexID vertex, int dist) {}
+    /// An entry that holds a vertex which should be explored. Used in {@link dijkstraAlgorithm}.
+    /// @param vertex Vertex to explore
+    /// @param dist Shortest distance to the vertex known at time of {@code ExploreEntry } creation.
+    private record ExploreEntry(VertexID vertex, int dist) {}
 
-    private List<Path> dijkstraAlgorithm(Graph graph, VertexID from, VertexID target){
+    /// Finds the shortest path between two vertices in a weighted graph using Dijkstra's algorithm.
+    /// <p>
+    /// Edge weights must be non-negative, otherwise the result is not guaranteed to be the shortest path.
+    /// @param graph the graph to search
+    /// @param source the vertex the path starts at
+    /// @param target the vertex the path should end at
+    /// @return TODO
+    private Path dijkstraAlgorithm(Graph graph, VertexID source, VertexID target){
         // --- SETUP ---
+
+        // Note: This could be optimized, not every vertexID may be in a graph.
+        //       You could map an index to the enum value and use that, instead of the ordinal of the enum.
+        //       For this project I don't think its worth it to spend time on this.
+        //       Just wanting to note that i'm aware of this.
         int nOfPossibleVertexIDs = VertexID.values().length;
 
         // Prev: Index -> vertex, value -> previous vertex on the path
         VertexID[] prev = new VertexID[nOfPossibleVertexIDs];
 
         // Dist: Index -> vertex, value -> shortest known distance
-        int[] dist = new int[nOfPossibleVertexIDs]; // TODO: think about how to correspond the enum to the index without making a array that is the size of all possible vertex ids
+        int[] dist = new int[nOfPossibleVertexIDs];
         Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[source.ordinal()] = 0;
 
         // Priority queue decides which vertex will be explored next (poll shortest distance)
-        PriorityQueue<State> pq = new PriorityQueue<>(Comparator.comparingInt(State::dist));
-        pq.add(new State(from, 0));
+        PriorityQueue<ExploreEntry> exploreQueue = new PriorityQueue<>(Comparator.comparingInt(ExploreEntry::dist));
+        exploreQueue.add(new ExploreEntry(source, 0));
 
         // --- ALGORITHM ---
-        while (!pq.isEmpty()) {
-            // Get next vertex to explore
-            State cur = pq.poll();
-
-            if(cur.vertex() == target){
-                break;
-            }
+        while(!exploreQueue.isEmpty()){
+            ExploreEntry cur = exploreQueue.poll();
+            if(cur.vertex() == target) break;
 
             int curIndex = cur.vertex().ordinal();
-            List<Edge> edges = graph.get(cur.vertex()).edges();
 
             // Check if a shorter path has already been found
             if(cur.dist() > dist[curIndex]) continue;
 
+            List<Edge> edges = graph.get(cur.vertex()).edges();
             for(Edge e : edges){
                 int combinedWeight = cur.dist() + e.weight();
+                int outgoingVertexIndex = e.to().ordinal();
 
-                if(combinedWeight < dist[e.to().ordinal()]){
-                    dist[e.to().ordinal()] = combinedWeight;
-                    prev[e.to().ordinal()] = cur.vertex();
+                if(combinedWeight < dist[outgoingVertexIndex]){
+                    dist[outgoingVertexIndex] = combinedWeight;
+                    prev[outgoingVertexIndex] = cur.vertex();
 
-                    pq.add(new State(e.to(), combinedWeight));
+                    exploreQueue.add(new ExploreEntry(e.to(), combinedWeight));
                 }
             }
         }
 
-        return parsePathParentArray(prev, from, target);
+        return extractPathFromParentArray(prev, source, target);
     }
 
-    List<Path> parsePathParentArray(VertexID[] path, VertexID from, VertexID target){
-        // Print parent array.
-        // TODO: rename path parrent array
+    private Path extractPathFromParentArray(VertexID[] prev, VertexID source, VertexID target){
+        for(int i = 0; i<prev.length; i++){
+            System.out.println("[" + i + "]: " + prev[i]);
+        }
 
-        // All the found paths. From to (target and everything in between).
-        ArrayList<ArrayList<VertexID>> result = new ArrayList<>();
+
 
         VertexID cur = target;
-        while(cur != from){
-            // We are reversing through the list
-            VertexID previousVertex = path[cur.ordinal()];
+        while(cur != source){
 
-            result.add(new ArrayList<>());
-            result.getLast().add(cur);
-
-            // Loop over all paths we have
-            for(ArrayList<VertexID> p : result){
-                p.addFirst(previousVertex);
-            }
-
-            cur = previousVertex;
         }
 
-        List<Path> paths = new ArrayList<>();
-        for(ArrayList<VertexID> p : result){
-            paths.add(
-                    new Path(p)
-            );
-        }
-
-        return paths;
-    }
-
-    void UpdateCache(VertexID from, List<Path> paths){
-        for(Path path : paths){
-            List<VertexID> vertices = path.toList(); // TODO: update this?
-            VertexID to = vertices.getLast();
-
-            cache.put(
-                    new cacheEntryKey(from, to),
-                    path
-            );
-        }
+        return null;
     }
 }

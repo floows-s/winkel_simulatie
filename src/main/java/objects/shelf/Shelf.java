@@ -2,6 +2,7 @@ package objects.shelf;
 
 import objects.product.Product;
 import core.Renderable;
+import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -125,7 +126,8 @@ public class Shelf implements Renderable, Updatable {
     }
 
     @Override
-    public void update(double delta, long now) {
+    public void update(double delta, long now, Simulation s) {
+
     }
 
     @Override

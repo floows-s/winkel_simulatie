@@ -1,5 +1,7 @@
 package core;
 
+import core.logger.Logger;
+import core.logger.TagLogger;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -21,11 +23,14 @@ public class Game extends javafx.application.Application {
     public final int WIDTH = 1280;
     public final int HEIGHT = 720;
 
-    // OBJECTS
-    private Queue<Object> removalQueue = new ArrayDeque<Object>();
+    // LOGGER
+    private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
-    private List<Renderable> renderables = new ArrayList<Renderable>();
-    private List<Updatable> updatables = new ArrayList<Updatable>();
+    // OBJECTS
+    private final Queue<Object> removalQueue = new ArrayDeque<>();
+
+    private final List<Renderable> renderables = new ArrayList<>();
+    private final List<Updatable> updatables = new ArrayList<>();
 
     // GRAPHICS
     private Canvas canvas;
@@ -35,7 +40,7 @@ public class Game extends javafx.application.Application {
     private Simulation simulation;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         setup(stage);
 
         new AnimationTimer() {
@@ -51,7 +56,7 @@ public class Game extends javafx.application.Application {
                 double dt = (now - previousTime) / 1e9;
                 previousTime = now;
 
-                update(dt, now);
+                update(dt, now, simulation);
                 handleRemovalQueue(removalQueue);
                 render(graphicsContext);
             }
@@ -73,7 +78,6 @@ public class Game extends javafx.application.Application {
         });
 
         simulation = new Simulation(this);
-        addObject(simulation);
 
         Pane root = new Pane(canvas);
         stage.setScene(new Scene(root));
@@ -81,9 +85,9 @@ public class Game extends javafx.application.Application {
         stage.show();
     }
 
-    private void update(double delta, long now){
+    private void update(double delta, long now, Simulation s){
         for(Updatable obj: updatables){
-            obj.update(delta, now);
+            obj.update(delta, now, s);
         }
     }
 
@@ -101,13 +105,13 @@ public class Game extends javafx.application.Application {
 
             if(obj instanceof Renderable rObj){
                 if(!renderables.remove(rObj)) {
-                    System.out.println("Error: Failed to remove Renderable object, not found. (" + obj + ")");
+                    log.logError("Failed to remove Renderable object, not found. (" + obj + ")");
                 }
             }
 
             if(obj instanceof Updatable uObj){
                 if(!updatables.remove(uObj)) {
-                    System.out.println("Error: Failed to remove Updatable object, not found. (" + obj + ")");
+                    log.logError("Failed to remove Updatable object, not found. (" + obj + ")");
                 }
             }
         }
@@ -127,7 +131,7 @@ public class Game extends javafx.application.Application {
         }
 
         if(!validInterface){
-            System.out.println("Warning: a object without the appropriate type was attempted to be added (" + obj + ")");
+            log.logWarning("An object without the appropriate type was attempted to be added (" + obj + ")");
         }
     }
 

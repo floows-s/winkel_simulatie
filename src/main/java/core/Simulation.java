@@ -4,13 +4,17 @@ import objects.FloatingText.FloatingNumber;
 import objects.box.Box;
 import objects.product.Product;
 import objects.register.Register;
+import objects.graph.*;
+import objects.path.Path;
+import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
 import utilities.JsonFileParser;
 import objects.background.BackgroundLoader;
 
-public class Simulation implements Updatable{
+public class Simulation{
     private final Game game;
+    public Graph graph;
 
     Simulation(Game game){
         this.game = game;
@@ -54,11 +58,17 @@ public class Simulation implements Updatable{
         game.addObject(register1);
         game.addObject(register2);
         game.addObject(priceTotal);
+
+        GraphData data = GraphData.fromJson("/json/graph/graph.json");
+
+        graph = new Graph(
+                data,
+                new DijkstraCachePathFinderStrategy()
+        );
+
+        game.addObject(graph);
     }
 
 
-    @Override
-    public void update(double delta, long now) {
 
-    }
 }

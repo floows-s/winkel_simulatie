@@ -51,46 +51,61 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
         cacheEntryKey key = new cacheEntryKey(source, target);
 
         if(!cache.containsKey(key)){
+            // Get paths
             Path foundPath = dijkstraAlgorithm(graph, source, target);
-            List<Path> subPaths = extractSubPathsFromPath(foundPath, source);
+            List<Path> prefixPaths = extractPrefixPaths(foundPath);
 
-            UpdateCache(source, subPaths);
+            // Collect
+            List<Path> pathsToCache = new ArrayList<>();
+            pathsToCache.add(foundPath);
+            pathsToCache.addAll(prefixPaths);
+
+            // Update
+            UpdateCache(pathsToCache);
             printCache();
         }
 
         return cache.get(key);
     }
 
-    List<Path> extractSubPathsFromPath(Path path, VertexID source){
-        ArrayList<Path> subPaths = new ArrayList<>();
+    /// Returns all prefixes of the given path that start at its source.
+    /// <p>
+    /// Excludes the single-vertex prefix (the source alone).
+    /// In order of increasing length.
+    ///
+    /// @param path the path to extract prefixes from
+    /// @return a list of prefix paths
+    private List<Path> extractPrefixPaths(Path path){
+        List<VertexID> steps = path.toList();
+        ArrayList<Path> prefixPaths = new ArrayList<>();
 
-        List<VertexID> currentPath = new ArrayList<>();
-        for(VertexID vID : path.toList()){
-            currentPath.add(vID);
-
-            if(vID.equals(source)) continue;
-
-            subPaths.add(
-                    new Path(currentPath)
+        // Start at 2 because subList toIndex is exclusive & we want to skip the single-vertex prefix, that is the source alone
+        for(int i = 2; i < steps.size(); ++i){
+            prefixPaths.add(
+              new Path(steps.subList(0, i))
             );
         }
 
-        return subPaths;
+        return prefixPaths;
     }
 
-    void UpdateCache(VertexID source, List<Path> paths){
+
+    /// Update cache with given paths. This could overwrite existing entry's.
+    /// @param paths The paths to update to the cache
+    private void UpdateCache(List<Path> paths){
         for(Path path : paths){
-            List<VertexID> vertices = path.toList(); // TODO: update this? Make in Path class getLast and getFirst??
-            VertexID to = vertices.getLast();
+            VertexID source = path.getFirst();
+            VertexID target = path.getLast();
 
             cache.put(
-                    new cacheEntryKey(source, to),
+                    new cacheEntryKey(source, target),
                     path
             );
         }
     }
 
-    /// Print the cache to System.out.
+    /// Print the current cache to {@code System.out}.
+    /// <p>
     /// Used for debugging.
     private void printCache(){
         for(var entry : cache.entrySet()){
@@ -118,7 +133,7 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
     /// @param graph the graph to search
     /// @param source the vertex the path starts at
     /// @param target the vertex the path should end at
-    /// @return TODO
+    /// @return The shortest path from {@code source} to {@code target} in {@code graph}.
     private Path dijkstraAlgorithm(Graph graph, VertexID source, VertexID target){
         // --- SETUP ---
 
@@ -164,21 +179,23 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
             }
         }
 
-        return extractPathFromParentArray(prev, source, target);
+        return extractPathFromParentArray(prev, target);
     }
 
-    private Path extractPathFromParentArray(VertexID[] prev, VertexID source, VertexID target){
-        for(int i = 0; i<prev.length; i++){
-            System.out.println("[" + i + "]: " + prev[i]);
-        }
-
-
+    /// Extract the path from source to target by walking through it. Prefixing every step so it has the right order.
+    /// @param previous The parent array where the index is the vertex and the value the previous vertex on the path
+    /// @param target The ending vertex of the path
+    /// @return A path that is the result of walking through {@code previous} from target to source
+    private Path extractPathFromParentArray(VertexID[] previous, VertexID target){
+        List<VertexID> steps = new ArrayList<>();
 
         VertexID cur = target;
-        while(cur != source){
+        while(cur != null){
+            steps.addFirst(cur);
 
+            cur = previous[cur.ordinal()];
         }
 
-        return null;
+        return new Path(steps);
     }
 }

@@ -1,0 +1,74 @@
+{
+  "vertices": [
+    {
+      "id": "ENTRANCE",
+      "location": {
+        "x": 709,
+        "y": 454
+      },
+      "edges": [
+        {
+          "to": "SHELF_1"
+        }
+      ]
+    },
+    {
+      "id": "SHELF_1",
+      "location": {
+        "x": 709,
+        "y": 337
+      },
+      "edges": [
+        {
+          "to": "SHELF_2"
+        },
+        {
+          "to": "ENTRANCE"
+        }
+      ]
+    },
+    {
+      "id": "SHELF_2",
+      "location": {
+        "x": 709,
+        "y": 218
+      },
+      "edges": [
+        {
+          "to": "CHECKOUT_1"
+        },
+        {
+          "to": "SHELF_1"
+        }
+      ]
+    },
+    {
+      "id": "CHECKOUT_1",
+      "location": {
+        "x": 536,
+        "y": 222
+      },
+      "edges": [
+        {
+          "to": "SHELF_2"
+        },
+        {
+          "to": "EXIT"
+        }
+      ]
+    },
+    {
+      "id": "EXIT",
+      "location": {
+        "x": 536,
+        "y": 453
+      },
+      "edges": [
+        {
+          "to": "EXIT"
+        }
+      ]
+    }
+  ]
+}
+

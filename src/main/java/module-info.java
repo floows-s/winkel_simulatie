@@ -12,4 +12,5 @@ module com.example.winkel_simulatie {
 
     // GSON OPENS
     opens objects.shelf to com.google.gson;
+    opens objects.graph to com.google.gson;
 }

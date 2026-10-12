@@ -3,23 +3,40 @@ package objects.path;
 import objects.graph.VertexID;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-//TODO: def update this and make more clear, make more queue like, Like get next step, or something like that
+/// An immutable list of steps.
+/// <p>
+/// Allowing to iterate over the steps, remembering the current step.
 public class Path {
 
-    protected final List<VertexID> vertices;
+    protected final List<VertexID> steps;
     protected final ListIterator<VertexID> iterator;
     protected VertexID current;
 
-    public Path(VertexID... vertices) {
-        this.vertices = Arrays.stream(vertices).toList();
-        this.iterator = this.vertices.listIterator();
+    /// Construct a Path object which follows the order of the given {@link VertexID}'s.
+    /// <p>
+    /// Creates deep copy of given steps.
+    /// @param steps To take in the path.
+    public Path(VertexID... steps) {
+        this.steps = Arrays.stream(steps).toList();
+        this.iterator = this.steps.listIterator();
     }
 
-    public Path(List<VertexID> vertices){
-        this.vertices = List.copyOf(vertices);
-        this.iterator = this.vertices.listIterator();
+    /// Construct a Path object which follows the order of the given list of {@link VertexID}'s.
+    /// <p>
+    /// Creates a deep copy of the given list.
+    /// @param steps To take in the path.
+    public Path(List<VertexID> steps){
+        this.steps = List.copyOf(steps);
+        this.iterator = this.steps.listIterator();
+    }
+
+    /// Constructs a copy of {@code path}.
+    /// @param path to copy from
+    public Path(Path path){
+        this.current = path.current;
+        this.steps = List.copyOf(path.steps);
+        this.iterator = this.steps.listIterator();
     }
 
 
@@ -30,7 +47,7 @@ public class Path {
         return !this.iterator.hasNext() && this.current == null;
     }
 
-    /// Sets the current VertexID on the path to the next one and returns the ID.
+    /// Sets the current VertexID on the path to the next one and return the ID.
     /// If there is no next it will return NULL.
     /// @return Next VertexID or NULL
     public VertexID next(){
@@ -78,7 +95,21 @@ public class Path {
         return this.iterator.hasPrevious();
     }
 
+
+    /// Get the first step of the path.
+    /// @return first step of the path
+    public VertexID getFirst(){
+        return this.steps.getFirst();
+    }
+
+    /// Get the last step of the path.
+    /// @return last step of the path
+    public VertexID getLast(){
+        return this.steps.getLast();
+    }
+
+    /// @return a list of the steps in the path. Order from beginning to end.
     public List<VertexID> toList(){
-        return List.copyOf(this.vertices); // Note: VertexID is an enum. No need to deep copy.
+        return List.copyOf(this.steps); // Note: VertexID is an enum. No need to deep copy.
     }
 }

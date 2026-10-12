@@ -12,6 +12,7 @@ import objects.path.pathfinder.PathFinderStrategy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Graph implements Renderable {
     private final Color VERTEX_COLOR = Color.BLUEVIOLET;
@@ -23,6 +24,11 @@ public class Graph implements Renderable {
     private final PathFinderStrategy pathFinder;
 
     private final Map<VertexID, Vertex> vertices = new HashMap<>();
+
+    public Graph(GraphData data, PathFinderStrategy pathFinder){
+        this.pathFinder = pathFinder;
+        mapVerticesToID(data.getVertices(), this.vertices);
+    }
 
     public Graph(Set<Vertex> vertices, PathFinderStrategy pathFinder){
         this.pathFinder = pathFinder;
@@ -47,15 +53,18 @@ public class Graph implements Renderable {
     }
 
 
-    // TODO: description
+    /// Get the shortest path between two vertices.
+    /// @param from starting vertex
+    /// @param to ending vertex
+    /// @return The shortest path between {@code from} and {@code to}
     public Path getShortestPath(VertexID from, VertexID to){
         return pathFinder.find(this, from, to);
     }
 
-    /// A set of vertices // TODO give more useful info
-    /// @return A set of vertices
+    /// Collects all the vertices in the graph into a set.
+    /// @return a set of all the vertices in the graph
     public Set<Vertex> toSet(){
-        return Set.copyOf(vertices.values()); // TODO: deep copy
+        return vertices.values().stream().map(Vertex::new).collect(Collectors.toSet());
     }
 
     @Override
@@ -83,7 +92,8 @@ public class Graph implements Renderable {
         }
     }
 
-    /// Draw the outgoing edges for the given Vertex.
+    /// Draw the outgoing edges for the given {@code Vertex}.
+    /// Skipping once where the outgoing vertex is not part of this graph.
     private void drawEdges(Vertex v, GraphicsContext g){
         for(Edge e : v.edges()){
             Vertex to = vertices.get(e.to());
@@ -92,7 +102,6 @@ public class Graph implements Renderable {
                 continue;
             }
 
-            // TODO: Right now its drawing edges which may be already drawn. This can be optimized.
             g.strokeLine(
                     v.location().x(),
                     v.location().y(),

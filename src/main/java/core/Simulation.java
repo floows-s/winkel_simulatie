@@ -1,15 +1,10 @@
 package core;
 
-import objects.customer.Customer;
 import objects.graph.*;
 import objects.path.Path;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 public class Simulation{
     private final Game game;
@@ -39,40 +34,10 @@ public class Simulation{
     }
 
     private void setupGraph(){
-        Vertex v_enterance = new Vertex(
-                VertexID.ENTRANCE,
-                new Point(709, 454),
-                Arrays.asList(new Edge(VertexID.SHELF_1))
-        );
-
-        Vertex v_shelf_1 = new Vertex(
-                VertexID.SHELF_1,
-                new Point(709, 337),
-                Arrays.asList(new Edge(VertexID.SHELF_2), new Edge(VertexID.ENTRANCE))
-        );
-
-        Vertex v_shelf_2 = new Vertex(
-                VertexID.SHELF_2,
-                new Point(709, 218),
-                Arrays.asList(new Edge(VertexID.CHECKOUT_1), new Edge(VertexID.SHELF_1))
-        );
-
-        Vertex v_checkout = new Vertex(
-                VertexID.CHECKOUT_1,
-                new Point(536, 222),
-                Arrays.asList(new Edge(VertexID.SHELF_2), new Edge(VertexID.EXIT))
-        );
-
-        Vertex v_exit = new Vertex(
-                VertexID.EXIT,
-                new Point(546, 453),
-                Arrays.asList(new Edge(VertexID.CHECKOUT_1))
-        );
-
-        Set<Vertex> vertices = Set.of(v_enterance, v_shelf_1, v_shelf_2, v_checkout, v_exit);
+        GraphData data = GraphData.fromJson("/json/graph/graph.json");
 
         graph = new Graph(
-                vertices,
+                data,
                 new DijkstraCachePathFinderStrategy()
         );
 

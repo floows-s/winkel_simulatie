@@ -1,4 +1,5 @@
 package objects.background;
+import core.Game;
 import core.Renderable;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -12,7 +13,7 @@ public class BackgroundLoader implements Renderable {
 
     @Override
     public void render(GraphicsContext g){
-        g.drawImage(backGround , 0, 0, 1280, 720);
+        g.drawImage(backGround , 0, 0, Game.WIDTH, Game.HEIGHT);
     }
 
     @Override

@@ -6,22 +6,18 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import utilities.EasyJsonObjectPositionar;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 
 public class Game extends javafx.application.Application {
     // CONSTANTS
-    public final int WIDTH = 1280;
-    public final int HEIGHT = 720;
+    public static final int WIDTH = 1280;
+    public static final int HEIGHT = 720;
 
     // LOGGER
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
@@ -68,14 +64,27 @@ public class Game extends javafx.application.Application {
         graphicsContext = canvas.getGraphicsContext2D();
 
         canvas.setOnMouseClicked(event -> {
-            String mouse_cords_json = "\n\"x\": " + event.getX() + ", \n\"y\": " + event.getY() + "\n";
+            String result = EasyJsonObjectPositionar.toClipboard(
+                    "{\n" +
+                            "      \"id\": \"\",\n" +
+                            "      \"location\": {\n" +
+                            "        \"x\": %x,\n" +
+                            "        \"y\": %y\n" +
+                            "      },\n" +
+                            "      \"edges\": [\n" +
+                            "        {\n" +
+                            "          \"to\": \"\"\n" +
+                            "        }\n" +
+                            "      ]\n" +
+                            " },\n",
+                    (int) event.getX(),
+                    (int) event.getY(),
+                    true
+            );
 
-            System.out.println(mouse_cords_json);
-
-            StringSelection stringSelection = new StringSelection(mouse_cords_json);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(stringSelection, null);
+            System.out.println(result);
         });
+
 
         simulation = new Simulation(this);
 

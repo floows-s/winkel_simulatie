@@ -79,6 +79,7 @@ public class Game extends javafx.application.Application {
                             " },\n",
                     (int) event.getX(),
                     (int) event.getY(),
+                    true,
                     true
             );
 

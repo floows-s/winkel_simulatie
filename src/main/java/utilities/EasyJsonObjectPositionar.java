@@ -15,7 +15,17 @@ public class EasyJsonObjectPositionar {
 
     private final static Logger log = new TagLogger(EasyJsonObjectPositionar.class.getSimpleName());
 
-    public static String toClipboard(String format, int x, int y, boolean concat) {
+    private static Integer first_x;
+
+    public static String toClipboard(String format, int x, int y, boolean concat, boolean snap_x_to_first) {
+        if(snap_x_to_first){
+            if(first_x == null){
+                first_x = x;
+            }
+
+            x = first_x;
+        }
+
         String filledInFormat = format;
 
         // Replace specifiers with given values

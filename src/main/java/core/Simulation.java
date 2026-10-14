@@ -66,7 +66,7 @@ public class Simulation{
                 new DijkstraCachePathFinderStrategy()
         );
 
-        game.addObject(graph);
+//        game.addObject(graph);
     }
 
 

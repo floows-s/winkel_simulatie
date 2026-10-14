@@ -80,6 +80,7 @@ public enum VertexID {
     STOCKROOM_AISLE_2_SHELF_1,
     STOCKROOM_AISLE_2_SHELF_2,
 
+    // Loading dock
     STOCKROOM_LOADING_DOCK, // Coupling between stockroom and loading dock
 
     // --- LOADING DOCK ---

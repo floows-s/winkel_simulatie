@@ -1,3 +1,3 @@
 package core;
 
-public record Point (float x, float y){ }
+public record Point (int x, int y){ }

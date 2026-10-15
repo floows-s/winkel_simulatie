@@ -3,27 +3,38 @@ package utilities;
 import core.logger.Logger;
 import core.logger.TagLogger;
 
-import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 
 public class EasyJsonObjectPositionar {
 
     private final static Logger log = new TagLogger(EasyJsonObjectPositionar.class.getSimpleName());
 
     private static Integer first_x;
+    private static Integer first_y;
 
-    public static String toClipboard(String format, int x, int y, boolean concat, boolean snap_x_to_first) {
+    public static void clearClipboard(){
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new StringSelection(""), null);
+    }
+
+    public static String toClipboard(String format, int x, int y, boolean concat, boolean snap_x_to_first, boolean snap_y_to_first) {
         if(snap_x_to_first){
             if(first_x == null){
                 first_x = x;
             }
 
             x = first_x;
+        }
+
+        if(snap_y_to_first){
+            if(first_y == null){
+                first_y = y;
+            }
+
+            y = first_y;
         }
 
         String filledInFormat = format;

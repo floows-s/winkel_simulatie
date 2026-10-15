@@ -63,28 +63,6 @@ public class Game extends javafx.application.Application {
         canvas = new Canvas(WIDTH, HEIGHT);
         graphicsContext = canvas.getGraphicsContext2D();
 
-        canvas.setOnMouseClicked(event -> {
-            String result = EasyJsonObjectPositionar.toClipboard(
-                    "{\n" +
-                            "      \"id\": \"\",\n" +
-                            "      \"location\": {\n" +
-                            "        \"x\": %x,\n" +
-                            "        \"y\": %y\n" +
-                            "      },\n" +
-                            "      \"edges\": [\n" +
-                            "        {\n" +
-                            "          \"to\": \"\"\n" +
-                            "        }\n" +
-                            "      ]\n" +
-                            " },\n",
-                    (int) event.getX(),
-                    (int) event.getY(),
-                    true,
-                    true
-            );
-
-            System.out.println(result);
-        });
 
 
         simulation = new Simulation(this);

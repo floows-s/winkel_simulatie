@@ -15,12 +15,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Graph implements Renderable {
-    private final Color VERTEX_COLOR = Color.BLUEVIOLET;
-    private final int VERTEX_DIAMETER = 30;
-    private final Color LINE_COLOR = Color.BLUEVIOLET;
-    private final int LINE_WIDTH = 3;
+    private final Color VERTEX_COLOR = Color.RED;
+    private final int VERTEX_DIAMETER = 21;
+    private final Color LINE_COLOR = Color.RED;
+    private final int LINE_WIDTH = 2;
 
-    private final Logger log = new TagLogger(this.getClass().toString());
+    private final Logger log = new TagLogger(this.getClass().getSimpleName());
     private final PathFinderStrategy pathFinder;
 
     private final Map<VertexID, Vertex> vertices = new HashMap<>();
@@ -69,11 +69,12 @@ public class Graph implements Renderable {
 
     @Override
     public void render(GraphicsContext g) {
-        g.setFill(VERTEX_COLOR);
-        g.setStroke(LINE_COLOR);
-        g.setLineWidth(LINE_WIDTH);
 
         for(var kv : vertices.entrySet()){
+            g.setFill(VERTEX_COLOR);
+            g.setStroke(LINE_COLOR);
+            g.setLineWidth(LINE_WIDTH);
+
             Vertex v = kv.getValue();
             Point loc = v.location();
 
@@ -83,8 +84,8 @@ public class Graph implements Renderable {
             g.fillOval(
                     loc.x() - r,
                     loc.y() - r,
-                    30,
-                    30
+                    VERTEX_DIAMETER,
+                    VERTEX_DIAMETER
             );
 
             // Draw edges of vertex

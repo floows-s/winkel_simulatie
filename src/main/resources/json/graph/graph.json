@@ -1,56 +1,1028 @@
 {
   "vertices": [
     {
-      "id": "ENTRANCE",
+      "id": "SPAWN_POINT",
       "location": {
-        "x": 709,
-        "y": 454
+        "x": 1500,
+        "y": 360
       },
       "edges": [
-        {
-          "to": "SHELF_1"
-        }
-      ]
-    },
-    {
-      "id": "SHELF_1",
-      "location": {
-        "x": 709,
-        "y": 337
-      },
-      "edges": [
-        {
-          "to": "SHELF_2"
-        },
         {
           "to": "ENTRANCE"
         }
       ]
     },
     {
-      "id": "SHELF_2",
+      "id": "ENTRANCE",
       "location": {
-        "x": 709,
-        "y": 218
+        "x": 1050,
+        "y": 328
       },
       "edges": [
         {
-          "to": "CHECKOUT_1"
+          "to": "SPAWN_POINT"
         },
         {
-          "to": "SHELF_1"
+          "to": "WALKWAY_TOP_ENTRANCE"
+        }
+      ]
+    },
+
+
+    {
+      "id": "WALKWAY_TOP_ENTRANCE",
+      "location": {
+        "x": 1003,
+        "y": 83
+      },
+      "edges": [
+        {
+          "to": "ENTRANCE"
+        },
+        {
+          "to": "WALKWAY_TOP_START"
         }
       ]
     },
     {
-      "id": "CHECKOUT_1",
+      "id": "WALKWAY_TOP_START",
       "location": {
-        "x": 536,
-        "y": 222
+        "x": 907,
+        "y": 83
       },
       "edges": [
         {
-          "to": "SHELF_2"
+          "to": "WALKWAY_TOP_ENTRANCE"
+        },
+        {
+          "to": "WALKWAY_TOP_END"
+        },
+        {
+          "to": "AISLE_1_START"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_TOP_END",
+      "location": {
+        "x": 421,
+        "y": 83
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_TOP_START"
+        },
+        {
+          "to": "WALKWAY_AISLE_1"
+        }
+      ]
+    },
+
+    {
+      "id": "WALKWAY_AISLE_1",
+      "location": {
+        "x": 421,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_TOP_END"
+        },
+        {
+          "to": "AISLE_1_END"
+        },
+        {
+          "to": "WALKWAY_AISLE_2"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_AISLE_2",
+      "location": {
+        "x": 421,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_AISLE_1"
+        },
+        {
+          "to": "AISLE_2_END"
+        },
+        {
+          "to": "WALKWAY_STOCKROOM"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_STOCKROOM",
+      "location": {
+        "x": 421,
+        "y": 350
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_AISLE_2"
+        },
+        {
+          "to": "STOCKROOM_ENTRANCE"
+        },
+        {
+          "to": "WALKWAY_AISLE_3"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_AISLE_3",
+      "location": {
+        "x": 421,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_STOCKROOM"
+        },
+        {
+          "to": "AISLE_3_END"
+        },
+        {
+          "to": "WALKWAY_AISLE_4"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_AISLE_4",
+      "location": {
+        "x": 421,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_AISLE_3"
+        },
+        {
+          "to": "AISLE_4_END"
+        },
+        {
+          "to": "WALKWAY_REGISTERS_QUEUE_END"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_REGISTERS_QUEUE_END",
+      "location": {
+        "x": 421,
+        "y": 696
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_AISLE_4"
+        },
+        {
+          "to": "REGISTER_2_QUEUE_END"
+        }
+      ]
+    },
+
+
+    {
+      "id": "AISLE_1_START",
+      "location": {
+        "x": 907,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_TOP_START"
+        },
+        {
+          "to": "AISLE_1_SHELF_1"
+        },
+        {
+          "to": "AISLE_2_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_SHELF_1",
+      "location": {
+        "x": 855,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_START"
+        },
+        {
+          "to": "AISLE_1_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_SHELF_2",
+      "location": {
+        "x": 795,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_SHELF_1"
+        },
+        {
+          "to": "AISLE_1_SHELF_3"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_SHELF_3",
+      "location": {
+        "x": 727,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_SHELF_2"
+        },
+        {
+          "to": "AISLE_1_SHELF_4"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_SHELF_4",
+      "location": {
+        "x": 664,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_SHELF_3"
+        },
+        {
+          "to": "AISLE_1_SHELF_5"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_SHELF_5",
+      "location": {
+        "x": 599,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_SHELF_4"
+        },
+        {
+          "to": "AISLE_1_SHELF_6"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_SHELF_6",
+      "location": {
+        "x": 536,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_SHELF_5"
+        },
+        {
+          "to": "AISLE_1_END"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_1_END",
+      "location": {
+        "x": 477,
+        "y": 183
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_SHELF_6"
+        },
+        {
+          "to": "WALKWAY_AISLE_1"
+        }
+      ]
+    },
+
+
+    {
+      "id": "AISLE_2_START",
+      "location": {
+        "x": 907,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_1_START"
+        },
+        {
+          "to": "AISLE_2_SHELF_1"
+        },
+        {
+          "to": "AISLE_3_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_SHELF_1",
+      "location": {
+        "x": 855,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_START"
+        },
+        {
+          "to": "AISLE_2_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_SHELF_2",
+      "location": {
+        "x": 795,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_SHELF_1"
+        },
+        {
+          "to": "AISLE_2_SHELF_3"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_SHELF_3",
+      "location": {
+        "x": 727,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_SHELF_2"
+        },
+        {
+          "to": "AISLE_2_SHELF_4"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_SHELF_4",
+      "location": {
+        "x": 664,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_SHELF_3"
+        },
+        {
+          "to": "AISLE_2_SHELF_5"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_SHELF_5",
+      "location": {
+        "x": 599,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_SHELF_4"
+        },
+        {
+          "to": "AISLE_2_SHELF_6"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_SHELF_6",
+      "location": {
+        "x": 536,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_SHELF_5"
+        },
+        {
+          "to": "AISLE_2_END"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_2_END",
+      "location": {
+        "x": 477,
+        "y": 283
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_SHELF_6"
+        },
+        {
+          "to": "WALKWAY_AISLE_2"
+        }
+      ]
+    },
+
+
+    {
+      "id": "AISLE_3_START",
+      "location": {
+        "x": 907,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_2_START"
+        },
+        {
+          "to": "AISLE_3_SHELF_1"
+        },
+        {
+          "to": "AISLE_4_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_SHELF_1",
+      "location": {
+        "x": 855,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_START"
+        },
+        {
+          "to": "AISLE_3_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_SHELF_2",
+      "location": {
+        "x": 795,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_SHELF_1"
+        },
+        {
+          "to": "AISLE_3_SHELF_3"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_SHELF_3",
+      "location": {
+        "x": 727,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_SHELF_2"
+        },
+        {
+          "to": "AISLE_3_SHELF_4"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_SHELF_4",
+      "location": {
+        "x": 664,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_SHELF_3"
+        },
+        {
+          "to": "AISLE_3_SHELF_5"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_SHELF_5",
+      "location": {
+        "x": 599,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_SHELF_4"
+        },
+        {
+          "to": "AISLE_3_SHELF_6"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_SHELF_6",
+      "location": {
+        "x": 536,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_SHELF_5"
+        },
+        {
+          "to": "AISLE_3_END"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_3_END",
+      "location": {
+        "x": 477,
+        "y": 383
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_SHELF_6"
+        },
+        {
+          "to": "WALKWAY_AISLE_3"
+        }
+      ]
+    },
+
+
+    {
+      "id": "AISLE_4_START",
+      "location": {
+        "x": 907,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_3_START"
+        },
+        {
+          "to": "AISLE_4_SHELF_1"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_SHELF_1",
+      "location": {
+        "x": 855,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_START"
+        },
+        {
+          "to": "AISLE_4_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_SHELF_2",
+      "location": {
+        "x": 795,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_1"
+        },
+        {
+          "to": "AISLE_4_SHELF_3"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_SHELF_3",
+      "location": {
+        "x": 727,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_2"
+        },
+        {
+          "to": "AISLE_4_SHELF_4"
+        },
+        {
+          "to": "REGISTER_1_QUEUE_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_SHELF_4",
+      "location": {
+        "x": 664,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_3"
+        },
+        {
+          "to": "AISLE_4_SHELF_5"
+        },
+        {
+          "to": "REGISTER_1_QUEUE_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_SHELF_5",
+      "location": {
+        "x": 599,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_4"
+        },
+        {
+          "to": "AISLE_4_SHELF_6"
+        },
+        {
+          "to": "REGISTER_2_QUEUE_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_SHELF_6",
+      "location": {
+        "x": 536,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_5"
+        },
+        {
+          "to": "AISLE_4_END"
+        },
+        {
+          "to": "REGISTER_2_QUEUE_START"
+        }
+      ]
+    },
+    {
+      "id": "AISLE_4_END",
+      "location": {
+        "x": 477,
+        "y": 498
+      },
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_6"
+        },
+        {
+          "to": "WALKWAY_AISLE_4"
+        }
+      ]
+    },
+
+
+    {
+      "id": "STOCKROOM_ENTRANCE",
+      "location": {
+        "x": 368,
+        "y": 351
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_STOCKROOM"
+        },
+        {
+          "to": "STOCKROOM_MIDDLE"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_MIDDLE",
+      "location": {
+        "x": 252,
+        "y": 351
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_ENTRANCE"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_SHELF_1"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_SHELF_2"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_AISLE_1_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_LOADING_DOCK"
+        }
+      ]
+    },
+
+
+    {
+      "id": "STOCKROOM_COOL_AISLE_1_SHELF_1",
+      "location": {
+        "x": 318,
+        "y": 238
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_MIDDLE"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_COOL_AISLE_1_MIDDLE",
+      "location": {
+        "x": 255,
+        "y": 238
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_SHELF_1"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_2_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_COOL_AISLE_1_SHELF_2",
+      "location": {
+        "x": 185,
+        "y": 238
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_MIDDLE"
+        }
+      ]
+    },
+
+
+    {
+      "id": "STOCKROOM_COOL_AISLE_2_SHELF_1",
+      "location": {
+        "x": 318,
+        "y": 141
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_COOL_AISLE_2_MIDDLE"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_COOL_AISLE_2_MIDDLE",
+      "location": {
+        "x": 252,
+        "y": 141
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_COOL_AISLE_2_SHELF_1"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_1_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_COOL_AISLE_2_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_COOL_AISLE_2_SHELF_2",
+      "location": {
+        "x": 186,
+        "y": 141
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_COOL_AISLE_2_MIDDLE"
+        }
+      ]
+    },
+
+
+    {
+      "id": "STOCKROOM_AISLE_1_SHELF_1",
+      "location": {
+        "x": 314,
+        "y": 496
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_AISLE_1_MIDDLE"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_AISLE_1_MIDDLE",
+      "location": {
+        "x": 250,
+        "y": 496
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_AISLE_1_SHELF_1"
+        },
+        {
+          "to": "STOCKROOM_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_AISLE_2_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_AISLE_1_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_AISLE_1_SHELF_2",
+      "location": {
+        "x": 185,
+        "y": 496
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_AISLE_1_MIDDLE"
+        }
+      ]
+    },
+
+
+    {
+      "id": "STOCKROOM_AISLE_2_SHELF_1",
+      "location": {
+        "x": 316,
+        "y": 607
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_AISLE_2_MIDDLE"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_AISLE_2_MIDDLE",
+      "location": {
+        "x": 252,
+        "y": 607
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_AISLE_2_SHELF_1"
+        },
+        {
+          "to": "STOCKROOM_AISLE_1_MIDDLE"
+        },
+        {
+          "to": "STOCKROOM_AISLE_2_SHELF_2"
+        }
+      ]
+    },
+    {
+      "id": "STOCKROOM_AISLE_2_SHELF_2",
+      "location": {
+        "x": 185,
+        "y": 607
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_AISLE_2_MIDDLE"
+        }
+      ]
+    },
+
+
+
+
+    {
+      "id": "STOCKROOM_LOADING_DOCK",
+      "location": {
+        "x": 59,
+        "y": 351
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_MIDDLE"
+        },
+        {
+          "to": "LOADING_DOCK"
+        }
+      ]
+    },
+
+
+
+    {
+      "id": "LOADING_DOCK",
+      "location": {
+        "x": 59,
+        "y": 295
+      },
+      "edges": [
+        {
+          "to": "STOCKROOM_LOADING_DOCK"
+        }
+      ]
+    },
+
+
+
+
+
+
+    {
+      "id": "REGISTER_1_QUEUE_START",
+      "location": {
+        "x": 725,
+        "y": 551
+      },
+      "edges": []
+    },
+    {
+      "id": "REGISTER_1_QUEUE_END",
+      "location": {
+        "x": 728,
+        "y": 696
+      },
+      "edges": [
+        {
+          "to": "REGISTER_2_QUEUE_END"
+        },
+        {
+          "to": "WALKWAY_EXIT"
+        }
+      ]
+    },
+
+    {
+      "id": "REGISTER_2_QUEUE_START",
+      "location": {
+        "x": 570,
+        "y": 551
+      },
+      "edges": []
+    },
+    {
+      "id": "REGISTER_2_QUEUE_END",
+      "location": {
+        "x": 569,
+        "y": 696
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_REGISTERS_QUEUE_END"
+        },
+        {
+          "to": "REGISTER_1_QUEUE_END"
+        }
+      ]
+    },
+
+
+
+    {
+      "id": "WALKWAY_EXIT",
+      "location": {
+        "x": 1019,
+        "y": 692
+      },
+      "edges": [
+        {
+          "to": "REGISTER_1_QUEUE_END"
         },
         {
           "to": "EXIT"
@@ -60,12 +1032,15 @@
     {
       "id": "EXIT",
       "location": {
-        "x": 536,
-        "y": 453
+        "x": 1049,
+        "y": 378
       },
       "edges": [
         {
-          "to": "EXIT"
+          "to": "WALKWAY_EXIT"
+        },
+        {
+          "to": "SPAWN_POINT"
         }
       ]
     }

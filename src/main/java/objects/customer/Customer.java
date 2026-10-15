@@ -38,7 +38,6 @@ public class Customer implements Renderable, Updatable {
 
     private void takeStepOnPath(Path path, Graph graph, double delta){
         if(path.isFinished()){
-            log.logInfo("No more steps to take. Path completed!");
             return;
         }
 

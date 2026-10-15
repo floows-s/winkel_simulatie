@@ -1,20 +1,22 @@
 package core;
 
+import core.logger.Logger;
+import core.logger.TagLogger;
 import objects.FloatingText.FloatingNumber;
 import objects.box.Box;
 import objects.product.Product;
 import objects.register.Register;
 import objects.graph.*;
-import objects.path.Path;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfData;
 import utilities.JsonFileParser;
 import objects.background.BackgroundLoader;
 
-public class Simulation{
+public class Simulation {
     private final Game game;
     public Graph graph;
+    private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
     Simulation(Game game){
         this.game = game;
@@ -68,7 +70,4 @@ public class Simulation{
 
         game.addObject(graph);
     }
-
-
-
 }

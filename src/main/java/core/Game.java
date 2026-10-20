@@ -8,7 +8,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import utilities.EasyJsonObjectPositionar;
+import objects.customer.Customer;
+import objects.graph.VertexID;
+import objects.path.Path;
+import utilities.Randomizer;
 
 import java.util.*;
 import java.util.List;
@@ -24,6 +27,7 @@ public class Game extends javafx.application.Application {
 
     // OBJECTS
     private final Queue<Object> removalQueue = new ArrayDeque<>();
+    private final Queue<Object> additionQueue = new ArrayDeque<>();
 
     private final List<Renderable> renderables = new ArrayList<>();
     private final List<Updatable> updatables = new ArrayList<>();
@@ -54,6 +58,7 @@ public class Game extends javafx.application.Application {
 
                 update(dt, now, simulation);
                 handleRemovalQueue(removalQueue);
+                handleAdditionQueue(additionQueue);
                 render(graphicsContext);
             }
         }.start();
@@ -101,6 +106,28 @@ public class Game extends javafx.application.Application {
                 if(!updatables.remove(uObj)) {
                     log.logError("Failed to remove Updatable object, not found. (" + obj + ")");
                 }
+            }
+        }
+    }
+
+    public void handleAdditionQueue(Queue<Object> queue){
+        while(!queue.isEmpty()){
+            Object obj = queue.poll();
+
+            boolean validInterface = false;
+
+            if(obj instanceof Renderable){
+                validInterface = true;
+                renderables.add((Renderable) obj);
+            }
+
+            if(obj instanceof Updatable){
+                validInterface = true;
+                updatables.add((Updatable) obj);
+            }
+
+            if(!validInterface){
+                log.logWarning("An object without the appropriate type was attempted to be added (" + obj + ")");
             }
         }
     }

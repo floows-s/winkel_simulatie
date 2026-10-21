@@ -1,5 +1,6 @@
 package objects.path;
 
+import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 
 import java.util.*;
@@ -111,5 +112,26 @@ public class Path {
     /// @return a list of the steps in the path. Order from beginning to end.
     public List<VertexID> toList(){
         return List.copyOf(this.steps); // Note: VertexID is an enum. No need to deep copy.
+    }
+
+    /// Is equal when the steps ({@code VertexID}) are the same in the same order.
+    /// @param obj   the reference object with which to compare.
+    /// @return If obj is equal
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){
+            return true;
+        }
+
+        if(obj instanceof Path p){
+            return steps.equals(p.toList());
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.steps);
     }
 }

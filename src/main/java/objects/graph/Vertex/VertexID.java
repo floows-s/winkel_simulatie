@@ -1,4 +1,4 @@
-package objects.graph;
+package objects.graph.Vertex;
 
 
 // Note: It's from right to left and top to bottom. Start is right, end is left... This is also for the shelf numbering

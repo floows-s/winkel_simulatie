@@ -1,6 +1,6 @@
 package objects.path;
 
-import objects.graph.VertexID;
+import objects.graph.Vertex.VertexID;
 
 import java.util.*;
 

@@ -1,10 +1,13 @@
 package objects.graph;
 
 
-import core.Point;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import javafx.adapters.ColorAdapter;
+import javafx.scene.paint.Color;
+import objects.graph.Vertex.Vertex;
 import utilities.JsonFileParser;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +23,12 @@ public class GraphData {
     /// @param jsonFileUri Path to the JSON file with serialized GraphData.
     /// @return The parsed GraphData filled with data from the given JSON file. Or NULL if there was an error.
     public static GraphData fromJson(String jsonFileUri){
-        return JsonFileParser.loadObjectFromFile(jsonFileUri, GraphData.class);
+        // Note: To give context the ColorAdapter is (at least) used for Vertex object creation.
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Color.class, new ColorAdapter())
+                .create();
+
+        return JsonFileParser.loadObjectFromFile(jsonFileUri, GraphData.class, gson);
     }
 
     /// @return deep-copy of vertices.

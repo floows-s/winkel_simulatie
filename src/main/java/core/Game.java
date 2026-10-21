@@ -8,10 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import objects.customer.Customer;
-import objects.graph.VertexID;
-import objects.path.Path;
-import utilities.Randomizer;
 
 import java.util.*;
 import java.util.List;

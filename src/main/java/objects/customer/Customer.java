@@ -10,8 +10,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.graph.Graph;
 import objects.path.Path;
-import objects.graph.Vertex;
-import objects.graph.VertexID;
+import objects.graph.Vertex.Vertex;
+import objects.graph.Vertex.VertexID;
 
 public class Customer implements Renderable, Updatable {
     public final int WIDTH = 60;

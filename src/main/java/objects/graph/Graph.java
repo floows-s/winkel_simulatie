@@ -1,11 +1,12 @@
 package objects.graph;
 
-import core.Point;
 import core.Renderable;
 import core.logger.Logger;
 import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import objects.graph.Vertex.Vertex;
+import objects.graph.Vertex.VertexID;
 import objects.path.Path;
 import objects.path.pathfinder.PathFinderStrategy;
 
@@ -15,8 +16,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Graph implements Renderable {
-    private final Color VERTEX_COLOR = Color.RED;
-    private final int VERTEX_DIAMETER = 21;
     private final Color LINE_COLOR = Color.RED;
     private final int LINE_WIDTH = 2;
 
@@ -71,24 +70,9 @@ public class Graph implements Renderable {
     public void render(GraphicsContext g) {
 
         for(var kv : vertices.entrySet()){
-            g.setFill(VERTEX_COLOR);
-            g.setStroke(LINE_COLOR);
-            g.setLineWidth(LINE_WIDTH);
-
             Vertex v = kv.getValue();
-            Point loc = v.location();
 
-            int r = VERTEX_DIAMETER / 2;
-
-            // Draw vertex
-            g.fillOval(
-                    loc.x() - r,
-                    loc.y() - r,
-                    VERTEX_DIAMETER,
-                    VERTEX_DIAMETER
-            );
-
-            // Draw edges of vertex
+            v.render(g);
             drawEdges(v, g);
         }
     }
@@ -96,6 +80,9 @@ public class Graph implements Renderable {
     /// Draw the outgoing edges for the given {@code Vertex}.
     /// Skipping once where the outgoing vertex is not part of this graph.
     private void drawEdges(Vertex v, GraphicsContext g){
+        g.setStroke(LINE_COLOR);
+        g.setLineWidth(LINE_WIDTH);
+
         for(Edge e : v.edges()){
             Vertex to = vertices.get(e.to());
             if(to == null){

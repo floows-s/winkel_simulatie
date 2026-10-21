@@ -4,8 +4,8 @@ import core.logger.Logger;
 import core.logger.TagLogger;
 import objects.graph.Edge;
 import objects.graph.Graph;
-import objects.graph.Vertex;
-import objects.graph.VertexID;
+import objects.graph.Vertex.Vertex;
+import objects.graph.Vertex.VertexID;
 import objects.path.Path;
 import objects.path.pathfinder.PathFinderStrategy;
 

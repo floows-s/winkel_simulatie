@@ -17,6 +17,16 @@ public class JsonFileParser {
     /// @return The parsed object of type T filled with data from the given JSON file. Or NULL if there was an error.
     /// @param <T> Type of object
     public static <T> T loadObjectFromFile(String fileURI, Class<T> typeClass){
+        return loadObjectFromFile(fileURI, typeClass, new Gson());
+    }
+
+    /// Load object of type T from JSON file.
+    /// @param fileURI Path to the JSON file with serialized object.
+    /// @param typeClass Class of type T
+    /// @param gson The Gson object used for deserialization.
+    /// @return The parsed object of type T filled with data from the given JSON file. Or NULL if there was an error.
+    /// @param <T> Type of object
+    public static <T> T loadObjectFromFile(String fileURI, Class<T> typeClass, Gson gson){
         Logger log = new TagLogger(JsonFileParser.class.getSimpleName());
 
         // Read file
@@ -42,7 +52,6 @@ public class JsonFileParser {
         T result;
 
         try{
-            Gson gson = new Gson();
             result = gson.fromJson(file, typeClass);
         }catch(JsonSyntaxException ex){
             log.logError("Invalid JSON data. (URI: " + fileURI + ")");

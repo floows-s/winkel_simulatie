@@ -1,7 +1,7 @@
 package objects.path.pathfinder;
 
 import objects.graph.Graph;
-import objects.graph.VertexID;
+import objects.graph.Vertex.VertexID;
 import objects.path.Path;
 
 public interface PathFinderStrategy {

@@ -1,39 +1,59 @@
 package objects.customer;
 
-import core.Point;
-import core.Renderable;
-import core.Simulation;
-import core.Updatable;
+import core.*;
 import core.logger.Logger;
 import core.logger.TagLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.graph.Graph;
+import objects.groceryList.GroceryList;
 import objects.path.Path;
 import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
+import utilities.Randomizer;
 
 public class Customer implements Renderable, Updatable {
-    public final int WIDTH = 60;
-    public final int HEIGHT = 60;
-    private final int walkingSpeed = 100;
+    // Constants
+    public final int WIDTH = 32;
+    public final int HEIGHT = 58;
+    private final int walkingSpeed = 60;
     private static Image sprite = null;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
+    // Fields
     private float x;
     private float y;
-    private Path path;
+    private GroceryList groceryList;
 
-    public Customer(int x, int y, Path path){
+
+    // State variables
+    private CustomerState currentState = CustomerState.IDLE;
+    private Path currentPath;
+    private VertexID currentVertexID;
+
+
+    public Customer(Point startPoint, GroceryList groceryList){
         if(sprite == null){
-            sprite = new Image(getClass().getResource("/images/customer.png").toExternalForm());
+            sprite = new Image(getClass().getResource("/images/customer/idle_shopping_cart_1x.png").toExternalForm());
         }
 
-        this.x = x;
-        this.y = y;
+        this.x = startPoint.x();
+        this.y = startPoint.y();
+        this.groceryList = groceryList;
+    }
 
-        this.path = path;
+
+    @Override
+    public void update(double delta, long now, Simulation s){
+        switch(currentState){
+            case IDLE: decideNewRandomPath(s); break;
+        }
+    }
+
+    private void decideNewRandomPath(Simulation s) {
+        VertexID random = VertexID.values()[Randomizer.nextInt(1, VertexID.values().length)];
+//        currentPath =
     }
 
     private void takeStepOnPath(Path path, Graph graph, double delta){
@@ -70,10 +90,6 @@ public class Customer implements Renderable, Updatable {
         y += dirY * walkingSpeed * delta;
     }
 
-    @Override
-    public void update(double delta, long now, Simulation s){
-        takeStepOnPath(path, s.graph, delta);
-    }
 
     @Override
     public void render(GraphicsContext g){
@@ -93,4 +109,7 @@ public class Customer implements Renderable, Updatable {
         return this.y;
     }
 
+    public CustomerState getCurrentState() {
+        return currentState;
+    }
 }

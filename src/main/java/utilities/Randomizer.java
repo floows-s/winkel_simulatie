@@ -1,5 +1,7 @@
 package utilities;
 
+import objects.graph.Vertex.VertexID;
+
 import java.util.Random;
 
 public class Randomizer {

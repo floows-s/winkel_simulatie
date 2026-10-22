@@ -1,8 +1,6 @@
 package objects.groceryList;
 
-import core.Simulation;
 import objects.graph.Vertex.VertexID;
-import objects.product.Product;
 import objects.product.ProductFactory;
 import objects.product.ProductName;
 import objects.shelf.ShelfManager;
@@ -12,10 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroceryListFactory {
-
     public static final int MAX_AMOUNT_OF_GROCERY_ENTRIES = 10;
+    private ShelfManager shelfManager;
 
-    public static GroceryList createGroceryList(int amountOfGroceries, ShelfManager shelfManager){
+    public GroceryListFactory(ShelfManager shelfManager){
+        this.shelfManager = shelfManager;
+    }
+
+
+    public GroceryList create(int amountOfGroceries){
         if(amountOfGroceries > MAX_AMOUNT_OF_GROCERY_ENTRIES){
             amountOfGroceries = MAX_AMOUNT_OF_GROCERY_ENTRIES;
         }
@@ -27,7 +30,7 @@ public class GroceryListFactory {
             VertexID location = null;
 
             // Decide if include location
-            boolean includeProductLocation = Randomizer.nextBoolean();
+            boolean includeProductLocation =  true; //Randomizer.nextBoolean();
             if(includeProductLocation){
                 location = shelfManager.getAccessPointOfShelfThatHasProduct(product);
             }

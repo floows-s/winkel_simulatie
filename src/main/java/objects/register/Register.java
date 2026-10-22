@@ -38,7 +38,7 @@ public class Register implements Renderable {
 
         for(Product p : products){
             // set the text to the correct price total
-            totalPrice += p.price;
+            totalPrice += p.GetPrice();
             priceText.SetText(String.valueOf(totalPrice));
 
             // make animation happen

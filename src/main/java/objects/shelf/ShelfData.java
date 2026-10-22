@@ -11,7 +11,7 @@ public class ShelfData {
     private Shelf.ShelfType type;
 
     /// The Vertex that is close to the shelf. Only when standing on this vertex, will it be logical to interact with the shelf by a character, for example a customer.
-    private VertexID accessPointVertexID;
+    private VertexID accessPoint;
 
     public ShelfData(Point position){
         this.position = position;
@@ -38,7 +38,7 @@ public class ShelfData {
     }
 
     /// The Vertex that is close to the shelf. Only when standing on this vertex, will it be logical to interact with the shelf by a character, for example a customer.
-    public VertexID getAccessPointVertexID() {
-        return accessPointVertexID;
+    public VertexID getAccessPoint() {
+        return accessPoint;
     }
 }

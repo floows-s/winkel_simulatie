@@ -1,6 +1,4 @@
-package objects.groceryList;//            GroceryListEntry entry  = new GroceryListEntry(
-//
-//            );
+package objects.groceryList;
 
 import objects.graph.Vertex.VertexID;
 import objects.product.Product;

@@ -2,12 +2,16 @@ package objects.shelf;
 
 
 import core.Point;
+import objects.graph.Vertex.VertexID;
 import utilities.JsonFileParser;
 
 
 public class ShelfData {
-    private final Point position;
+    private Point position;
     private Shelf.ShelfType type;
+
+    /// The Vertex that is close to the shelf. Only when standing on this vertex, will it be logical to interact with the shelf by a character, for example a customer.
+    private VertexID accessPointVertexID;
 
     public ShelfData(Point position){
         this.position = position;
@@ -31,5 +35,10 @@ public class ShelfData {
 
     public Shelf.ShelfType getType() {
         return type;
+    }
+
+    /// The Vertex that is close to the shelf. Only when standing on this vertex, will it be logical to interact with the shelf by a character, for example a customer.
+    public VertexID getAccessPointVertexID() {
+        return accessPointVertexID;
     }
 }

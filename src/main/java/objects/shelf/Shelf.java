@@ -1,5 +1,8 @@
 package objects.shelf;
 
+import core.logger.Logger;
+import core.logger.TagLogger;
+import objects.graph.Vertex.VertexID;
 import objects.product.Product;
 import core.Renderable;
 import core.Simulation;
@@ -14,6 +17,7 @@ public class Shelf implements Renderable, Updatable {
     private final float x;
     private final float y;
     private final ShelfType type;
+    private final VertexID accessPointVertexID;
 
     // width and height of the sprites
     private final int width = 64;
@@ -30,23 +34,28 @@ public class Shelf implements Renderable, Updatable {
         STORAGE
     }
 
+    private Logger log;
+
     /// Constructor reads the data from shelfs.json
     /// @param data
     public Shelf(ShelfData data){
+        x                   = data.getX();
+        y                   = data.getY();
+        type                = data.getType();
+        accessPointVertexID = data.getAccessPointVertexID();
 
-        x       = data.getX();
-        y       = data.getY();
-        type    = data.getType();
+        // Setup logger
+        log = new TagLogger(this.getClass().getSimpleName() + " [" + accessPointVertexID + "]");
 
+        // Load sprite
         if (type != null){
             sprite = new Image(getClass().getResource("/images/shelfs/Shelf" + type + ".png").toExternalForm());
         }
         else
         {
+            log.logWarning("No type give. Loading wood sprite.");
             sprite = new Image(getClass().getResource("/images/shelfs/ShelfWOOD.png").toExternalForm());
         }
-
-
     }
 
     /// returns type of current shelf
@@ -59,15 +68,13 @@ public class Shelf implements Renderable, Updatable {
     /// @param p is the product that needs to be added
     public void AddProduct(Product p){
         for(int i = 0; i < products.length; i++){
-
-            if (products[i] == null && type == p.type ){
+            if (products[i] == null && type == p.getType()){
                 products[i] = p;
-                break;
-            }
-            else{
-                System.out.println("Could not add sprite, either space is full or type does not match");
+                return;
             }
         }
+
+        log.logWarning("Could not add sprite, either space is full or type does not match");
     }
 
     /// removes a product from the list products and returns said product
@@ -79,7 +86,7 @@ public class Shelf implements Renderable, Updatable {
             return products[i];
         }
         else{
-            System.out.println("This location is already empty");
+            log.logWarning("Failed to remove a product. Location is already empty.");
             return null;
         }
     }

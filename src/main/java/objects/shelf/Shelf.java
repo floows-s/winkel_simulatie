@@ -9,6 +9,7 @@ import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import objects.product.ProductName;
 
 public class Shelf implements Renderable, Updatable {
 
@@ -17,7 +18,7 @@ public class Shelf implements Renderable, Updatable {
     private final float x;
     private final float y;
     private final ShelfType type;
-    private final VertexID accessPointVertexID;
+    private final VertexID accessPoint;
 
     // width and height of the sprites
     private final int width = 64;
@@ -42,10 +43,10 @@ public class Shelf implements Renderable, Updatable {
         x                   = data.getX();
         y                   = data.getY();
         type                = data.getType();
-        accessPointVertexID = data.getAccessPointVertexID();
+        accessPoint = data.getAccessPoint();
 
         // Setup logger
-        log = new TagLogger(this.getClass().getSimpleName() + " [" + accessPointVertexID + "]");
+        log = new TagLogger(this.getClass().getSimpleName() + " [" + accessPoint + "]");
 
         // Load sprite
         if (type != null){
@@ -136,6 +137,21 @@ public class Shelf implements Renderable, Updatable {
     public void update(double delta, long now, Simulation s) {
 
     }
+
+    public VertexID getAccessPoint() {
+        return accessPoint;
+    }
+
+    public boolean hasProduct(ProductName name){
+        for(Product p : products){
+            if(p.getName() == name){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     @Override
     public float getX() {

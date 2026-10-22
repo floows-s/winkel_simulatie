@@ -12,4 +12,8 @@ public class Randomizer {
     public static int nextInt(int origin, int bounds){
         return random.nextInt(origin, bounds);
     }
+
+    public static boolean nextBoolean(){
+        return random.nextInt(0, 2) == 1;
+    }
 }

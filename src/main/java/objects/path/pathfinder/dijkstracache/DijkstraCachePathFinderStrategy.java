@@ -15,8 +15,14 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
     private record cacheEntryKey (VertexID source, VertexID target){}
     private final Map<cacheEntryKey, Path> cache = new HashMap<>();
-
+    private boolean shouldPrintCacheAfterUpdate = false;
     private final Logger log = new TagLogger(getClass().getSimpleName());
+
+    public DijkstraCachePathFinderStrategy(){}
+
+    public DijkstraCachePathFinderStrategy(boolean shouldPrintCacheAfterUpdate){
+        this.shouldPrintCacheAfterUpdate = shouldPrintCacheAfterUpdate;
+    }
 
     /// Calculates the shortest path between two vertices using Dijkstra's algorithm.
     /// <p>
@@ -62,7 +68,6 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
             // Update
             UpdateCache(pathsToCache);
-            printCache();
         }
 
         return cache.get(key);
@@ -102,6 +107,8 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
                     path
             );
         }
+
+        if(shouldPrintCacheAfterUpdate) printCache();
     }
 
     /// Print the current cache to {@code System.out}.
@@ -197,5 +204,13 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
         }
 
         return new Path(steps);
+    }
+
+    public boolean getShouldPrintCacheAfterUpdate() {
+        return shouldPrintCacheAfterUpdate;
+    }
+
+    public void setShouldPrintCacheAfterUpdate(boolean shouldPrintCacheAfterUpdate) {
+        this.shouldPrintCacheAfterUpdate = shouldPrintCacheAfterUpdate;
     }
 }

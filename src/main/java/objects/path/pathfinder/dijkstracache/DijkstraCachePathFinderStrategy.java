@@ -14,9 +14,15 @@ import java.util.*;
 public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
     private record cacheEntryKey (VertexID source, VertexID target){}
-    private final Map<cacheEntryKey, Path> cache = new HashMap<>();
-
+    private final Map<cacheEntryKey, List<VertexID>> cache = new HashMap<>();
+    private boolean shouldPrintCacheAfterUpdate = false;
     private final Logger log = new TagLogger(getClass().getSimpleName());
+
+    public DijkstraCachePathFinderStrategy(){}
+
+    public DijkstraCachePathFinderStrategy(boolean shouldPrintCacheAfterUpdate){
+        this.shouldPrintCacheAfterUpdate = shouldPrintCacheAfterUpdate;
+    }
 
     /// Calculates the shortest path between two vertices using Dijkstra's algorithm.
     /// <p>
@@ -28,7 +34,7 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
         if(source.equals(target)){
             // From one vertex target the same vertex is the shortest path: A path with no steps...
-            return new Path(new ArrayList<>());
+            return new Path();
         }
 
         { // Check if given VertexID's is a part of given graph
@@ -37,7 +43,7 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
             if(sourceVertex == null || targetVertex == null){
                 log.logError("Given source or target VertexID is not part of the given Graph. Can't find shortest path.");
-                return new Path(new ArrayList<>());
+                return new Path();
             }
         }
 
@@ -52,20 +58,27 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
         if(!cache.containsKey(key)){
             // Get paths
-            Path foundPath = dijkstraAlgorithm(graph, source, target);
-            List<Path> prefixPaths = extractPrefixPaths(foundPath);
+            List<VertexID> foundPath = dijkstraAlgorithm(graph, source, target);
+            List<List<VertexID>> prefixPaths = extractPrefixPaths(foundPath);
 
             // Collect
-            List<Path> pathsToCache = new ArrayList<>();
+            List<List<VertexID>> pathsToCache = new ArrayList<>();
             pathsToCache.add(foundPath);
             pathsToCache.addAll(prefixPaths);
 
             // Update
             UpdateCache(pathsToCache);
-            printCache();
         }
 
-        return cache.get(key);
+
+        List<VertexID> shortestPath = cache.get(key);
+
+        if(shortestPath == null){
+            log.logError("Failed to get shortest path from cache. Path from entry [" + source + "], to [" + target + "] is null.");
+            return new Path();
+        }
+
+        return new Path(cache.get(key));
     }
 
     /// Returns all prefixes of the given path that start at its source.
@@ -73,16 +86,15 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
     /// Excludes the single-vertex prefix (the source alone).
     /// In order of increasing length.
     ///
-    /// @param path the path to extract prefixes from
+    /// @param steps of the path to extract prefixes from
     /// @return a list of prefix paths
-    private List<Path> extractPrefixPaths(Path path){
-        List<VertexID> steps = path.toList();
-        ArrayList<Path> prefixPaths = new ArrayList<>();
+    private List<List<VertexID>> extractPrefixPaths(List<VertexID> steps){
+        List<List<VertexID>> prefixPaths = new ArrayList<>();
 
         // Start at 2 because subList toIndex is exclusive & we want to skip the single-vertex prefix, that is the source alone
         for(int i = 2; i < steps.size(); ++i){
             prefixPaths.add(
-              new Path(steps.subList(0, i))
+                steps.subList(0, i)
             );
         }
 
@@ -91,9 +103,10 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
 
     /// Update cache with given paths. This could overwrite existing entry's.
+    ///
     /// @param paths The paths to update to the cache
-    private void UpdateCache(List<Path> paths){
-        for(Path path : paths){
+    private void UpdateCache(List<List<VertexID>> paths){
+        for(List<VertexID> path : paths){
             VertexID source = path.getFirst();
             VertexID target = path.getLast();
 
@@ -102,6 +115,8 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
                     path
             );
         }
+
+        if(shouldPrintCacheAfterUpdate) printCache();
     }
 
     /// Print the current cache to {@code System.out}.
@@ -110,11 +125,11 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
     private void printCache(){
         for(var entry : cache.entrySet()){
             cacheEntryKey key = entry.getKey();
-            Path value = entry.getValue();
+            List<VertexID> value = entry.getValue();
 
             System.out.print("From: [" + key.source() + "] To: [" + key.target() +  "] Path: ");
 
-            for(VertexID vID : value.toList()){
+            for(VertexID vID : value){
                 System.out.print("[" + vID + "] ");
             }
 
@@ -134,7 +149,7 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
     /// @param source the vertex the path starts at
     /// @param target the vertex the path should end at
     /// @return The shortest path from {@code source} to {@code target} in {@code graph}.
-    private Path dijkstraAlgorithm(Graph graph, VertexID source, VertexID target){
+    private List<VertexID> dijkstraAlgorithm(Graph graph, VertexID source, VertexID target){
         // --- SETUP ---
 
         // Note: This could be optimized, not every vertexID may be in a graph.
@@ -186,7 +201,7 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
     /// @param previous The parent array where the index is the vertex and the value the previous vertex on the path
     /// @param target The ending vertex of the path
     /// @return A path that is the result of walking through {@code previous} from target to source
-    private Path extractPathFromParentArray(VertexID[] previous, VertexID target){
+    private List<VertexID> extractPathFromParentArray(VertexID[] previous, VertexID target){
         List<VertexID> steps = new ArrayList<>();
 
         VertexID cur = target;
@@ -196,6 +211,14 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
             cur = previous[cur.ordinal()];
         }
 
-        return new Path(steps);
+        return steps;
+    }
+
+    public boolean getShouldPrintCacheAfterUpdate() {
+        return shouldPrintCacheAfterUpdate;
+    }
+
+    public void setShouldPrintCacheAfterUpdate(boolean shouldPrintCacheAfterUpdate) {
+        this.shouldPrintCacheAfterUpdate = shouldPrintCacheAfterUpdate;
     }
 }

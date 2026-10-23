@@ -1,24 +1,23 @@
 package objects.groceryList;
 
-import objects.graph.Vertex.Vertex;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/// An immutable list of {@link GroceryListEntry GroceryListEntries}
+/// An immutable list of {@link GroceryListItem GroceryListEntries}
 public class GroceryList {
-    private List<GroceryListEntry> groceries = new ArrayList<>();
-    private final Iterator<GroceryListEntry> iterator = groceries.listIterator();
+    private List<GroceryListItem> groceries;
+    private Iterator<GroceryListItem> iterator;
 
-    public GroceryList(List<GroceryListEntry> groceries){
-        this.groceries = groceries.stream().map(GroceryListEntry::new).collect(Collectors.toList());
+    public GroceryList(List<GroceryListItem> groceries){
+        this.groceries = groceries.stream().map(GroceryListItem::new).collect(Collectors.toList());
+        this.iterator = this.groceries.iterator();
     }
 
     /// Gets the next item on the grocery list, or null if there isn't a next item.
     /// @return the next item on the grocery list, or null if there isn't a next item.
-    public GroceryListEntry getNext(){
+    public GroceryListItem getNext(){
         if(!iterator.hasNext()){
             return null;
         }
@@ -26,9 +25,9 @@ public class GroceryList {
         return iterator.next();
     }
 
-    /// Creates a list of all the {@link GroceryListEntry}
-    /// @return A list of all the {@link GroceryListEntry}
-    public List<GroceryListEntry> toList(){
-        return groceries.stream().map(GroceryListEntry::new).collect(Collectors.toList());
+    /// Creates a list of all the {@link GroceryListItem}
+    /// @return A list of all the {@link GroceryListItem}
+    public List<GroceryListItem> toList(){
+        return groceries.stream().map(GroceryListItem::new).collect(Collectors.toList());
     }
 }

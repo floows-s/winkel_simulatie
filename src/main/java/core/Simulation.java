@@ -2,6 +2,7 @@ package core;
 
 import core.logger.Logger;
 import core.logger.TagLogger;
+import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
 import objects.box.Box;
 import objects.customer.Customer;
@@ -26,7 +27,7 @@ import objects.background.BackgroundLoader;
 import java.lang.reflect.Array;
 import java.util.List;
 
-public class Simulation {
+public class Simulation implements Updatable{
     private final Game game;
     public Graph graph;
 
@@ -104,5 +105,22 @@ public class Simulation {
         Point spawnPointLocation = graph.get(VertexID.SPAWN_POINT).location();
         Customer c = customerFactory.create(spawnPointLocation);
         game.addObject(c);
+    }
+
+
+    private IntervalTimer customerSpawnTimer = new IntervalTimer(2000, this::spawnNewCustomer); // TODO: remove, right now its just for demo purposes.
+
+    public void spawnNewCustomer(){ // TODO: maybe revisit, right now its just for demo purposes.
+        log.logInfo("Spawning in new customer!");
+
+        Point spawnPoint = graph.get(VertexID.SPAWN_POINT).location();
+        game.addObject(
+                customerFactory.create(spawnPoint)
+        );
+    }
+
+    @Override
+    public void update(double delta, long now, Simulation s) {
+        customerSpawnTimer.tick(now); // TODO: remove, right now its just for demo purposes.
     }
 }

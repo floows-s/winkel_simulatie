@@ -15,6 +15,18 @@ public class GroceryList {
         this.iterator = this.groceries.iterator();
     }
 
+    /// Creates deep copy of {@code groceryList}
+    /// @param groceryList to copy from
+    public GroceryList(GroceryList groceryList){
+        // Deep copy list
+        this.groceries = groceryList.groceries
+                .stream()
+                .map(GroceryListItem::new)
+                .collect(Collectors.toList());
+
+        this.iterator = this.groceries.iterator(); // TODO: revisit after implementing walking through grocery list. Is this the right way?
+    }
+
     /// Gets the next item on the grocery list, or null if there isn't a next item.
     /// @return the next item on the grocery list, or null if there isn't a next item.
     public GroceryListItem getNext(){

@@ -67,6 +67,7 @@ public class Game extends javafx.application.Application {
 
 
         simulation = new Simulation(this);
+        addObject(simulation);
 
         Pane root = new Pane(canvas);
         stage.setScene(new Scene(root));

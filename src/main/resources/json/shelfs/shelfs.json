@@ -1,6 +1,5 @@
 [
   {
-    "accessPoint": "AISLE_1_SHELF_6",
     "position": {
       "x": 507,
       "y": 87
@@ -8,7 +7,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_1_SHELF_5",
     "position":{
       "x": 571,
       "y": 87
@@ -16,7 +14,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_1_SHELF_4",
     "position": {
       "x": 635,
       "y": 87
@@ -24,7 +21,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_1_SHELF_3",
     "position": {
       "x": 699,
       "y": 87
@@ -32,7 +28,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_1_SHELF_2",
     "position": {
       "x": 763,
       "y": 87
@@ -40,7 +35,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_1_SHELF_1",
     "position": {
       "x": 827,
       "y": 87
@@ -48,7 +42,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_2_SHELF_6",
     "position": {
       "x": 507,
       "y": 187
@@ -56,7 +49,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_2_SHELF_5",
     "position": {
       "x": 571,
       "y": 187
@@ -64,7 +56,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_2_SHELF_4",
     "position": {
       "x": 635,
       "y": 187
@@ -72,7 +63,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_2_SHELF_3",
     "position": {
       "x": 699,
       "y": 187
@@ -80,7 +70,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_2_SHELF_2",
     "position": {
       "x": 763,
       "y": 187
@@ -88,7 +77,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_2_SHELF_1",
     "position": {
       "x": 827,
       "y": 187
@@ -96,7 +84,6 @@
     "type": "WOOD"
   },
   {
-    "accessPoint": "AISLE_3_SHELF_6",
     "position": {
       "x": 507,
       "y": 287
@@ -104,7 +91,6 @@
     "type": "METAL"
   },
   {
-    "accessPoint": "AISLE_3_SHELF_5",
     "position": {
       "x": 571,
       "y": 287
@@ -112,7 +98,6 @@
     "type": "METAL"
   },
   {
-    "accessPoint": "AISLE_3_SHELF_4",
     "position": {
       "x": 635,
       "y": 287
@@ -120,7 +105,6 @@
     "type": "METAL"
   },
   {
-    "accessPoint": "AISLE_3_SHELF_3",
     "position": {
       "x": 699,
       "y": 287
@@ -128,7 +112,6 @@
     "type": "METAL"
   },
   {
-    "accessPoint": "AISLE_3_SHELF_2",
     "position": {
       "x": 763,
       "y": 287
@@ -136,7 +119,6 @@
     "type": "METAL"
   },
   {
-    "accessPoint": "AISLE_3_SHELF_1",
     "position": {
       "x": 827,
       "y": 287
@@ -144,7 +126,6 @@
     "type": "METAL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_6",
     "position": {
       "x": 507,
       "y": 401
@@ -152,7 +133,6 @@
     "type": "COOL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_5",
     "position": {
       "x": 571,
       "y": 401
@@ -160,7 +140,6 @@
     "type": "COOL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_4",
     "position": {
       "x": 635,
       "y": 401
@@ -168,7 +147,6 @@
     "type": "COOL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_3",
     "position": {
       "x": 699,
       "y": 401
@@ -176,7 +154,6 @@
     "type": "COOL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_2",
     "position": {
       "x": 763,
       "y": 401
@@ -184,7 +161,6 @@
     "type": "COOL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_1",
     "position": {
       "x": 827,
       "y": 401
@@ -192,7 +168,6 @@
     "type": "COOL"
   },
   {
-    "accessPoint": "AISLE_4_SHELF_1",
     "position": {
       "x": 157,
       "y": 50
@@ -200,7 +175,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_COOL_AISLE_2_SHELF_1",
     "position": {
       "x": 287,
       "y": 50
@@ -208,7 +182,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_COOL_AISLE_1_SHELF_2",
     "position": {
       "x": 157,
       "y": 144
@@ -216,7 +189,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_COOL_AISLE_1_SHELF_1",
     "position": {
       "x": 287,
       "y": 144
@@ -224,7 +196,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_AISLE_1_SHELF_2",
     "position": {
       "x": 157,
       "y": 403
@@ -232,7 +203,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_AISLE_1_SHELF_1",
     "position": {
       "x": 287,
       "y": 403
@@ -240,7 +210,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_AISLE_2_SHELF_2",
     "position": {
       "x": 157,
       "y": 512
@@ -248,7 +217,6 @@
     "type": "STORAGE"
   },
   {
-    "accessPoint": "STOCKROOM_AISLE_2_SHELF_1",
     "position": {
       "x": 287,
       "y": 512

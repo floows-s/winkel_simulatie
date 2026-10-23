@@ -129,21 +129,7 @@ public class Game extends javafx.application.Application {
     }
 
     public void addObject(Object obj){
-        boolean validInterface = false;
-
-        if(obj instanceof Renderable){
-            validInterface = true;
-            renderables.add((Renderable) obj);
-        }
-
-        if(obj instanceof Updatable){
-            validInterface = true;
-            updatables.add((Updatable) obj);
-        }
-
-        if(!validInterface){
-            log.logWarning("An object without the appropriate type was attempted to be added (" + obj + ")");
-        }
+        additionQueue.add(obj);
     }
 
     public void removeObject(Object obj){

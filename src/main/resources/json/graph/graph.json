@@ -970,7 +970,14 @@
         "x": 725,
         "y": 551
       },
-      "edges": []
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_3"
+        },
+        {
+          "to": "AISLE_4_SHELF_4"
+        }
+      ]
     },
     {
       "id": "REGISTER_1_QUEUE_END",
@@ -994,7 +1001,14 @@
         "x": 570,
         "y": 551
       },
-      "edges": []
+      "edges": [
+        {
+          "to": "AISLE_4_SHELF_5"
+        },
+        {
+          "to": "AISLE_4_SHELF_6"
+        }
+      ]
     },
     {
       "id": "REGISTER_2_QUEUE_END",

@@ -6,26 +6,40 @@ import objects.shelf.Shelf;
 public class Product {
     // ==== VARIABLES ====
     private Image sprite;
-    private String name;
-    public Shelf.ShelfType type;
-    public double price;
+    private ProductName name;
+    private Shelf.ShelfType type;
+    private double price;
 
     /// Constructor
     /// @param name string the same name as the sprite name or else no sprite will load
     /// @param type shelfs.Type
     /// @param price double
-    public Product(String name, Shelf.ShelfType type, double price)
+    public Product(ProductName name, Shelf.ShelfType type, double price)
     {
         this.name   = name;
         this.type   = type;
         this.price  = price;
 
         // type the name correctly as the image folder suggests
-        sprite = new javafx.scene.image.Image(getClass().getResource("/images/products/" + this.name + ".png").toExternalForm());
+        sprite = new javafx.scene.image.Image(getClass().getResource("/images/products/" + this.name.getImageName() + ".png").toExternalForm());
 
     }
 
+    /// Copy constructor
+    /// @param product to copy values from
+    public Product(Product product){
+        this.sprite = product.sprite;
+        this.name = product.name;
+        this.type = product.type;
+        this.price = product.price;
+    }
 
+
+    /// returns the name of the product
+    /// @return the name
+    public ProductName getName() {
+        return name;
+    }
 
     /// returns the sprite as an Image
     /// @return

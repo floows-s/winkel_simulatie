@@ -1,15 +1,11 @@
 package objects.shelf;
 
-import core.logger.Logger;
-import core.logger.TagLogger;
-import objects.graph.Vertex.VertexID;
 import objects.product.Product;
 import core.Renderable;
 import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import objects.product.ProductName;
 
 public class Shelf implements Renderable, Updatable {
 
@@ -18,7 +14,6 @@ public class Shelf implements Renderable, Updatable {
     private final float x;
     private final float y;
     private final ShelfType type;
-    private final VertexID accessPoint;
 
     // width and height of the sprites
     private final int width = 64;
@@ -35,28 +30,23 @@ public class Shelf implements Renderable, Updatable {
         STORAGE
     }
 
-    private Logger log;
-
     /// Constructor reads the data from shelfs.json
     /// @param data
     public Shelf(ShelfData data){
-        x                   = data.getX();
-        y                   = data.getY();
-        type                = data.getType();
-        accessPoint = data.getAccessPoint();
 
-        // Setup logger
-        log = new TagLogger(this.getClass().getSimpleName() + " [" + accessPoint + "]");
+        x       = data.getX();
+        y       = data.getY();
+        type    = data.getType();
 
-        // Load sprite
         if (type != null){
             sprite = new Image(getClass().getResource("/images/shelfs/Shelf" + type + ".png").toExternalForm());
         }
         else
         {
-            log.logWarning("No type give. Loading wood sprite.");
             sprite = new Image(getClass().getResource("/images/shelfs/ShelfWOOD.png").toExternalForm());
         }
+
+
     }
 
     /// returns type of current shelf
@@ -69,13 +59,15 @@ public class Shelf implements Renderable, Updatable {
     /// @param p is the product that needs to be added
     public void AddProduct(Product p){
         for(int i = 0; i < products.length; i++){
-            if (products[i] == null && type == p.getType()){
+
+            if (products[i] == null && type == p.type ){
                 products[i] = p;
-                return;
+                break;
+            }
+            else{
+                System.out.println("Could not add sprite, either space is full or type does not match");
             }
         }
-
-        log.logWarning("Could not add sprite, either space is full or type does not match");
     }
 
     /// removes a product from the list products and returns said product
@@ -87,7 +79,7 @@ public class Shelf implements Renderable, Updatable {
             return products[i];
         }
         else{
-            log.logWarning("Failed to remove a product. Location is already empty.");
+            System.out.println("This location is already empty");
             return null;
         }
     }
@@ -137,21 +129,6 @@ public class Shelf implements Renderable, Updatable {
     public void update(double delta, long now, Simulation s) {
 
     }
-
-    public VertexID getAccessPoint() {
-        return accessPoint;
-    }
-
-    public boolean hasProduct(ProductName name){
-        for(Product p : products){
-            if(p.getName() == name){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     @Override
     public float getX() {

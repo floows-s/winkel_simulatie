@@ -1,7 +1,6 @@
 package objects.box;
 
 import objects.product.Product;
-import objects.product.ProductName;
 import objects.shelf.Shelf;
 
 public class Box extends Product{
@@ -13,14 +12,14 @@ public class Box extends Product{
     /// Creates a box with the name Box and type STORAGE and price 0
     ///
     public Box() {
-        super(ProductName.BOX, Shelf.ShelfType.STORAGE, 0);
+        super("Box", Shelf.ShelfType.STORAGE, 0);
     }
 
 
     /// adds a product to the box
     /// @param p
     public void AddProduct(Product p){
-        if (p.getType() == type) {
+        if (p.type == type) {
             for(int i = 0; i < products.length; i ++){
                 if (products[i] == null){products[i] = p;}
             }

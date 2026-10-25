@@ -8,6 +8,7 @@ import objects.FloatingText.FloatingNumber;
 import objects.box.Box;
 import objects.customer.Customer;
 import objects.customer.CustomerFactory;
+import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import objects.groceryList.GroceryListFactory;
 import objects.product.ProductFactory;
@@ -74,10 +75,6 @@ public class Simulation implements Updatable{
             }
         });
 
-        // Create factories
-        groceryListFactory = new GroceryListFactory(shelfManager);
-        customerFactory = new CustomerFactory(groceryListFactory);
-
         // add the register
         game.addObject(register1);
         game.addObject(register2);
@@ -93,10 +90,9 @@ public class Simulation implements Updatable{
 
         game.addObject(graph);
 
-
-        Coordinates spawnPointLocation = graph.get(VertexID.SPAWN_POINT).location();
-        Customer c = customerFactory.create(spawnPointLocation);
-        game.addObject(c);
+        // Create factories
+        groceryListFactory = new GroceryListFactory(shelfManager);
+        customerFactory = new CustomerFactory(groceryListFactory, graph.get(VertexID.SPAWN_POINT));
     }
 
 
@@ -104,9 +100,8 @@ public class Simulation implements Updatable{
     public void spawnNewCustomer(){ // TODO: maybe revisit, right now its just for demo purposes.
         log.logInfo("Spawning in new customer!");
 
-        Coordinates spawnPoint = graph.get(VertexID.SPAWN_POINT).location();
         game.addObject(
-                customerFactory.create(spawnPoint)
+                customerFactory.create()
         );
     }
 

@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import utilities.EasyJsonObjectPositionar;
 
 import java.util.*;
 import java.util.List;
@@ -70,6 +71,33 @@ public class Game extends javafx.application.Application {
         addObject(simulation);
 
         Pane root = new Pane(canvas);
+
+        EasyJsonObjectPositionar.clearClipboard();;
+        root.setOnMouseClicked((e) -> {
+            EasyJsonObjectPositionar.toClipboard(
+                "    {\n" +
+                        "      \"id\": \"REGISTER_2_QUEUE_START\",\n" +
+                        "      \"location\": {\n" +
+                        "        \"x\": %x,\n" +
+                        "        \"y\": %y\n" +
+                        "      },\n" +
+                        "      \"edges\": [\n" +
+                        "        {\n" +
+                        "          \"to\": \"AISLE_4_SHELF_5\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"to\": \"AISLE_4_SHELF_6\"\n" +
+                        "        }\n" +
+                        "      ]\n" +
+                        "    },",
+                    (int) e.getX(),
+                    (int) e.getY(),
+                    false,
+                    false,
+                    false
+            );
+        });
+
         stage.setScene(new Scene(root));
         stage.setTitle("Winkel Simulatie");
         stage.show();

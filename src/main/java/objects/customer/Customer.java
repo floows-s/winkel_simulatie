@@ -37,23 +37,22 @@ public class Customer implements Renderable, Updatable {
     private AnimationTimer walkingAnimation;
     private AnimationTimer walkingShoppingCartAnimation;
 
-
     // State variables
     private Image currentSprite;
     private Direction currentDirection = Direction.EAST;
-    private CustomerState currentState = CustomerState.IDLE;
+    private CustomerState currentState = CustomerState.SPAWNED_IN;
     private Path currentPath;
     private VertexID currentVertexID = VertexID.SPAWN_POINT;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
 
-    public Customer(Coordinates startPoint, GroceryList groceryList){
-        this.x = startPoint.x();
-        this.y = startPoint.y();
+    public Customer(Vertex startVertex, GroceryList groceryList){
+        this.x = startVertex.location().x();
+        this.y = startVertex.location().y();
+        this.currentVertexID = startVertex.id();
         this.groceryList = groceryList;
 
-        // Setup
         setup();
     }
 
@@ -102,13 +101,21 @@ public class Customer implements Renderable, Updatable {
     @Override
     public void update(double delta, long now, Simulation s){
         switch(currentState){
-            case IDLE: decideNewRandomPath(s); break;
+            case SPAWNED_IN: currentState = CustomerState.GRABBING_SHOPPING_CART; break;
+            case GRABBING_SHOPPING_CART: grabbingShoppingCart(delta, now, s.graph);
+            case DECIDING_RANDOM_PATH: decideNewRandomPath(s); break;
             case WALKING_PATH: walkOnPath(currentPath, delta, now, s.graph); break;
         }
     }
 
 
     // Actions
+
+    private void grabbingShoppingCart(double delta, long now, Graph g){
+//        Path p = g.getShortestPath(currentVertexID, );
+
+
+    }
 
     // TODO: this can be removed, just for testing
     private void decideNewRandomPath(Simulation s) {
@@ -129,11 +136,15 @@ public class Customer implements Renderable, Updatable {
 
         // Update this.x this.y
         currentDirection = moveTowardsCurrentStepOnPath(path, graph, delta);
+
+        if(currentPath.isFinished()){
+            currentState =
+        }
     }
 
     private Direction moveTowardsCurrentStepOnPath(Path path, Graph graph, double delta){
         if(path.isFinished()){
-            currentState = CustomerState.IDLE;
+            currentState = CustomerState.DECIDING_RANDOM_PATH;
             return currentDirection;
         }
 

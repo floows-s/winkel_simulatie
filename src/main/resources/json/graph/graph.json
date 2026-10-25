@@ -8,6 +8,21 @@
       },
       "edges": [
         {
+          "to": "SHOPPING_CART_PICKUP"
+        }
+      ]
+    },
+    {
+      "id": "SHOPPING_CART_PICKUP",
+      "location": {
+        "x": 1162,
+        "y": 312
+      },
+      "edges": [
+        {
+          "to": "SPAWN_POINT"
+        },
+        {
           "to": "ENTRANCE"
         }
       ]
@@ -20,13 +35,14 @@
       },
       "edges": [
         {
-          "to": "SPAWN_POINT"
+          "to": "SHOPPING_CART_PICKUP"
         },
         {
           "to": "WALKWAY_TOP_ENTRANCE"
         }
       ]
     },
+
 
 
     {

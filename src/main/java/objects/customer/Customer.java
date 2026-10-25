@@ -7,7 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.graph.Graph;
 import objects.groceryList.GroceryList;
-import objects.groceryList.GroceryListItem;
 import objects.path.Path;
 import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
@@ -48,7 +47,7 @@ public class Customer implements Renderable, Updatable {
     public void update(double delta, long now, Simulation s){
         switch(currentState){
             case IDLE: decideNewRandomPath(s); break;
-            case WALKING_PATH: takeStepOnPath(s, currentPath, s.graph, delta); break;
+            case WALKING_PATH: walkOnPath(currentPath, delta, now, s.graph); break;
         }
     }
 
@@ -62,7 +61,16 @@ public class Customer implements Renderable, Updatable {
         currentState = CustomerState.WALKING_PATH;
     }
 
-    private void takeStepOnPath(Simulation s, Path path, Graph graph, double delta){
+    private void walkOnPath(Path path, double delta, long now, Graph graph){
+        // Handle walking animation
+        // TODO
+
+        // Update this.x this.y
+        moveTowardsCurrentStepOnPath(path, graph, delta);
+    }
+    
+
+    private void moveTowardsCurrentStepOnPath(Path path, Graph graph, double delta){
         if(path.isFinished()){
             currentState = CustomerState.IDLE;
             return;

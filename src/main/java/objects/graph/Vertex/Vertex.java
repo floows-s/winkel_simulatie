@@ -1,6 +1,6 @@
 package objects.graph.Vertex;
 
-import core.Point;
+import core.orientation.Coordinates;
 import core.Renderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,20 +15,20 @@ import java.util.List;
 /// @param location On the canvas
 /// @param color    Of circle on canvas. (Default: {@code Color.RED})
 /// @param diameter Of circle on canvas. (Default: {@code 21})
-public record Vertex(VertexID id, List<Edge> edges, Point location, Color color, Integer diameter) implements Renderable {
+public record Vertex(VertexID id, List<Edge> edges, Coordinates location, Color color, Integer diameter) implements Renderable {
 
     public static Color DEFAULT_COLOR = Color.RED;
     public static Integer DEFAULT_DIAMETER = 21;
 
 
     public Vertex {
-        location = location == null ? new Point(0,0) : location;
+        location = location == null ? new Coordinates(0,0) : location;
         edges = edges == null ? List.of() : List.copyOf(edges);
         color = color == null ? DEFAULT_COLOR : color;
         diameter = diameter == null ? DEFAULT_DIAMETER : diameter;
     }
 
-    public Vertex(VertexID id, List<Edge> edges, Point location) {
+    public Vertex(VertexID id, List<Edge> edges, Coordinates location) {
         this(id, List.copyOf(edges), location, DEFAULT_COLOR, DEFAULT_DIAMETER);
     }
 

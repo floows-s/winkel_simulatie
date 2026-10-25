@@ -1,6 +1,6 @@
 package objects.customer;
 
-import core.Point;
+import core.orientation.Coordinates;
 import objects.groceryList.GroceryListFactory;
 import utilities.Randomizer;
 
@@ -13,7 +13,7 @@ public class CustomerFactory {
         this.groceryListFactory = groceryListFactory;
     }
 
-    public Customer create(Point startPoint){
+    public Customer create(Coordinates startPoint){
         // Decide amount of groceries in list
         int amountOfGroceries = Randomizer.nextInt(
                 MINIMAL_AMOUNT_OF_GROCERIES,

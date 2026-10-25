@@ -2,30 +2,22 @@ package core;
 
 import core.logger.Logger;
 import core.logger.TagLogger;
+import core.orientation.Coordinates;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
 import objects.box.Box;
 import objects.customer.Customer;
 import objects.customer.CustomerFactory;
-import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
-import objects.groceryList.GroceryList;
 import objects.groceryList.GroceryListFactory;
-import objects.path.Path;
-import objects.product.Product;
 import objects.product.ProductFactory;
 import objects.product.ProductName;
 import objects.register.Register;
 import objects.graph.*;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
-import objects.shelf.ShelfData;
 import objects.shelf.ShelfManager;
-import utilities.JsonFileParser;
 import objects.background.BackgroundLoader;
-
-import java.lang.reflect.Array;
-import java.util.List;
 
 public class Simulation implements Updatable{
     private final Game game;
@@ -102,18 +94,17 @@ public class Simulation implements Updatable{
         game.addObject(graph);
 
 
-        Point spawnPointLocation = graph.get(VertexID.SPAWN_POINT).location();
+        Coordinates spawnPointLocation = graph.get(VertexID.SPAWN_POINT).location();
         Customer c = customerFactory.create(spawnPointLocation);
         game.addObject(c);
     }
 
 
     private IntervalTimer customerSpawnTimer = new IntervalTimer(2000, this::spawnNewCustomer); // TODO: remove, right now its just for demo purposes.
-
     public void spawnNewCustomer(){ // TODO: maybe revisit, right now its just for demo purposes.
         log.logInfo("Spawning in new customer!");
 
-        Point spawnPoint = graph.get(VertexID.SPAWN_POINT).location();
+        Coordinates spawnPoint = graph.get(VertexID.SPAWN_POINT).location();
         game.addObject(
                 customerFactory.create(spawnPoint)
         );

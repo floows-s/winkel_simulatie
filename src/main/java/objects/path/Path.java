@@ -68,7 +68,7 @@ public class Path {
         return this.current;
     }
 
-    /// Returns the current VertexID on the path, advancing to the next one first if there is no current.
+    /// Returns the current VertexID on the path, advancing to the next one if there is no current yet.
     /// If current is already set, it is returned unchanged. Otherwise, this behaves like next().
     /// @return Current or next VertexID, or NULL if there is none
     public VertexID currentOrNext(){

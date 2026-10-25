@@ -2,16 +2,16 @@ package core.timer;
 
 
 public class IntervalTimer{
-    private double intervalTime_MS;
-    private long previousIntervalPassTime_NS;
+    private double intervalTimeMs;
+    private long previousIntervalPassTimeNs;
     private Runnable action;
 
-    /// The interval timer will execute the provided {@code action} every {@code intervalTime} when checked with {@link tick}.
+    /// The interval timer will execute the provided {@code action} every {@code intervalTimeMs} when checked with {@link tick}.
     /// <p>
     /// If no action is provided the return value of {@link tick} can still be used to determine if the interval time has been reached that tick.
-    /// @param intervalTime in milliseconds
-    public IntervalTimer(double intervalTime){
-        this.intervalTime_MS = intervalTime;
+    /// @param intervalTimeMs in milliseconds
+    public IntervalTimer(double intervalTimeMs){
+        this.intervalTimeMs = intervalTimeMs;
     }
 
     /// The interval timer will execute the provided {@code action} every {@code intervalTime} when checked with {@link tick}.
@@ -20,7 +20,7 @@ public class IntervalTimer{
     /// @param intervalTime in milliseconds
     /// @param action to execute after threshold has been reached
     public IntervalTimer(double intervalTime, Runnable action){
-        this.intervalTime_MS = intervalTime;
+        this.intervalTimeMs = intervalTime;
         this.action = action;
     }
 
@@ -31,16 +31,17 @@ public class IntervalTimer{
     /// @return if the interval time has been reached this tick.
     public boolean tick(long now){
         // If previous time has not been set -> set it
-        if(previousIntervalPassTime_NS == 0){
-            previousIntervalPassTime_NS = now;
+        if(previousIntervalPassTimeNs == 0){
+            previousIntervalPassTimeNs = now;
             return false;
         }
 
         // Check if enough time has passed
-        double timePassed_MS = (now - previousIntervalPassTime_NS) / 1e6;
-        if(timePassed_MS > intervalTime_MS){
-            previousIntervalPassTime_NS = now;
+        double timePassed_MS = (now - previousIntervalPassTimeNs) / 1e6;
+        if(timePassed_MS > intervalTimeMs){
+            previousIntervalPassTimeNs = now;
 
+            // Execute action if set
             if(action != null) action.run();
             return true;
         }
@@ -55,6 +56,6 @@ public class IntervalTimer{
 
     /// @param intervalTime in milliseconds
     public void setIntervalTime(double intervalTime) {
-        this.intervalTime_MS = intervalTime;
+        this.intervalTimeMs = intervalTime;
     }
 }

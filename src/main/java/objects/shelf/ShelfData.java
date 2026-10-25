@@ -1,19 +1,19 @@
 package objects.shelf;
 
 
-import core.Point;
+import core.orientation.Coordinates;
 import objects.graph.Vertex.VertexID;
 import utilities.JsonFileParser;
 
 
 public class ShelfData {
-    private Point position;
+    private Coordinates position;
     private Shelf.ShelfType type;
 
     /// The Vertex that is close to the shelf. Only when standing on this vertex, will it be logical to interact with the shelf by a character, for example a customer.
     private VertexID accessPoint;
 
-    public ShelfData(Point position){
+    public ShelfData(Coordinates position){
         this.position = position;
     }
 

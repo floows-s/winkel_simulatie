@@ -11,7 +11,7 @@ public class AnimationTimer {
     private List<Image> frames;
     private int currentFrameIndex = 0;
     private double frameTimeMs;
-    private double previousFrameChangeTimeNs = -1;
+    private long previousFrameChangeTimeNs = -1;
 
     private Logger log;
 
@@ -35,7 +35,7 @@ public class AnimationTimer {
     ///
     /// @param nowNs the current time in nanoseconds, values less than or equal to {@code 0} are considered invalid
     /// @return the {@link Image} to display at the given time. Never advances more than one frame per call.
-    public Image getFrame(double nowNs){
+    public Image getFrame(long nowNs){
         // nowNs has bad data
         if(nowNs <= 0){
             log.logWarning("nowNs <= 0. Invalid data! Returning current frame.");
@@ -85,6 +85,11 @@ public class AnimationTimer {
         }
 
         return frames.get(currentFrameIndex);
+    }
+
+    /// Reset animation to the first frame.
+    public void reset(){
+        currentFrameIndex = 0;
     }
 
     /// Get a copy of the frames given at creation time.

@@ -14,4 +14,6 @@ module com.example.winkel_simulatie {
     opens objects.shelf to com.google.gson;
     opens objects.graph to com.google.gson, org.junit.platform.commons;
     opens objects.graph.Vertex to com.google.gson;
+    exports core.orientation;
+    opens core.orientation to javafx.fxml;
 }

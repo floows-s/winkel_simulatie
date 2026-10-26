@@ -97,13 +97,13 @@ public class Path {
     }
 
 
-    /// Get the first step of the path.
+    /// Get the first step of the path. i.e. the source of the path.
     /// @return first step of the path
     public VertexID getFirst(){
         return this.steps.getFirst();
     }
 
-    /// Get the last step of the path.
+    /// Get the last step of the path. i.e. the target of the path.
     /// @return last step of the path
     public VertexID getLast(){
         return this.steps.getLast();

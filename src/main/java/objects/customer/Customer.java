@@ -8,13 +8,17 @@ import core.orientation.Direction;
 import core.timer.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import objects.customer.States.CustomerState;
+import objects.customer.States.ExploringStore;
+import objects.customer.States.GrabbingShoppingCart;
+import objects.customer.States.SpawnedIn;
+import objects.shoppingCart.ShoppingCart;
 import objects.graph.Graph;
 import objects.groceryList.GroceryList;
 import objects.path.Path;
 import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import utilities.ImageLoader;
-import utilities.Randomizer;
 
 import java.util.List;
 
@@ -28,6 +32,8 @@ public class Customer implements Renderable, Updatable {
     private float y;
     private GroceryList groceryList;
 
+    private ShoppingCart shoppingCart = null;
+
     // Images
     private static Image idleSprite = null;
     private static List<Image> walkingFrames = null;
@@ -37,30 +43,28 @@ public class Customer implements Renderable, Updatable {
     private AnimationTimer walkingAnimation;
     private AnimationTimer walkingShoppingCartAnimation;
 
-
     // State variables
-    private Image currentSprite;
-    private Direction currentDirection = Direction.EAST;
-    private CustomerState currentState = CustomerState.IDLE;
-    private Path currentPath;
+    private CustomerState state = new SpawnedIn();
+
+    private Image sprite;
+    private Direction direction = Direction.EAST;
     private VertexID currentVertexID = VertexID.SPAWN_POINT;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
-
-    public Customer(Coordinates startPoint, GroceryList groceryList){
-        this.x = startPoint.x();
-        this.y = startPoint.y();
+    public Customer(Vertex startVertex, GroceryList groceryList){
+        this.x = startVertex.location().x();
+        this.y = startVertex.location().y();
+        this.currentVertexID = startVertex.id();
         this.groceryList = groceryList;
 
-        // Setup
         setup();
     }
 
     // Setup
     private void setup(){
         loadImages();
-        currentSprite = idleSprite;
+        sprite = idleSprite;
 
         setupAnimationTimers();
     }
@@ -101,53 +105,37 @@ public class Customer implements Renderable, Updatable {
 
     @Override
     public void update(double delta, long now, Simulation s){
-        switch(currentState){
-            case IDLE: decideNewRandomPath(s); break;
-            case WALKING_PATH: walkOnPath(currentPath, delta, now, s.graph); break;
-        }
+        state.update(this, delta, now, s);
     }
 
 
     // Actions
 
-    // TODO: this can be removed, just for testing
-    private void decideNewRandomPath(Simulation s) {
-        VertexID random = VertexID.values()[Randomizer.nextInt(1, VertexID.values().length)];
-        currentPath = s.graph.getShortestPath(currentVertexID, random);
+    /// TODO here is a explanation of this method
+    /// <p>
+    /// Side effects:
+    /// - Updates {@link x} & {@link y} to move towards the current step
+    /// - Updates {@link currentVertexID} to the last vertex it has been
+    /// - Updates {@link direction} based on the moving direction
+    /// - Updates {@link sprite} to accommodate for the walking animation
+    /// @param path to get the current step to move towards.
+    /// @param graph to move on
+    /// @param delta between this and the last frame
+    /// @return if the last step on the path is reached
+    public Boolean followPath(Path path, Graph graph, double delta, long now){
+        if(path.isFinished()) return true;
 
-        log.logInfo("Next target: [" + random + "]");
-
-        currentState = CustomerState.WALKING_PATH;
-    }
-
-    private void walkOnPath(Path path, double delta, long now, Graph graph){
-        // TODO Handle walking animation
-        //      - Update current direction
-        //      - Get next frame
-        // Also update render function to handle current direction correctly
-        currentSprite = walkingShoppingCartAnimation.getFrame(now);
-
-        // Update this.x this.y
-        currentDirection = moveTowardsCurrentStepOnPath(path, graph, delta);
-    }
-
-    private Direction moveTowardsCurrentStepOnPath(Path path, Graph graph, double delta){
-        if(path.isFinished()){
-            currentState = CustomerState.IDLE;
-            return currentDirection;
-        }
-
+        // Get vertex of current step from graph
         VertexID currentStep = path.currentOrNext();
-
         Vertex v = graph.get(currentStep);
         if(v == null){
-            log.logWarning("Vertex with ID [" + currentStep + "] not found in given Graph. Skipping step.");
+            log.logError("Vertex with ID [" + currentStep + "] not found in given Graph. Skipping step. This will possibly lead to not following the edges of the graph properly.");
             path.next();
-            return currentDirection;
         }
 
         Coordinates p = v.location();
 
+        // Calculate delta and distance
         float dx = (p.x() - x);
         float dy = (p.y() - y);
         double distance = Math.sqrt(dx * dx + dy * dy);
@@ -159,8 +147,12 @@ public class Customer implements Renderable, Updatable {
             y = p.y();
             currentVertexID = currentStep;
 
-            path.next();
-            return currentDirection;
+            VertexID nextStep = path.next();
+            if(nextStep == null){
+                return true;
+            }
+
+            return false;
         }
 
         double dirX = dx / distance;
@@ -169,14 +161,27 @@ public class Customer implements Renderable, Updatable {
         x += dirX * WALKING_SPEED * delta;
         y += dirY * WALKING_SPEED * delta;
 
-        // Return walking direction
+        // Determine and set current facing direction
         if(dirX > 0){
-            return Direction.EAST;
+            direction = Direction.EAST;
         }else{
-            return Direction.WEST;
+            direction = Direction.WEST;
         }
+
+        // Update sprite
+        handleWalkingAnimation(now);
+
+        return false;
     }
 
+
+    public void handleWalkingAnimation(long now){
+        if(hasShoppingCart()){
+            sprite = walkingShoppingCartAnimation.getFrame(now);
+        }else{
+            sprite = walkingAnimation.getFrame(now);
+        }
+    }
 
     // Render
     @Override
@@ -185,7 +190,7 @@ public class Customer implements Renderable, Updatable {
         int width, height;
 
         // Correct for direction
-        if(currentDirection == Direction.EAST){
+        if(direction == Direction.EAST){
             x_center = x - getWidth() / 2;
             y_center = y - getHeight() / 2;;
 
@@ -199,7 +204,7 @@ public class Customer implements Renderable, Updatable {
             height= getHeight();
         }
 
-        g.drawImage(currentSprite, x_center, y_center, width, height);
+        g.drawImage(sprite, x_center, y_center, width, height);
     }
 
 
@@ -218,19 +223,36 @@ public class Customer implements Renderable, Updatable {
 
     /// @return the current width of the sprite
     public int getWidth(){
-        return (int) currentSprite.getWidth();
+        return (int) sprite.getWidth();
     }
 
     /// @return the current height of the sprite
     public int getHeight(){
-        return (int) currentSprite.getHeight();
+        return (int) sprite.getHeight();
     }
 
     public CustomerState getState() {
-        return currentState;
+        return state; // TODO: copy?
+    }
+
+    public void setState(CustomerState state) {
+        this.state = state; // TODO: copy?
+    }
+
+
+    public VertexID getCurrentVertexID() {
+        return currentVertexID;
     }
 
     public GroceryList getGroceryList() {
         return new GroceryList(groceryList);
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart; // TODO: copy?
+    }
+
+    public boolean hasShoppingCart(){
+        return shoppingCart != null;
     }
 }

@@ -5,6 +5,7 @@ package objects.graph.Vertex;
 public enum VertexID {
     SPAWN_POINT,
     ENTRANCE,
+    SHOPPING_CART_PICKUP,
 
     // --- WALKWAY (LIGHT GREY TILES) ---
     WALKWAY_TOP_ENTRANCE, // Coupling between the top of the walkway and the entrance

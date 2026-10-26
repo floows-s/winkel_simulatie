@@ -147,7 +147,11 @@ public class Customer implements Renderable, Updatable {
             y = p.y();
             currentVertexID = currentStep;
 
-            path.next();
+            VertexID nextStep = path.next();
+            if(nextStep == null){
+                return true;
+            }
+
             return false;
         }
 

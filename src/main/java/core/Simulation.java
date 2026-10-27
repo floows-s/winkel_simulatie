@@ -2,11 +2,13 @@ package core;
 
 import core.logger.Logger;
 import core.logger.TagLogger;
+import core.orientation.Coordinates;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
 import objects.customer.CustomerFactory;
 import objects.graph.Vertex.VertexID;
 import objects.groceryList.GroceryListFactory;
+import objects.LookupKioskStand.LookupKioskStand;
 import objects.product.Product;
 import objects.product.ProductType;
 import objects.register.Register;
@@ -26,6 +28,9 @@ public class Simulation implements Updatable{
     // Factories
     public GroceryListFactory groceryListFactory;
     public CustomerFactory customerFactory;
+
+    // Objects
+    private LookupKioskStand lookupKioskStand;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
@@ -85,6 +90,13 @@ public class Simulation implements Updatable{
         // Create factories
         groceryListFactory = new GroceryListFactory(shelfManager);
         customerFactory = new CustomerFactory(groceryListFactory, graph.get(VertexID.SPAWN_POINT));
+
+        // Add lookup kiosk stand
+        lookupKioskStand = new LookupKioskStand(
+                new Coordinates(696, 26),
+                shelfManager
+        );
+        game.addObject(lookupKioskStand);
     }
 
 
@@ -100,5 +112,9 @@ public class Simulation implements Updatable{
     @Override
     public void update(double delta, long now, Simulation s) {
         customerSpawnTimer.tick(now); // TODO: remove, right now its just for demo purposes.
+    }
+
+    public LookupKioskStand getLookupKioskStand() {
+        return lookupKioskStand;
     }
 }

@@ -1,6 +1,6 @@
-package objects.shelf;
+package objects.storeItems.shelf;
 
-import objects.product.Product;
+import core.ShelfItem;
 import core.Renderable;
 import core.Simulation;
 import core.Updatable;
@@ -20,7 +20,7 @@ public class Shelf implements Renderable, Updatable {
     private final int height = 80;
 
     // list products per shelf
-    private final Product[] products = new Product[9];
+    private final ShelfItem[] items = new ShelfItem[9];
 
     // using a type per shelf
     public enum ShelfType {
@@ -30,8 +30,9 @@ public class Shelf implements Renderable, Updatable {
         STORAGE
     }
 
+    // ==== CONSTRUCTOR ====
     /// Constructor reads the data from shelfs.json
-    /// @param data
+    /// @param data is the .Json file with locations, types of shelves
     public Shelf(ShelfData data){
 
         x       = data.getX();
@@ -49,19 +50,20 @@ public class Shelf implements Renderable, Updatable {
 
     }
 
+    // ==== FUNCTIONS ====
     /// returns type of current shelf
-    /// @return
+    /// @return current type of the shelf
     public ShelfType getType() {
         return type;
     }
 
     /// Adds a product to the shelf, if the shelf is full prints error message
     /// @param p is the product that needs to be added
-    public void AddProduct(Product p){
-        for(int i = 0; i < products.length; i++){
-
-            if (products[i] == null && type == p.type ){
-                products[i] = p;
+    public void AddItem(ShelfItem p){
+        for(int i = 0; i < items.length; i++){
+            if (items[i] == null && type == p.GetShelfType() )
+            {
+                items[i] = p;
                 break;
             }
             else{
@@ -73,10 +75,10 @@ public class Shelf implements Renderable, Updatable {
     /// removes a product from the list products and returns said product
     /// TODO needs to remove the current sprite
     /// @param i is the location of the current product in the shelf starting at 0
-    public Product RemoveProduct(int i){
-        if(products[i] != null){
-            products[i] = null;
-            return products[i];
+    public ShelfItem RemoveItem(int i){
+        if(items[i] != null){
+            items[i] = null;
+            return items[i];
         }
         else{
             System.out.println("This location is already empty");
@@ -84,18 +86,20 @@ public class Shelf implements Renderable, Updatable {
         }
     }
 
+
+    // ==== Interface Renderable  + updatable ====
     /// Draws the shelf based on jason file
     /// Draws product per products list on the correct location based on scale and position of the shelf
-    /// @param g
+    /// @param g is the canvas
     @Override
     public void render(GraphicsContext g) {
         // Draw shelf first
         g.drawImage(sprite, x, y, width, height);
 
-        for (int i = 0; i < products.length; i++) {
+        for (int i = 0; i < items.length; i++) {
 
             // Continue rendering sprites even though one is empty
-            if (products[i] == null) {
+            if (items[i] == null) {
                 continue;
             }
             float resizeFactorX = width / 64;
@@ -116,7 +120,7 @@ public class Shelf implements Renderable, Updatable {
             int productY = startLocationY + (row * moveDownY);
 
             g.drawImage(
-                    products[i].GetSprite(),
+                    items[i].GetSprite(),
                     productX,
                     productY,
                     scale,

@@ -3,13 +3,13 @@ package core;
 import core.logger.Logger;
 import core.logger.TagLogger;
 import objects.FloatingText.FloatingNumber;
-import objects.box.Box;
-import objects.product.Product;
-import objects.register.Register;
+import objects.storeItems.box.Box;
+import objects.storeItems.product.Product;
+import objects.storeItems.register.Register;
 import objects.graph.*;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
-import objects.shelf.Shelf;
-import objects.shelf.ShelfData;
+import objects.storeItems.shelf.Shelf;
+import objects.storeItems.shelf.ShelfData;
 import utilities.JsonFileParser;
 import objects.background.BackgroundLoader;
 
@@ -32,9 +32,9 @@ public class Simulation {
         ShelfData[] shelfL = JsonFileParser.loadObjectFromFile("/json/shelfs/shelfs.json", ShelfData[].class);
 
         // create products
-        Product bread = new Product("Bread", Shelf.ShelfType.WOOD, 10);
-        Product pizza = new Product("Pizza", Shelf.ShelfType.METAL, 10);
-        Product meat  = new Product("Meat", Shelf.ShelfType.COOL, 10);
+        Product bread = new Product(Product.ProductType.BREAD);
+        Product pizza = new Product(Product.ProductType.PIZZA);
+        Product meat  = new Product(Product.ProductType.MEAT);
         Box box = new Box();
 
         // create register
@@ -48,10 +48,10 @@ public class Simulation {
         for(ShelfData d : shelfL){
             Shelf s = new Shelf(d);
             for(int i = 0; i < 9; i ++){
-                s.AddProduct(bread);
-                s.AddProduct(pizza);
-                s.AddProduct(meat);
-                s.AddProduct(box);
+                s.AddItem(bread);
+                s.AddItem(pizza);
+                s.AddItem(meat);
+                s.AddItem(box);
             }
             // add shelf to the game
             game.addObject(s);

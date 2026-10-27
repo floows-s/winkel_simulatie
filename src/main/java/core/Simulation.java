@@ -3,13 +3,13 @@ package core;
 import core.logger.Logger;
 import core.logger.TagLogger;
 import objects.FloatingText.FloatingNumber;
-import objects.storeItems.box.Box;
-import objects.storeItems.product.Product;
-import objects.storeItems.register.Register;
+import objects.box.Box;
+import objects.product.Product;
+import objects.register.Register;
 import objects.graph.*;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
-import objects.storeItems.shelf.Shelf;
-import objects.storeItems.shelf.ShelfData;
+import objects.shelf.Shelf;
+import objects.shelf.ShelfData;
 import utilities.JsonFileParser;
 import objects.background.BackgroundLoader;
 

@@ -1,8 +1,8 @@
-package objects.storeItems.product;
+package objects.product;
 
 import core.ShelfItem;
 import javafx.scene.image.Image;
-import objects.storeItems.shelf.Shelf;
+import objects.shelf.Shelf;
 
 public class Product implements ShelfItem {
     // ==== VARIABLES ====

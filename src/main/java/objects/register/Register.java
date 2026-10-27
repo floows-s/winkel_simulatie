@@ -1,10 +1,10 @@
-package objects.storeItems.register;
+package objects.register;
 
 import core.Renderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.FloatingText.FloatingNumber;
-import objects.storeItems.product.Product;
+import objects.product.Product;
 
 import java.util.List;
 

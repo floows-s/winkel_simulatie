@@ -1,6 +1,6 @@
-package objects.storeItems;
+package objects;
 
-import objects.storeItems.product.Product;
+import objects.product.Product;
 
 import java.util.EnumMap;
 

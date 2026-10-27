@@ -1,4 +1,4 @@
-package objects.storeItems.shelf;
+package objects.shelf;
 
 
 import core.Point;

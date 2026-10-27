@@ -1,9 +1,9 @@
-package objects.storeItems.box;
+package objects.box;
 
 import core.ShelfItem;
 import javafx.scene.image.Image;
-import objects.storeItems.product.Product;
-import objects.storeItems.shelf.Shelf;
+import objects.product.Product;
+import objects.shelf.Shelf;
 
 public class Box implements ShelfItem {
 

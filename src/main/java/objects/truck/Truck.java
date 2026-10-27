@@ -1,7 +1,7 @@
-package objects.storeItems.truck;
+package objects.truck;
 
-import objects.storeItems.box.Box;
-import objects.storeItems.product.Product;
+import objects.box.Box;
+import objects.product.Product;
 
 import java.util.ArrayDeque;
 import java.util.EnumMap;

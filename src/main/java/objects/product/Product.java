@@ -20,7 +20,7 @@ public class Product implements ShelfItem {
         this.name   = pType.name;
         this.type   = pType.shelfType;
         this.price  = pType.price;
-        this.pType = pType;
+        this.pType  = pType;
 
         // type the name correctly as the image folder suggests
         sprite = new Image(getClass().getResource("/images/products/" + this.name + ".png").toExternalForm());

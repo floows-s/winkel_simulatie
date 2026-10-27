@@ -4,6 +4,7 @@ import core.logger.Logger;
 import core.logger.TagLogger;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
+import objects.StockManager;
 import objects.customer.CustomerFactory;
 import objects.graph.Vertex.VertexID;
 import objects.groceryList.GroceryListFactory;
@@ -15,13 +16,22 @@ import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
+import objects.truck.Truck;
 
 public class Simulation implements Updatable{
+
+    // ==== Variables ====
     private final Game game;
     public Graph graph;
 
+    // keep track how many shelves are filled
+    private int woodCount       = 0;
+    private int metalCount      = 0;
+    private int freezerCount    = 0;
+
     // Managers
     public ShelfManager shelfManager;
+    public StockManager stockManager = new StockManager();
 
     // Factories
     public GroceryListFactory groceryListFactory;
@@ -49,21 +59,31 @@ public class Simulation implements Updatable{
         // Create shelf manager
         shelfManager = new ShelfManager("/json/shelfs/shelfs.json", game);
 
-        // Fill shelves with "dummy" products for testing
+        // Fill shelves with products according to plan
         shelfManager.forEach((s) -> {
+
+            ProductType productType = null;
+            switch (s.getType()){
+
+                case WOOD -> {
+                    productType = woodCount < 6 ? ProductType.APPLE : ProductType.BREAD;
+                    woodCount ++;
+
+                }
+                case METAL -> {
+                    productType = metalCount < 3 ? ProductType.MEAT : ProductType.MILK;
+                    metalCount ++;
+
+                }
+                case COOL -> {
+                    productType = freezerCount < 3 ? ProductType.PIZZA : ProductType.ICE_SCREAM;
+                    freezerCount ++;
+                }
+                case STORAGE -> {return;}
+            }
+
             for(int i = 0; i < 9; i ++){
-
-                if(s.getType() == Shelf.ShelfType.WOOD){
-                    s.AddProduct(new Product(ProductType.APPLE));
-                }
-
-                if(s.getType() == Shelf.ShelfType.METAL){
-                    s.AddProduct(new Product(ProductType.MEAT));
-                }
-
-                if(s.getType() == Shelf.ShelfType.COOL){
-                    s.AddProduct(new Product(ProductType.PIZZA));
-                }
+                s.AddProduct(new Product(productType));
             }
         });
 
@@ -85,6 +105,15 @@ public class Simulation implements Updatable{
         // Create factories
         groceryListFactory = new GroceryListFactory(shelfManager);
         customerFactory = new CustomerFactory(groceryListFactory, graph.get(VertexID.SPAWN_POINT));
+
+        // add stock manager and remove stock
+        stockManager.ChangeProductStock(ProductType.APPLE, -40);
+        // checks if something is lower than half of the stock if so spawn a truck
+        Truck truck = new Truck();
+        game.addObject(truck);
+
+        truck.SpawnTruck(stockManager.GetRestockOrder());
+
     }
 
 

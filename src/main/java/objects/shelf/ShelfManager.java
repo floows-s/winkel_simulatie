@@ -4,7 +4,7 @@ import core.Game;
 import core.logger.Logger;
 import core.logger.TagLogger;
 import objects.graph.Vertex.VertexID;
-import objects.product.ProductName;
+import objects.product.ProductType;
 import utilities.JsonFileParser;
 
 import java.util.*;
@@ -98,7 +98,7 @@ public class ShelfManager {
     /// Search for a shelf that has the given product, and return the {@code VertexID} of the access point for the shelf.
     /// @param product to search for
     /// @return The access point of the found shelf, or null if there is no shelf found
-    public VertexID getAccessPointOfShelfThatHasProduct(ProductName product){
+    public VertexID getAccessPointOfShelfThatHasProduct(ProductType product){
         for(var entry : shelves.entrySet()){
             VertexID accessPoint = entry.getKey();
             Shelf s = entry.getValue();

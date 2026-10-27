@@ -9,7 +9,7 @@ import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import objects.product.ProductName;
+import objects.product.ProductType;
 
 public class Shelf implements Renderable, Updatable {
 
@@ -142,9 +142,11 @@ public class Shelf implements Renderable, Updatable {
         return accessPoint;
     }
 
-    public boolean hasProduct(ProductName name){
+    public boolean hasProduct(ProductType name){
         for(Product p : products){
-            if(p.getName() == name){
+            if(p == null) continue;
+
+            if(p.getpType() == name){
                 return true;
             }
         }

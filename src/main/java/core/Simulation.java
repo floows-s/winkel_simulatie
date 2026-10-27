@@ -2,17 +2,13 @@ package core;
 
 import core.logger.Logger;
 import core.logger.TagLogger;
-import core.orientation.Coordinates;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
-import objects.box.Box;
-import objects.customer.Customer;
 import objects.customer.CustomerFactory;
-import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import objects.groceryList.GroceryListFactory;
-import objects.product.ProductFactory;
-import objects.product.ProductName;
+import objects.product.Product;
+import objects.product.ProductType;
 import objects.register.Register;
 import objects.graph.*;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
@@ -58,19 +54,15 @@ public class Simulation implements Updatable{
             for(int i = 0; i < 9; i ++){
 
                 if(s.getType() == Shelf.ShelfType.WOOD){
-                    s.AddProduct(ProductFactory.getProduct(ProductName.BREAD));
+                    s.AddProduct(new Product(ProductType.APPLE));
                 }
 
                 if(s.getType() == Shelf.ShelfType.METAL){
-                    s.AddProduct(ProductFactory.getProduct(ProductName.PIZZA));
+                    s.AddProduct(new Product(ProductType.MEAT));
                 }
 
                 if(s.getType() == Shelf.ShelfType.COOL){
-                    s.AddProduct(ProductFactory.getProduct(ProductName.MEAT));
-                }
-
-                if(s.getType() == Shelf.ShelfType.STORAGE){
-                    s.AddProduct(new Box());
+                    s.AddProduct(new Product(ProductType.PIZZA));
                 }
             }
         });

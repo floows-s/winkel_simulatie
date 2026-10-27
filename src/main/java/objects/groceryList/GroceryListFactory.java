@@ -1,8 +1,8 @@
 package objects.groceryList;
 
 import objects.graph.Vertex.VertexID;
-import objects.product.ProductFactory;
-import objects.product.ProductName;
+import objects.product.Product;
+import objects.product.ProductType;
 import objects.shelf.ShelfManager;
 import utilities.Randomizer;
 
@@ -27,7 +27,9 @@ public class GroceryListFactory {
         List<GroceryListItem> groceries = new ArrayList<>();
 
         for(int i = 0; i < amountOfGroceries; i++){
-            ProductName product = ProductFactory.getRandomProductName();
+            int random = Randomizer.nextInt(0, ProductType.values().length);
+
+            ProductType product = ProductType.values()[random];
             VertexID location = null;
 
             // Decide if include location

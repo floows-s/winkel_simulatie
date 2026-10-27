@@ -1,60 +1,61 @@
 package objects.product;
 
+import core.ShelfItem;
 import javafx.scene.image.Image;
 import objects.shelf.Shelf;
 
-public class Product {
+public class Product implements ShelfItem {
     // ==== VARIABLES ====
     private Image sprite;
-    private ProductName name;
-    private Shelf.ShelfType type;
-    private double price;
+    private String name;
+    public Shelf.ShelfType type;
+    public double price;
+
+    private ProductType pType;
 
     /// Constructor
-    /// @param name string the same name as the sprite name or else no sprite will load
-    /// @param type shelfs.Type
-    /// @param price double
-    public Product(ProductName name, Shelf.ShelfType type, double price)
+    /// @param pType is an enum based on a product containing the necessary information
+    public Product(ProductType pType)
     {
-        this.name   = name;
-        this.type   = type;
-        this.price  = price;
+        this.name   = pType.name;
+        this.type   = pType.shelfType;
+        this.price  = pType.price;
+        this.pType = pType;
 
         // type the name correctly as the image folder suggests
-        sprite = new javafx.scene.image.Image(getClass().getResource("/images/products/" + this.name.getImageName() + ".png").toExternalForm());
+        sprite = new Image(getClass().getResource("/images/products/" + this.name + ".png").toExternalForm());
 
     }
 
-    /// Copy constructor
-    /// @param product to copy values from
-    public Product(Product product){
-        this.sprite = product.sprite;
-        this.name = product.name;
-        this.type = product.type;
-        this.price = product.price;
-    }
 
-
-    /// returns the name of the product
-    /// @return the name
-    public ProductName getName() {
-        return name;
-    }
-
+    // ==== Interface ShelfItem
     /// returns the sprite as an Image
-    /// @return
+    /// @return Image sprite of the current product
+    @Override
     public Image GetSprite(){
         return sprite;
     }
 
+    ///
+    /// @return current type of shelf the product belongs to
+    @Override
+    public Shelf.ShelfType GetShelfType() {
+        return type;
+    }
+
+    // ==== FUNCTIONS ====
     /// returns the price of the product as a double
-    /// @return
+    /// @return current double price
     public double GetPrice(){
         return price;
     }
 
+    public ProductType getpType() {
+        return pType;
+    }
+
     /// returns the type as a ShelfType
-    /// @return
+    /// @return current type
     public Shelf.ShelfType getType() {
         return type;
     }

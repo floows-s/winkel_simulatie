@@ -1,9 +1,9 @@
 package objects.groceryList;
 
 import objects.graph.Vertex.VertexID;
-import objects.product.ProductName;
+import objects.product.ProductType;
 
-public record GroceryListItem(ProductName product, VertexID location, boolean hasBeenCheckedOff){
+public record GroceryListItem(ProductType product, VertexID location, boolean hasBeenCheckedOff){
 
     /// Makes a deep-copy of the given {@code GroceryListEntry}
     /// @param g entry to copy from

@@ -29,6 +29,9 @@ public class Simulation implements Updatable{
     public GroceryListFactory groceryListFactory;
     public CustomerFactory customerFactory;
 
+    // Objects
+    private LookupKioskStand lookupKioskStand;
+
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
     Simulation(Game game){
@@ -89,7 +92,7 @@ public class Simulation implements Updatable{
         customerFactory = new CustomerFactory(groceryListFactory, graph.get(VertexID.SPAWN_POINT));
 
         // Add lookup kiosk stand
-        LookupKioskStand lookupKioskStand = new LookupKioskStand(
+        lookupKioskStand = new LookupKioskStand(
                 new Coordinates(696, 26),
                 shelfManager
         );
@@ -109,5 +112,9 @@ public class Simulation implements Updatable{
     @Override
     public void update(double delta, long now, Simulation s) {
         customerSpawnTimer.tick(now); // TODO: remove, right now its just for demo purposes.
+    }
+
+    public LookupKioskStand getLookupKioskStand() {
+        return lookupKioskStand;
     }
 }

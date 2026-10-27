@@ -45,7 +45,7 @@ public class LookupKioskStand implements Renderable {
         return shelfManager.getAccessPointOfShelfThatHasProduct(type);
     }
 
-    /// @return VertexID which leads to the lookup kiosk stand
+    /// @return VertexID which leads to this lookup kiosk stand
     public VertexID getAccessPoint(){
         return VertexID.LOOKUP_KIOSK_STAND;
     }

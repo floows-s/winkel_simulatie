@@ -70,10 +70,6 @@ public class Game extends javafx.application.Application {
         addObject(simulation);
 
         Pane root = new Pane(canvas);
-
-        root.setOnMouseClicked((e) -> {
-            System.out.println("x: " + e.getX() + " y: " + e.getY());
-        });
         stage.setScene(new Scene(root));
         stage.setTitle("Winkel Simulatie");
         stage.show();

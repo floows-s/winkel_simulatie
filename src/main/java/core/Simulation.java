@@ -16,6 +16,7 @@ import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.Shelf;
 import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
+import objects.stats.Stats;
 import objects.truck.Truck;
 
 import java.util.ArrayList;
@@ -61,13 +62,13 @@ public class Simulation implements Updatable{
         productsList.add(new Product(ProductType.PIZZA));
         productsList.add(new Product(ProductType.BREAD));
 
-
         // create register
         Register register1 = new Register(590, 531);
         Register register2 = new Register(738, 531);
 
         // create text test
-        FloatingNumber priceTotal = new FloatingNumber("100€", 637, 589);
+        FloatingNumber priceTotal = new FloatingNumber( () ->"money earned = " + String.valueOf(Stats.GetMoneyEarned() + " €"), 1153, 52);
+        FloatingNumber productTotal = new FloatingNumber(()->"products = " + String.valueOf(Stats.GetProductsSold()), 1153, 72);
 
         // Create shelf manager
         shelfManager = new ShelfManager("/json/shelfs/shelfs.json", game);
@@ -103,11 +104,14 @@ public class Simulation implements Updatable{
         // add the register
         game.addObject(register1);
         game.addObject(register2);
+        // add the text
         game.addObject(priceTotal);
+        game.addObject(productTotal);
 
 
         // test if checkout works
         register1.CheckOut(productsList);
+        register2.CheckOut(productsList);
 
         // Create graph
         GraphData graphData = GraphData.fromJson("/json/graph/graph.json");

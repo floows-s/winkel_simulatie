@@ -1,9 +1,19 @@
 package objects.stats;
 
-public class Stats {
+import core.Simulation;
+import core.Updatable;
+import objects.FloatingText.FloatingNumber;
+
+public class Stats  {
     // ==== variables ====
     private static int amountProductsSold      = 0;
     private static double amountMoneyEarned    = 0;
+
+    // needs to be a float to be used correctly
+    private float xTextLocation = 1153;
+    private float yTextLocation2 = 72;
+    private float yTextLocation1 = 42;
+
 
     // ==== constructor ====
     public static void IncrementProductSold(int amount){
@@ -21,4 +31,5 @@ public class Stats {
     public static double GetMoneyEarned() {
         return amountMoneyEarned;
     }
+
 }

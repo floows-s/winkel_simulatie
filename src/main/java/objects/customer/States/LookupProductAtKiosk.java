@@ -19,17 +19,17 @@ public class LookupProductAtKiosk implements CustomerState{
     }
 
     @Override
-    public void update(Customer customer, double delta, long now, Simulation s) {
+    public void update(Customer c, double delta, long now, Simulation s) {
         LookupKioskStand kioskStand = s.getLookupKioskStand();
 
         if(pathToKiosk == null){
             pathToKiosk = s.graph.getShortestPath(
-                    customer.getCurrentVertexID(),
+                    c.getCurrentVertexID(),
                     kioskStand.getAccessPoint()
             );
         }
 
-        boolean atDestination = customer.followPath(pathToKiosk, s.graph, delta, now);
+        boolean atDestination = c.followPath(pathToKiosk, s.graph, delta, now);
         if(!atDestination) return;
 
         // Get product location from kiosk
@@ -39,11 +39,15 @@ public class LookupProductAtKiosk implements CustomerState{
         if(shelfContainingProduct == null){
             log.logInfo("No shelf containing product " + productToLookup + ". Skipping grocery list item.");
 
-            customer.setState(new ExploringStore()); // TODO: Change this to: Skip item on grocery list (customer state)
+            c.setState(new PickNextGroceryListItem());
             return;
         }
 
-
-        // TODO: grab product (customer state)
+        c.setState(
+                new GrabProductFromShelf(
+                        productToLookup,
+                        shelfContainingProduct
+                )
+        );
     }
 }

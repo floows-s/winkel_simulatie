@@ -19,7 +19,7 @@ import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
 
 public class Simulation implements Updatable{
-    private final Game game;
+    public final Game game;
     public Graph graph;
 
     // Managers

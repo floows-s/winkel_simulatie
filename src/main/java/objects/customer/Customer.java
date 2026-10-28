@@ -12,6 +12,7 @@ import objects.customer.States.CustomerState;
 import objects.customer.States.ExploringStore;
 import objects.customer.States.GrabbingShoppingCart;
 import objects.customer.States.SpawnedIn;
+import objects.product.Product;
 import objects.shoppingCart.ShoppingCart;
 import objects.graph.Graph;
 import objects.groceryList.GroceryList;
@@ -181,6 +182,10 @@ public class Customer implements Renderable, Updatable {
         }else{
             sprite = walkingAnimation.getFrame(now);
         }
+    }
+
+    public boolean addProductToShoppingCart(Product p){
+        return shoppingCart.add(p);
     }
 
     // Render

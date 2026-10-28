@@ -23,7 +23,7 @@ public class GrabbingShoppingCart implements CustomerState {
             c.setShoppingCart(new ShoppingCart());
 
             // Set next state
-            c.setState(new ExploringStore());
+            c.setState(new PickNextGroceryListItem());
         }
     }
 }

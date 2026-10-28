@@ -65,6 +65,18 @@ public class Shelf implements Renderable, Updatable {
         return type;
     }
 
+    public Product grabProduct(ProductType type){
+        for(int i = 0; i<products.length; i++){
+            Product product = products[i];
+            if(product != null && product.getpType() == type){
+                RemoveProduct(i);
+                return product;
+            }
+        }
+
+        return null;
+    }
+
     /// Adds a product to the shelf, if the shelf is full prints error message
     /// @param p is the product that needs to be added
     public void AddProduct(Product p){

@@ -4,6 +4,7 @@ import core.Renderable;
 import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
+import objects.StockManager;
 import objects.box.Box;
 import objects.movement.Movement;
 import objects.product.Product;
@@ -38,6 +39,10 @@ public class Truck implements Renderable, Updatable {
     // automatically returns first available box and null when no box is available
     private final Queue<Box> boxes = new ArrayDeque<>();
 
+    // replenish the current stock to the stock manager
+    private EnumMap<ProductType, Integer> restockOrder;
+    private boolean stockReplenished = false;
+
     // ==== FUNCTIONS ====
     /// using the queue system it automatically takes the first box in the queue and if it is null returns null
     /// @return the first box in the queue
@@ -55,6 +60,8 @@ public class Truck implements Renderable, Updatable {
     /// @param order a enumMap with product types and the amount needed per product
     public void SpawnTruck(EnumMap<ProductType, Integer> order){
 
+        // save a copy to use for restocking
+        this.restockOrder = new EnumMap<>(order);
         // create the order
         for(ProductType type : order.keySet()){
             int orderAmount = order.get(type);
@@ -97,6 +104,20 @@ public class Truck implements Renderable, Updatable {
             isTruckSpawned = false;
 
         }
+    }
+
+    /// replenish the current added products to the stock
+    /// @param stockManager the current stock manager inside the simulation
+    private void ReplenishStock(StockManager stockManager) {
+        for (var entry : restockOrder.entrySet()) {
+
+            ProductType type = entry.getKey();
+            int amount = entry.getValue();
+
+            stockManager.ChangeProductStock(type, amount);
+            restockOrder = null;
+        }
+        stockReplenished = true;
     }
 
     // ==== Sprite setting ====
@@ -148,6 +169,7 @@ public class Truck implements Renderable, Updatable {
 
         // remove the truck if the truck is completely empty and is there
         if (isMoving == false && isTruckSpawned == true && boxes.isEmpty()){
+            ReplenishStock(s.stockManager);
             RemoveTruck();
             System.out.println("the truck is leaving");
         }

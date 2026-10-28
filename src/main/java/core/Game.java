@@ -65,7 +65,6 @@ public class Game extends javafx.application.Application {
         graphicsContext = canvas.getGraphicsContext2D();
 
 
-
         simulation = new Simulation(this);
         addObject(simulation);
 

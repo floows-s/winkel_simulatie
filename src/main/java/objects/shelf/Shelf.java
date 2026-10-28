@@ -60,7 +60,7 @@ public class Shelf implements Renderable, Updatable {
     }
 
     /// returns type of current shelf
-    /// @return
+    /// @return type of shelf
     public ShelfType getType() {
         return type;
     }

@@ -6,37 +6,37 @@ import core.orientation.Coordinates;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
 import objects.StockManager;
+import objects.customer.Customer;
 import objects.customer.CustomerFactory;
+import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import objects.groceryList.GroceryListFactory;
-import objects.LookupKioskStand.LookupKioskStand;
+import objects.lookupKioskStand.LookupKioskStand;
 import objects.product.Product;
 import objects.product.ProductType;
 import objects.register.Register;
 import objects.graph.*;
 import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
-import objects.shelf.Shelf;
 import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
 import objects.stats.Stats;
 import objects.truck.Truck;
-
-import java.util.ArrayList;
-import java.util.List;
+import utilities.Randomizer;
 
 public class Simulation implements Updatable{
-
     // ==== Variables ====
+
+    // Constants
+    private final int MAX_CUSTOMER_COUNT = 10;
+
     private final Game game;
     public Graph graph;
+    private IntervalTimer customerSpawnTimer = new IntervalTimer(0, this::spawnNewCustomer);
 
-    // keep track how many shelves are filled
     private int woodCount       = 0;
     private int metalCount      = 0;
     private int freezerCount    = 0;
-
-    // TEST for checking out
-    private List<Product> productsList = new ArrayList<>();
+    private int customerCount   = 0;
 
     // Managers
     public ShelfManager shelfManager;
@@ -48,6 +48,8 @@ public class Simulation implements Updatable{
 
     // Objects
     private LookupKioskStand lookupKioskStand;
+    private Register register1;
+    private Register register2;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
@@ -61,15 +63,6 @@ public class Simulation implements Updatable{
     private void setup(){
         // add background to the game as a gameObject
         game.addObject(new BackgroundLoader());
-
-        // TEST PRODUCT LIST FOR REGISTER
-        productsList.add(new Product(ProductType.APPLE));
-        productsList.add(new Product(ProductType.PIZZA));
-        productsList.add(new Product(ProductType.BREAD));
-
-        // create register
-        Register register1 = new Register(590, 531);
-        Register register2 = new Register(738, 531);
 
         // create test text
         FloatingNumber priceTotal   = new FloatingNumber(() ->"money earned = " + String.valueOf(Stats.GetMoneyEarned() + " €"), 1153, 52);
@@ -107,27 +100,27 @@ public class Simulation implements Updatable{
             }
         });
 
-
-        // add the register
-        game.addObject(register1);
-        game.addObject(register2);
         // add the text
         game.addObject(priceTotal);
         game.addObject(productTotal);
-
-        // test if checkout works
-        register1.CheckOut(productsList);
-        register2.CheckOut(productsList);
 
         // Create graph
         GraphData graphData = GraphData.fromJson("/json/graph/graph.json");
 
         graph = new Graph(
                 graphData,
-                new DijkstraCachePathFinderStrategy(false)
+                new DijkstraCachePathFinderStrategy()
         );
 
         game.addObject(graph);
+
+        // create register
+        Vertex register1EndOfQueue = graph.get(VertexID.REGISTER_1_QUEUE_END);
+        Vertex register2EndOfQueue = graph.get(VertexID.REGISTER_2_QUEUE_END);
+        register1 = new Register(738, 531, VertexID.REGISTER_1_QUEUE_START, register1EndOfQueue);
+        register2 = new Register(590, 531, VertexID.REGISTER_2_QUEUE_START, register2EndOfQueue);
+        game.addObject(register1);
+        game.addObject(register2);
 
         // Create factories
         groceryListFactory = new GroceryListFactory(shelfManager);
@@ -147,24 +140,48 @@ public class Simulation implements Updatable{
         game.addObject(truck);
 
         truck.SpawnTruck(stockManager.GetRestockOrder());
+
+
+//        game.addObject(
+//                new Customer(
+//                        graph.get(VertexID.SPAWN_POINT),
+//                        new GroceryList(
+//                                List.of(new GroceryListItem(ProductType.BREAD, null), new GroceryListItem(ProductType.APPLE, null), new GroceryListItem(ProductType.MEAT, null))
+//                        )
+//                )
+//        );
     }
 
+    public void spawnNewCustomer(){
+        if(customerCount >= MAX_CUSTOMER_COUNT) return;
 
-    private IntervalTimer customerSpawnTimer = new IntervalTimer(2000, this::spawnNewCustomer); // TODO: remove, right now its just for demo purposes.
-    public void spawnNewCustomer(){ // TODO: maybe revisit, right now its just for demo purposes.
         log.logInfo("Spawning in new customer!");
-
         game.addObject(
                 customerFactory.create()
         );
+        customerCount++;
     }
+
 
     @Override
     public void update(double delta, long now, Simulation s) {
-        customerSpawnTimer.tick(now); // TODO: remove, right now its just for demo purposes.
+        customerSpawnTimer.tick(now);
     }
 
     public LookupKioskStand getLookupKioskStand() {
         return lookupKioskStand;
+    }
+
+    public Register getRegisterToCheckout(){
+        int register = Randomizer.nextInt(1, 3);
+
+        return register == 1 ? register1 : register2;
+    }
+
+    /// Removes given customer from the game.
+    /// @param c to despawn
+    public void despawnCustomer(Customer c){
+        game.removeObject(c);
+        customerCount--;
     }
 }

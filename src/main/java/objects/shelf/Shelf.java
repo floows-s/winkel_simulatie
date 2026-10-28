@@ -11,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.product.ProductType;
 
+import java.util.Arrays;
+
 public class Shelf implements Renderable, Updatable {
 
     // ==== VARIABLES ====
@@ -63,6 +65,18 @@ public class Shelf implements Renderable, Updatable {
     /// @return type of shelf
     public ShelfType getType() {
         return type;
+    }
+
+    public Product grabProduct(ProductType type){
+        for(int i = 0; i<products.length; i++){
+            Product product = products[i];
+            if(product != null && product.getpType() == type){
+                RemoveProduct(i);
+                return product;
+            }
+        }
+
+        return null;
     }
 
     /// Adds a product to the shelf, if the shelf is full prints error message

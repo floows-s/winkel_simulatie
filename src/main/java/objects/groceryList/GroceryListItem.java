@@ -3,12 +3,12 @@ package objects.groceryList;
 import objects.graph.Vertex.VertexID;
 import objects.product.ProductType;
 
-public record GroceryListItem(ProductType product, VertexID location, boolean hasBeenCheckedOff){
+public record GroceryListItem(ProductType product, VertexID location){
 
     /// Makes a deep-copy of the given {@code GroceryListEntry}
     /// @param g entry to copy from
     public GroceryListItem(GroceryListItem g){
-        this(g.product, g.location, g.hasBeenCheckedOff);
+        this(g.product, g.location);
     }
 
     @Override
@@ -16,7 +16,6 @@ public record GroceryListItem(ProductType product, VertexID location, boolean ha
         return "GroceryListEntry{" +
                 "product=" + product +
                 ", location=" + location +
-                ", hasBeenCheckedOff=" + hasBeenCheckedOff +
                 '}';
     }
 }

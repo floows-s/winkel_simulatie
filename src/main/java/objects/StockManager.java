@@ -19,7 +19,7 @@ public class StockManager {
     private final EnumMap<ProductType, Integer> maxStock =
             new EnumMap<>(ProductType.class);
 
-    private int appleAmount         = 54;
+    private int appleAmount         = 54;   // based on the amount of shelves * 9
     private int breadAmount         = 54;
     private int meatAmount          = 27;
     private int milkAmount          = 27;
@@ -27,7 +27,7 @@ public class StockManager {
     private int ice_screamAmount    = 27;
 
 
-
+    // ==== constructor ====
     public StockManager(){
 
         // set the current stock
@@ -61,7 +61,7 @@ public class StockManager {
         for (ProductType type : maxStock.keySet()) {
 
             // use the current type to receive information on the current stock and max stock amounts
-            int max = maxStock.get(type);
+            int max     = maxStock.get(type);
             int current = stock.getOrDefault(type, 0);
 
             // if the current stock is less then half add it to the order

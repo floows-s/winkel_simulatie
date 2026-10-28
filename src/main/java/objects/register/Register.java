@@ -6,6 +6,7 @@ import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.FloatingText.FloatingNumber;
+import objects.StockManager;
 import objects.movement.Movement;
 import objects.product.Product;
 import objects.stats.Stats;
@@ -23,6 +24,7 @@ public class Register implements Renderable, Updatable {
     float width  = 78;
     float height = 135;
 
+    // create a que of products for easy access
     private final Queue<Product> products = new ArrayDeque<>();
     private Product currentProduct = null;
 
@@ -35,13 +37,13 @@ public class Register implements Renderable, Updatable {
     private int offsetXEndPosition      = 16;       // amount of pixes right from the start position
     private int offsetYEndPosition      = 106;      // amount of pixels down from the start position
 
-    // animation locations
-
-
+    // receive the sprite
     private Image sprite = new Image(getClass()
             .getResource("/images/register/Register.png")
             .toExternalForm()) {
     };
+
+    // ==== FUNCTIONS ====
 
     /// Constructor
     /// @param x coordinate on map
@@ -51,13 +53,15 @@ public class Register implements Renderable, Updatable {
         this.y = y;
     }
 
-    /// Add al items to queue products
+    /// Add all items to queue products
     /// @param items is a list of products contained inside the shopping cart
     public void CheckOut(List<Product> items){
         products.addAll(items);
     }
 
-
+    // ==== Interface renderable ====
+    /// renders all sprites
+    /// @param g is the canvas
     @Override
     public void render(GraphicsContext g) {
         g.drawImage(sprite, x, y, width, height);
@@ -78,6 +82,12 @@ public class Register implements Renderable, Updatable {
         return 0;
     }
 
+    // ==== interface updatable ====
+
+    /// updates the sprites each time a sprite should move
+    /// @param delta    time that has passed
+    /// @param now      time it is now
+    /// @param s        the simulation
     @Override
     public void update(double delta, long now, Simulation s) {
 
@@ -95,6 +105,9 @@ public class Register implements Renderable, Updatable {
         if(movement.update(delta)){
             Stats.IncrementProductSold(1);
             Stats.IncrementMoneyEarned(currentProduct.GetPrice());
+
+            // access the stock manager from within the simulation and alter it
+            s.stockManager.ChangeProductStock(currentProduct.getpType(), -1);
             currentProduct = null;
             System.out.println("current product has been checked out");
         }

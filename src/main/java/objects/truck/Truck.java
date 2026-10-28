@@ -28,20 +28,15 @@ public class Truck implements Renderable, Updatable {
     private double targetY;
 
     // moving
-    private boolean isMoving = false;
-    private Movement movement = new Movement(50);
+    private boolean isMoving    = false;
+    private Movement movement   = new Movement(50);
 
     // width and height of the sprite
-    private double width = 84;
-    private double height = 261;
+    private final double width  = 84;
+    private final double height = 261;
 
     // automatically returns first available box and null when no box is available
     private final Queue<Box> boxes = new ArrayDeque<>();
-
-    // ==== CONSTRUCTOR ====
-    public Truck(){
-
-    }
 
     // ==== FUNCTIONS ====
     /// using the queue system it automatically takes the first box in the queue and if it is null returns null
@@ -56,7 +51,8 @@ public class Truck implements Renderable, Updatable {
         boxes.add(b);
     }
 
-    /// should spawn a truck
+    /// spawns a truck filled with boxes which are filled with products from the order
+    /// @param order a enumMap with product types and the amount needed per product
     public void SpawnTruck(EnumMap<ProductType, Integer> order){
 
         // create the order
@@ -94,13 +90,12 @@ public class Truck implements Renderable, Updatable {
 
     /// removes the truck and changes its appearance
     public void RemoveTruck(){
-        if(boxes.poll() == null){
+        if(boxes.isEmpty()){
             // if there are no more boxes change the sprite and move away
             SetSpriteToEmpty();
             movement.start(23, 64, 23,-300);
             isTruckSpawned = false;
 
-            // move the truck away
         }
     }
 
@@ -116,12 +111,14 @@ public class Truck implements Renderable, Updatable {
     }
 
     // ==== Interface Renderable ====
+
+    /// renders the sprite of the truck based on the location returned by movement
+    /// @param g    the canvas
     @Override
     public void render(GraphicsContext g) {
         if (sprite != null){
             g.drawImage(sprite, movement.getX(), movement.getY(), width, height);
         }
-
     }
 
     @Override
@@ -134,14 +131,22 @@ public class Truck implements Renderable, Updatable {
         return 0;
     }
 
+    // ==== interface updatable ====.
+
+    /// checks if the truck is done moving and if the truck can be removed
+    /// @param delta    time passed
+    /// @param now      time that is now
+    /// @param s        the simulation
     @Override
     public void update(double delta, long now, Simulation s) {
 
+        // check if the animation is done
         if (movement.update(delta)){
             SetSpriteToFull();
             isMoving = false;
         }
 
+        // remove the truck if the truck is completely empty and is there
         if (isMoving == false && isTruckSpawned == true && boxes.isEmpty()){
             RemoveTruck();
             System.out.println("the truck is leaving");

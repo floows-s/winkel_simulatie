@@ -7,7 +7,6 @@ import javafx.scene.text.Font;
 
 import java.util.function.Supplier;
 
-
 public class FloatingNumber implements Renderable {
 
     // ==== Variables =====
@@ -22,6 +21,9 @@ public class FloatingNumber implements Renderable {
         this.y = y;
     }
 
+    // ==== interface renderable ====
+    /// renders the text and sets the font + color
+    /// @param g    the canvas
     @Override
     public void render(GraphicsContext g) {
         g.setFont(new Font("Arial", 10));

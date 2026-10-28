@@ -2,6 +2,7 @@ package objects.movement;
 
 public class Movement {
 
+    // ==== variables ====
     private double x;
     private double y;
     private double targetX;
@@ -14,6 +15,11 @@ public class Movement {
         this.speed = speed;
     }
 
+    /// creates a starting position and an end position
+    /// @param startX   start coordinate x
+    /// @param startY   start coordinate y
+    /// @param endX     end coordinate x
+    /// @param endY     end coordinate y
     public void start(double startX, double startY, double endX, double endY) {
         this.x = startX;
         this.y = startY;
@@ -22,7 +28,9 @@ public class Movement {
         moving = true;
     }
 
-    // Returns true when the movement finishes
+    /// updates each "step" the image takes by using the passed time
+    /// @param delta    passed time
+    /// @return         true if the animation is done aka the time passed - the steps taken is less then the total distance
     public boolean update(double delta) {
 
         if (!moving) return false;

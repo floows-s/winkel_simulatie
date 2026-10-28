@@ -36,10 +36,9 @@ public class Simulation implements Updatable{
     // TEST for checking out
     private List<Product> productsList = new ArrayList<>();
 
-
     // Managers
     public ShelfManager shelfManager;
-    public StockManager stockManager = new StockManager();
+    public final StockManager stockManager = new StockManager();
 
     // Factories
     public GroceryListFactory groceryListFactory;
@@ -47,6 +46,7 @@ public class Simulation implements Updatable{
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
+    // ==== constructor ====
     Simulation(Game game){
         this.game = game;
         setup();
@@ -66,8 +66,8 @@ public class Simulation implements Updatable{
         Register register1 = new Register(590, 531);
         Register register2 = new Register(738, 531);
 
-        // create text test
-        FloatingNumber priceTotal = new FloatingNumber( () ->"money earned = " + String.valueOf(Stats.GetMoneyEarned() + " €"), 1153, 52);
+        // create test text
+        FloatingNumber priceTotal   = new FloatingNumber(() ->"money earned = " + String.valueOf(Stats.GetMoneyEarned() + " €"), 1153, 52);
         FloatingNumber productTotal = new FloatingNumber(()->"products = " + String.valueOf(Stats.GetProductsSold()), 1153, 72);
 
         // Create shelf manager
@@ -79,20 +79,21 @@ public class Simulation implements Updatable{
             ProductType productType = null;
             switch (s.getType()){
 
-                case WOOD -> {
+                case WOOD -> { // load 6 shelves with apples and 6 with bread
                     productType = woodCount < 6 ? ProductType.APPLE : ProductType.BREAD;
                     woodCount ++;
 
                 }
-                case METAL -> {
+                case METAL -> { // load 3 shelves with meat and 3 with milk
                     productType = metalCount < 3 ? ProductType.MEAT : ProductType.MILK;
                     metalCount ++;
 
                 }
-                case COOL -> {
+                case COOL -> {  // load 3 shelves with pizza and 3 shelves with icescream
                     productType = freezerCount < 3 ? ProductType.PIZZA : ProductType.ICE_SCREAM;
                     freezerCount ++;
                 }
+                // dont add anything to storage
                 case STORAGE -> {return;}
             }
 
@@ -101,13 +102,13 @@ public class Simulation implements Updatable{
             }
         });
 
+
         // add the register
         game.addObject(register1);
         game.addObject(register2);
         // add the text
         game.addObject(priceTotal);
         game.addObject(productTotal);
-
 
         // test if checkout works
         register1.CheckOut(productsList);

@@ -18,6 +18,9 @@ import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
 import objects.truck.Truck;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Simulation implements Updatable{
 
     // ==== Variables ====
@@ -28,6 +31,10 @@ public class Simulation implements Updatable{
     private int woodCount       = 0;
     private int metalCount      = 0;
     private int freezerCount    = 0;
+
+    // TEST for checking out
+    private List<Product> productsList = new ArrayList<>();
+
 
     // Managers
     public ShelfManager shelfManager;
@@ -48,6 +55,12 @@ public class Simulation implements Updatable{
     private void setup(){
         // add background to the game as a gameObject
         game.addObject(new BackgroundLoader());
+
+        // TEST PRODUCT LIST FOR REGISTER
+        productsList.add(new Product(ProductType.APPLE));
+        productsList.add(new Product(ProductType.PIZZA));
+        productsList.add(new Product(ProductType.BREAD));
+
 
         // create register
         Register register1 = new Register(590, 531);
@@ -91,6 +104,10 @@ public class Simulation implements Updatable{
         game.addObject(register1);
         game.addObject(register2);
         game.addObject(priceTotal);
+
+
+        // test if checkout works
+        register1.CheckOut(productsList);
 
         // Create graph
         GraphData graphData = GraphData.fromJson("/json/graph/graph.json");

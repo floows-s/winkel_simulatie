@@ -5,6 +5,7 @@ import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import objects.box.Box;
+import objects.movement.Movement;
 import objects.product.Product;
 import objects.product.ProductType;
 import javafx.scene.image.Image;
@@ -28,7 +29,7 @@ public class Truck implements Renderable, Updatable {
 
     // moving
     private boolean isMoving = false;
-    private double speed = 50;
+    private Movement movement = new Movement(50);
 
     // width and height of the sprite
     private double width = 84;
@@ -58,10 +59,6 @@ public class Truck implements Renderable, Updatable {
     /// should spawn a truck
     public void SpawnTruck(EnumMap<ProductType, Integer> order){
 
-        // set the correct sprite
-
-        isTruckSpawned = true;
-
         // create the order
         for(ProductType type : order.keySet()){
             int orderAmount = order.get(type);
@@ -89,8 +86,10 @@ public class Truck implements Renderable, Updatable {
             }   // if not 0 loop
         }   // for loop ends
 
+        isTruckSpawned = true;
         // move the sprite to the correct spot
-        MoveTo(23, 64);
+        movement.start(x,y,23,64);
+        isMoving = true;
     }
 
     /// removes the truck and changes its appearance
@@ -98,7 +97,7 @@ public class Truck implements Renderable, Updatable {
         if(boxes.poll() == null){
             // if there are no more boxes change the sprite and move away
             SetSpriteToEmpty();
-            MoveTo(23,-300);
+            movement.start(23, 64, 23,-300);
             isTruckSpawned = false;
 
             // move the truck away
@@ -116,21 +115,11 @@ public class Truck implements Renderable, Updatable {
         sprite = new Image(getClass().getResource("/images/truck/Truck_Full.png").toExternalForm());
     }
 
-    /// sets the moving variables
-    /// @param x    location to travel to x
-    /// @param y    location to travel to y
-    public void MoveTo(double x, double y){
-        this.targetX = x;
-        this.targetY = y;
-        this.isMoving = true;
-    }
-
-
     // ==== Interface Renderable ====
     @Override
     public void render(GraphicsContext g) {
         if (sprite != null){
-            g.drawImage(sprite, x, y, width, height);
+            g.drawImage(sprite, movement.getX(), movement.getY(), width, height);
         }
 
     }
@@ -148,34 +137,14 @@ public class Truck implements Renderable, Updatable {
     @Override
     public void update(double delta, long now, Simulation s) {
 
-        if (!isMoving) return;
-
-        double dx = targetX - x;
-        double dy = targetY - y;
-
-        // Distance to destination
-        double distance = Math.sqrt(dx * dx + dy * dy);
-
-        // How far to travel this frame
-        double step = speed * delta;
-
-        // Arrived at destination
-        if (distance <= step) {
-            x = targetX;
-            y = targetY;
-            isMoving = false;
-
-            // when destination is reached change sprite
+        if (movement.update(delta)){
             SetSpriteToFull();
-            return;
+            isMoving = false;
         }
 
-        // Move in the direction of the destination
-        x += (dx / distance) * step;
-        y += (dy / distance) * step;
-
-        if (isMoving == false && isTruckSpawned == true && GetBox() == null){
+        if (isMoving == false && isTruckSpawned == true && boxes.isEmpty()){
             RemoveTruck();
+            System.out.println("the truck is leaving");
         }
     }
 }

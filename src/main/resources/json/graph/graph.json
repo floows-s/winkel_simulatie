@@ -75,6 +75,27 @@
         },
         {
           "to": "AISLE_1_START"
+        },
+        {
+          "to": "WALKWAY_TOP_LOOKUP_KIOSK_STAND"
+        }
+      ]
+    },
+    {
+      "id": "WALKWAY_TOP_LOOKUP_KIOSK_STAND",
+      "location": {
+        "x": 695.0,
+        "y": 83
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_TOP_START"
+        },
+        {
+          "to": "LOOKUP_KIOSK_STAND"
+        },
+        {
+          "to": "WALKWAY_TOP_END"
         }
       ]
     },
@@ -90,6 +111,9 @@
         },
         {
           "to": "WALKWAY_AISLE_1"
+        },
+        {
+          "to": "WALKWAY_TOP_LOOKUP_KIOSK_STAND"
         }
       ]
     },
@@ -196,6 +220,20 @@
         },
         {
           "to": "REGISTER_2_QUEUE_END"
+        }
+      ]
+    },
+
+
+    {
+      "id": "LOOKUP_KIOSK_STAND",
+      "location": {
+        "x": 695,
+        "y": 53
+      },
+      "edges": [
+        {
+          "to": "WALKWAY_TOP_LOOKUP_KIOSK_STAND"
         }
       ]
     },

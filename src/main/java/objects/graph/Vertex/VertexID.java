@@ -10,6 +10,7 @@ public enum VertexID {
     // --- WALKWAY (LIGHT GREY TILES) ---
     WALKWAY_TOP_ENTRANCE, // Coupling between the top of the walkway and the entrance
     WALKWAY_TOP_START,
+    WALKWAY_TOP_LOOKUP_KIOSK_STAND, // Coupling between the top of the walkway and the lookup kiosk stand
     WALKWAY_TOP_END,
     WALKWAY_AISLE_1,
     WALKWAY_AISLE_2,
@@ -18,6 +19,9 @@ public enum VertexID {
     WALKWAY_AISLE_4,
     WALKWAY_REGISTERS_QUEUE_END, // Coupling between the walkway and the end of the queue's of the registers
     WALKWAY_EXIT, // Coupling between the walkway and the exit
+
+    // --- LOOKUP KIOSK STAND ----
+    LOOKUP_KIOSK_STAND,
 
     // --- AISLE 1 (WOOD) ---
     AISLE_1_START,

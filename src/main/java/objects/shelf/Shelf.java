@@ -11,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.product.ProductType;
 
+import java.util.Arrays;
+
 public class Shelf implements Renderable, Updatable {
 
     // ==== VARIABLES ====

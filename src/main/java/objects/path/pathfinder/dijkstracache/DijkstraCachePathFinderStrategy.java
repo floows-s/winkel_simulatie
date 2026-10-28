@@ -20,10 +20,6 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
 
     public DijkstraCachePathFinderStrategy(){}
 
-    public DijkstraCachePathFinderStrategy(boolean shouldPrintCacheAfterUpdate){
-        this.shouldPrintCacheAfterUpdate = shouldPrintCacheAfterUpdate;
-    }
-
     /// Calculates the shortest path between two vertices using Dijkstra's algorithm.
     /// <p>
     /// It will hold the calculated shortest path's in a cache so you don't need target worry about repeated calculations.
@@ -115,8 +111,6 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
                     path
             );
         }
-
-        if(shouldPrintCacheAfterUpdate) printCache();
     }
 
     /// Print the current cache to {@code System.out}.
@@ -212,13 +206,5 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
         }
 
         return steps;
-    }
-
-    public boolean getShouldPrintCacheAfterUpdate() {
-        return shouldPrintCacheAfterUpdate;
-    }
-
-    public void setShouldPrintCacheAfterUpdate(boolean shouldPrintCacheAfterUpdate) {
-        this.shouldPrintCacheAfterUpdate = shouldPrintCacheAfterUpdate;
     }
 }

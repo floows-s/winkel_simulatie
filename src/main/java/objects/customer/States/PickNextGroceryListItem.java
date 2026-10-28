@@ -14,22 +14,26 @@ public class PickNextGroceryListItem implements CustomerState {
 
     @Override
     public void update(Customer c, double delta, long now, Simulation s) {
-        GroceryList groceryList = c.getGroceryList();
-        GroceryListItem groceryItem = groceryList.getNext();
-        if(groceryItem == null){
-            log.logInfo("Grocery list done! Removing customer from game.");
-            s.game.removeObject(c);
+        GroceryListItem nextGroceryItem = c.getNextGroceryListItem();
+
+        if(nextGroceryItem == null){
+            if(c.getShoppingCart().amountOfProducts() == 0){
+                c.setState(new ExitStore());
+                return;
+            }
+
+            c.setState(new CheckoutItemsAtRegister());
+            return;
         }
 
-        log.logInfo("Next product to get: [" + groceryItem.product() + "]");
-
+        // Check if product location is known
         CustomerState newState;
-        if(groceryItem.location() == null){
-            newState = new LookupProductAtKiosk(groceryItem.product());
+        if(nextGroceryItem.location() == null){
+            newState = new LookupProductAtKiosk(nextGroceryItem.product());
         }else{
             newState = new GrabProductFromShelf(
-                    groceryItem.product(),
-                    groceryItem.location()
+                    nextGroceryItem.product(),
+                    nextGroceryItem.location()
             );
         }
 

@@ -97,5 +97,6 @@ public enum VertexID {
     REGISTER_2_QUEUE_START,
     REGISTER_2_QUEUE_END,
 
-    EXIT
+    EXIT,
+    DESPAWN_POINT
 }

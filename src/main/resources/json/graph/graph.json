@@ -1108,9 +1108,17 @@
           "to": "WALKWAY_EXIT"
         },
         {
-          "to": "SPAWN_POINT"
+          "to": "DESPAWN_POINT"
         }
       ]
+    },
+
+    {
+      "id": "DESPAWN_POINT",
+      "location": {
+        "x": 1500,
+        "y": 398
+      }
     }
   ]
 }

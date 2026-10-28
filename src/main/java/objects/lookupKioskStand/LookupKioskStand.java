@@ -1,4 +1,4 @@
-package objects.LookupKioskStand;
+package objects.lookupKioskStand;
 
 import core.Renderable;
 import core.orientation.Coordinates;

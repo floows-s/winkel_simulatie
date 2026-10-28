@@ -6,10 +6,8 @@ import objects.graph.Vertex.VertexID;
 import objects.path.Path;
 import objects.shoppingCart.ShoppingCart;
 
-public class GrabbingShoppingCart implements CustomerState {
+public class GrabShoppingCart implements CustomerState {
     Path path = null;
-
-
 
     @Override
     public void update(Customer c, double delta, long now, Simulation s) {

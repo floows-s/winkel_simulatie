@@ -1,7 +1,6 @@
 package objects.groceryList;
 
 import objects.graph.Vertex.VertexID;
-import objects.product.Product;
 import objects.product.ProductType;
 import objects.shelf.ShelfManager;
 import utilities.Randomizer;
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class GroceryListFactory {
     public static final int MAX_AMOUNT_OF_GROCERY_ITEMS = 10;
-    public static final float PERCENTAGE_CHANGE_ON_INCLUDING_PRODUCT_LOCATION = 50;
+    public static final float PERCENTAGE_CHANGE_OF_INCLUDING_PRODUCT_LOCATION = 80;
 
     private ShelfManager shelfManager;
 
@@ -33,7 +32,7 @@ public class GroceryListFactory {
             VertexID location = null;
 
             // Decide if include location
-            boolean includeProductLocation = Randomizer.nextBoolean(PERCENTAGE_CHANGE_ON_INCLUDING_PRODUCT_LOCATION);
+            boolean includeProductLocation = Randomizer.nextBoolean(PERCENTAGE_CHANGE_OF_INCLUDING_PRODUCT_LOCATION);
             if(includeProductLocation){
                 location = shelfManager.getAccessPointOfShelfThatHasProduct(product);
             }
@@ -41,8 +40,7 @@ public class GroceryListFactory {
             // Create item
             GroceryListItem item = new GroceryListItem(
                     product,
-                    location, // Note: the location is randomly included. BUT if no shelf has the product it will still be null.
-                    false
+                    location // Note: the location is randomly included. BUT if no shelf has the product it will still be null.
             );
 
             groceries.add(item);

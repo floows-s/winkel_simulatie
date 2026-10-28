@@ -9,9 +9,9 @@ import core.timer.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.customer.States.CustomerState;
-import objects.customer.States.ExploringStore;
-import objects.customer.States.GrabbingShoppingCart;
 import objects.customer.States.SpawnedIn;
+import objects.groceryList.GroceryListItem;
+import objects.movement.Movement;
 import objects.product.Product;
 import objects.shoppingCart.ShoppingCart;
 import objects.graph.Graph;
@@ -22,10 +22,11 @@ import objects.graph.Vertex.VertexID;
 import utilities.ImageLoader;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Customer implements Renderable, Updatable {
     // Constants
-    private final int WALKING_SPEED = 60;
+    private final int WALKING_SPEED = 200;
     private final int WALKING_FRAME_TIME_MS = 100;
 
     // Fields
@@ -37,6 +38,7 @@ public class Customer implements Renderable, Updatable {
 
     // Images
     private static Image idleSprite = null;
+    private static Image idleShoppingCartSprite = null;
     private static List<Image> walkingFrames = null;
     private static List<Image> walkingShoppingCartFrames = null;
 
@@ -77,6 +79,10 @@ public class Customer implements Renderable, Updatable {
         // Sprites
         if(idleSprite == null){
             idleSprite = new Image(getClass().getResource(baseFolder + "idle.png").toExternalForm());
+        }
+
+        if(idleShoppingCartSprite == null){
+            idleShoppingCartSprite = new Image(getClass().getResource(baseFolder + "idle_shopping_cart.png").toExternalForm());
         }
 
         // Animations (frames)
@@ -134,43 +140,16 @@ public class Customer implements Renderable, Updatable {
             path.next();
         }
 
-        Coordinates p = v.location();
-
-        // Calculate delta and distance
-        float dx = (p.x() - x);
-        float dy = (p.y() - y);
-        double distance = Math.sqrt(dx * dx + dy * dy);
-
-        // If close enough to target -> snap
-        double snappingThreshold = 1;
-        if(distance < snappingThreshold){
-            x = p.x();
-            y = p.y();
+        // Move in the direction of the current step
+        boolean atDestination = moveTo(v.location(), delta, now);
+        if(atDestination){
             currentVertexID = currentStep;
 
-            VertexID nextStep = path.next();
-            if(nextStep == null){
-                return true;
-            }
+            if(path.isFinished()) return true;
 
-            return false;
+            // Advance to next step in path
+            path.next();
         }
-
-        double dirX = dx / distance;
-        double dirY = dy / distance;
-
-        x += dirX * WALKING_SPEED * delta;
-        y += dirY * WALKING_SPEED * delta;
-
-        // Determine and set current facing direction
-        if(dirX > 0){
-            direction = Direction.EAST;
-        }else{
-            direction = Direction.WEST;
-        }
-
-        // Update sprite
-        handleWalkingAnimation(now);
 
         return false;
     }
@@ -182,10 +161,6 @@ public class Customer implements Renderable, Updatable {
         }else{
             sprite = walkingAnimation.getFrame(now);
         }
-    }
-
-    public boolean addProductToShoppingCart(Product p){
-        return shoppingCart.add(p);
     }
 
     // Render
@@ -249,15 +224,108 @@ public class Customer implements Renderable, Updatable {
         return currentVertexID;
     }
 
+    public void setCurrentVertexID(VertexID value){
+        currentVertexID = value;
+    }
+
+    // --- Grocery list ---
     public GroceryList getGroceryList() {
         return new GroceryList(groceryList);
     }
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart; // TODO: copy?
+    public GroceryListItem getNextGroceryListItem(){
+        GroceryListItem item = groceryList.getNext();
+        return item == null ? null : new GroceryListItem(item);
     }
 
+
+    public void setSpriteToIdle(){
+        if(hasShoppingCart()){
+            sprite = idleShoppingCartSprite;
+        }else{
+            sprite = idleSprite;
+        }
+    }
+
+
+    // --- Shopping cart ---
     public boolean hasShoppingCart(){
         return shoppingCart != null;
+    }
+
+    public boolean addToCart(Product p){
+        if(!hasShoppingCart()){
+            throw new IllegalStateException("Customer doesn't have shopping cart.");
+        }
+
+        return shoppingCart.add(p);
+    }
+
+    public List<Product> takeProductsOutOfCart(){
+        if(!hasShoppingCart()){
+            throw new IllegalStateException("Customer doesn't have shopping cart.");
+        }
+
+        return shoppingCart.takeOutAllProducts();
+    }
+
+
+    /// Returns a copy of this customer's shopping cart.
+    /// <p>The returned cart is created via the {@code ShoppingCart} copy constructor.
+    /// @return a copy of the cart, or {@code null} if this customer has no cart
+    public ShoppingCart getShoppingCart(){
+        if(hasShoppingCart()){
+            return new ShoppingCart(shoppingCart);
+        }
+
+        return null;
+    }
+
+    /// Sets this customer's shopping cart.
+    /// <p>
+    /// Stores a copy of the given cart, created via the {@code ShoppingCart} copy constructor.
+    /// @param shoppingCart the cart to copy and assign to this customer
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = new ShoppingCart(shoppingCart);
+    }
+
+    /// Moves this customer toward the given location.
+    /// @param location the target coordinates
+    /// @param delta the elapsed time between frames
+    /// @return {@code true} if the location was reached, {@code false} otherwise
+    public boolean moveTo(Coordinates location, double delta, long now){
+        if(x == location.x() && y == location.y()) return true;
+
+        // Calculate delta and distance
+        float dx = (location.x() - x);
+        float dy = (location.y() - y);
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        // If close enough to target -> snap
+        double snappingThreshold = 1;
+        if(distance < snappingThreshold){
+            x = location.x();
+            y = location.y();
+
+            return true;
+        }
+
+        double dirX = dx / distance;
+        double dirY = dy / distance;
+
+        x += dirX * WALKING_SPEED * delta;
+        y += dirY * WALKING_SPEED * delta;
+
+        // Determine and set current facing direction
+        if(dirX > 0){
+            direction = Direction.EAST;
+        }else{
+            direction = Direction.WEST;
+        }
+
+        // Update sprite
+        handleWalkingAnimation(now);
+
+        return false;
     }
 }

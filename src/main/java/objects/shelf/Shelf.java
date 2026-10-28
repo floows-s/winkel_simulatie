@@ -1,7 +1,9 @@
 package objects.shelf;
 
+import core.ShelfItem;
 import core.logger.Logger;
 import core.logger.TagLogger;
+import objects.box.Box;
 import objects.graph.Vertex.VertexID;
 import objects.product.Product;
 import core.Renderable;
@@ -25,7 +27,8 @@ public class Shelf implements Renderable, Updatable {
     private final int height = 80;
 
     // list items per shelf
-    private final Product[] products = new Product[9];
+    public final int MAX_ITEM_AMOUNT = 9;
+    private final ShelfItem[] shelfItems = new ShelfItem[MAX_ITEM_AMOUNT];
 
     // using a type per shelf
     public enum ShelfType {
@@ -66,37 +69,60 @@ public class Shelf implements Renderable, Updatable {
     }
 
     public Product grabProduct(ProductType type){
-        for(int i = 0; i<products.length; i++){
-            Product product = products[i];
-            if(product != null && product.getpType() == type){
-                RemoveProduct(i);
-                return product;
+        for(int i = 0; i< shelfItems.length; i++){
+            ShelfItem item = shelfItems[i];
+            if(item == null) continue;
+
+            if(item instanceof Product p){
+
+                if(p != null && p.getpType() == type){
+                    removeItem(i);
+                    return p;
+                }
             }
         }
 
         return null;
     }
 
-    /// Adds a product to the shelf, if the shelf is full prints error message
-    /// @param p is the product that needs to be added
-    public void AddProduct(Product p){
-        for(int i = 0; i < products.length; i++){
-            if (products[i] == null && type == p.getType()){
-                products[i] = p;
+    /// Adds a item to the shelf, if the shelf is full prints error message
+    /// @param item is the item that needs to be added
+    public void addItem(ShelfItem item){
+        if(isFull()){
+            log.logWarning("Could not add item, shelf is full.");
+            return;
+        }
+
+        if(item instanceof Product p){
+            if(p.getType() != getType()){
+                log.logWarning("Could not add product, type does not match");
                 return;
             }
         }
 
-        log.logWarning("Could not add sprite, either space is full or type does not match");
+        if(item instanceof Box b){
+            if(getType() != ShelfType.STORAGE){
+                log.logWarning("Could not add box, shelf is not of type store");
+                return;
+            }
+        }
+
+        for(int i = 0; i < shelfItems.length; i++){
+            if (shelfItems[i] == null){
+                shelfItems[i] = item;
+                return;
+            }
+        }
+
     }
 
     /// removes a product from the list products and returns said product
     /// TODO needs to remove the current sprite
     /// @param i is the location of the current product in the shelf starting at 0
-    public Product RemoveProduct(int i){
-        if(products[i] != null){
-            products[i] = null;
-            return products[i];
+    public ShelfItem removeItem(int i){
+        if(shelfItems[i] != null){
+            shelfItems[i] = null;
+            return shelfItems[i];
         }
         else{
             log.logWarning("Failed to remove a product. Location is already empty.");
@@ -112,10 +138,10 @@ public class Shelf implements Renderable, Updatable {
         // Draw shelf first
         g.drawImage(sprite, x, y, width, height);
 
-        for (int i = 0; i < products.length; i++) {
+        for (int i = 0; i < shelfItems.length; i++) {
 
             // Continue rendering sprites even though one is empty
-            if (products[i] == null) {
+            if (shelfItems[i] == null) {
                 continue;
             }
             float resizeFactorX = width / 64;
@@ -136,7 +162,7 @@ public class Shelf implements Renderable, Updatable {
             int productY = startLocationY + (row * moveDownY);
 
             g.drawImage(
-                    products[i].GetSprite(),
+                    shelfItems[i].GetSprite(),
                     productX,
                     productY,
                     scale,
@@ -155,15 +181,58 @@ public class Shelf implements Renderable, Updatable {
     }
 
     public boolean hasProduct(ProductType name){
-        for(Product p : products){
-            if(p == null) continue;
-
-            if(p.getpType() == name){
-                return true;
+        for(ShelfItem item : shelfItems){
+            if(item == null) continue;
+            
+            if(item instanceof Product p){
+                if(p.getpType() == name){
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    public boolean hasBox(){
+        for(ShelfItem item : shelfItems){
+            if(item == null) continue;
+            if(item instanceof Box) return true;
+        }
+
+        return false;
+    }
+
+    /// @return first encountered box, or null if there is no box
+    public Box grabBox(){
+        for(int i = 0; i<shelfItems.length; i++){
+            ShelfItem item = shelfItems[i];
+            if(item == null) continue;
+
+            if(item instanceof Box b){
+                return b;
+            }
+
+            removeItem(i);
+        }
+
+        return null;
+    }
+
+    /// Amount of items on shelf
+    /// @return Amount of items on shelf
+    public int amountOfItems(){
+        int counter = 0;
+
+        for(ShelfItem i : shelfItems){
+            if(i != null) counter++;
+        }
+
+        return counter;
+    }
+
+    public boolean isFull(){
+        return amountOfItems() >= MAX_ITEM_AMOUNT;
     }
 
 

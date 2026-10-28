@@ -57,7 +57,7 @@ public class GrabProductFromShelf implements CustomerState{
                 log.logWarning("Couldn't add item to shopping cart. It is full. Putting item back on shelf and checking out at register.");
 
                 // Put product back on shelf
-                shelf.AddProduct(product);
+                shelf.addItem(product);
                 c.setState(new CheckoutItemsAtRegister());
                 return;
             }

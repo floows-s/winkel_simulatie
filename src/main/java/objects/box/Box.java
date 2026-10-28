@@ -4,6 +4,10 @@ import javafx.scene.image.Image;
 import objects.product.Product;
 import objects.shelf.Shelf;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Box implements core.ShelfItem {
 
     // ==== VARIABLES ====
@@ -17,6 +21,12 @@ public class Box implements core.ShelfItem {
     /// requires an array of type products
     public Box() {
 
+    }
+
+    public Box(Box box){
+        this.products = Arrays.stream(box.products)
+                .map(p -> new Product(p.getpType()))
+                .toArray(Product[]::new);
     }
 
     // ==== FUNCTIONS ====

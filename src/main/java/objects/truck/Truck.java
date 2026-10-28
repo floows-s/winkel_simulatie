@@ -153,7 +153,7 @@ public class Truck implements Renderable, Updatable {
     }
 
     public boolean isReadyToUnload(){
-        return !isMoving && isTruckSpawned  && boxes.isEmpty();
+        return !isMoving && isTruckSpawned  && !boxes.isEmpty();
     }
 
     // ==== interface updatable ====.

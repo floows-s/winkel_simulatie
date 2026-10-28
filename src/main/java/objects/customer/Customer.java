@@ -49,7 +49,7 @@ public class Customer implements Renderable, Updatable {
 
     private Image sprite;
     private Direction direction = Direction.EAST;
-    private VertexID currentVertexID = VertexID.SPAWN_POINT;
+    private VertexID currentVertexID;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 

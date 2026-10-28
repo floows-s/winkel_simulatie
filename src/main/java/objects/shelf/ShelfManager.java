@@ -111,12 +111,30 @@ public class ShelfManager {
         return null;
     }
 
+    /// Finds the access point of a storage shelf that holds a box.
+    /// @return the access point of a storage shelf with a box, or {@code null} if there is none
     public VertexID getAccessPointOfStorageShelfWithBox(){
         for(Shelf s : shelves.values()){
             if(s.getType() != Shelf.ShelfType.STORAGE) continue;
 
-            if(s.hasProduct())
+            if(s.hasBox()){
+                return s.getAccessPoint();
+            }
         }
+
+        return null;
+    }
+
+    public VertexID getAccessPointOfShelfWithRoomForBox(){
+        for(Shelf s : shelves.values()){
+            if(s.getType() != Shelf.ShelfType.STORAGE) continue;
+
+            if(s.amountOfItems() < s.MAX_ITEM_AMOUNT){
+                return s.getAccessPoint();
+            }
+        }
+
+        return null;
     }
 
     /// Execute an action on every shelf.

@@ -20,6 +20,7 @@ import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
 import objects.stats.Stats;
+import objects.stocker.Stocker;
 import objects.truck.Truck;
 import utilities.Randomizer;
 
@@ -51,6 +52,7 @@ public class Simulation implements Updatable{
     private Register register1;
     private Register register2;
     private Truck truck;
+    private Stocker stocker;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
@@ -97,7 +99,7 @@ public class Simulation implements Updatable{
             }
 
             for(int i = 0; i < 9; i ++){
-                s.AddProduct(new Product(productType));
+                s.addItem(new Product(productType));
             }
         });
 
@@ -136,13 +138,17 @@ public class Simulation implements Updatable{
 
         // add stock manager and remove stock
         stockManager.ChangeProductStock(ProductType.APPLE, -40);
+        stockManager.ChangeProductStock(ProductType.BREAD, -40);
+
 
         // checks if something is lower than half of the stock if so spawn a truck
         truck = new Truck();
         game.addObject(truck);
         truck.SpawnTruck(stockManager.GetRestockOrder());
 
-
+        // Create stocker
+        stocker = new Stocker(graph.get(VertexID.STOCKROOM_MIDDLE));
+        game.addObject(stocker);
 //        game.addObject(
 //                new Customer(
 //                        graph.get(VertexID.SPAWN_POINT),

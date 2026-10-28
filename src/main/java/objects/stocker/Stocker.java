@@ -16,6 +16,7 @@ import objects.graph.Graph;
 import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import objects.path.Path;
+import objects.stocker.states.DecideNextTask;
 import objects.stocker.states.StockerState;
 import utilities.ImageLoader;
 
@@ -41,12 +42,11 @@ public class Stocker implements Renderable, Updatable {
     private AnimationTimer walkingBoxAnimation;
 
     // State variables
-    private StockerState state; //= ; TODO
+    private StockerState state = new DecideNextTask();
 
     private Image sprite;
     private Direction direction = Direction.EAST;
-    private VertexID currentVertexID; //TODO: = VertexID.SPAWN_POINT;
-
+    private VertexID currentVertexID;
     // Objects
     Box heldBox = null;
 
@@ -270,4 +270,16 @@ public class Stocker implements Renderable, Updatable {
             sprite = idleSprite;
         }
     }
+
+    public void holdBox(Box box) {
+        this.heldBox = box;
+    }
+
+    public Box removeBox(){
+        Box box = this.heldBox;
+        this.heldBox = null;
+
+        return box;
+    }
+
 }

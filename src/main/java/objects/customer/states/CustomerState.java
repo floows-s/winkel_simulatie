@@ -1,4 +1,4 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import objects.customer.Customer;

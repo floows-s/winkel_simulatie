@@ -1,11 +1,10 @@
 package objects.box;
 
-import core.ShelfItem;
 import javafx.scene.image.Image;
 import objects.product.Product;
 import objects.shelf.Shelf;
 
-public class Box implements ShelfItem {
+public class Box implements core.ShelfItem {
 
     // ==== VARIABLES ====
     public final int capacity = 30;

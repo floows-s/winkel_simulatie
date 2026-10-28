@@ -1,6 +1,5 @@
 package objects;
 
-import objects.product.Product;
 import objects.product.ProductType;
 
 import java.util.EnumMap;
@@ -48,7 +47,7 @@ public class StockManager {
     public void ChangeProductStock(ProductType pType, int amount){
         // add amount of product to stock (can remove products by using negative numbers)
         stock.merge(pType, amount, Integer::sum);
-}
+    }
 
     /// Checks on product type both enum maps stock and max stock and uses this to check if more than half of the products are sold, if so adds this to a new enum map
     /// @return an enum map containing the amount of products that need to get restocked

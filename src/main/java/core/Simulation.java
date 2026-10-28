@@ -30,7 +30,7 @@ public class Simulation implements Updatable{
     private final int MAX_CUSTOMER_COUNT = 10;
 
     private final Game game;
-    public Graph graph;
+    private Graph graph;
     private IntervalTimer customerSpawnTimer = new IntervalTimer(0, this::spawnNewCustomer);
 
     private int woodCount       = 0;
@@ -39,17 +39,18 @@ public class Simulation implements Updatable{
     private int customerCount   = 0;
 
     // Managers
-    public ShelfManager shelfManager;
-    public final StockManager stockManager = new StockManager();
+    private ShelfManager shelfManager;
+    private final StockManager stockManager = new StockManager();
 
     // Factories
-    public GroceryListFactory groceryListFactory;
-    public CustomerFactory customerFactory;
+    private GroceryListFactory groceryListFactory;
+    private CustomerFactory customerFactory;
 
     // Objects
     private LookupKioskStand lookupKioskStand;
     private Register register1;
     private Register register2;
+    private Truck truck;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
@@ -135,10 +136,10 @@ public class Simulation implements Updatable{
 
         // add stock manager and remove stock
         stockManager.ChangeProductStock(ProductType.APPLE, -40);
-        // checks if something is lower than half of the stock if so spawn a truck
-        Truck truck = new Truck();
-        game.addObject(truck);
 
+        // checks if something is lower than half of the stock if so spawn a truck
+        truck = new Truck();
+        game.addObject(truck);
         truck.SpawnTruck(stockManager.GetRestockOrder());
 
 
@@ -183,5 +184,21 @@ public class Simulation implements Updatable{
     public void despawnCustomer(Customer c){
         game.removeObject(c);
         customerCount--;
+    }
+
+    public StockManager getStockManager() {
+        return stockManager;
+    }
+
+    public ShelfManager getShelfManager() {
+        return shelfManager;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public Truck getTruck() {
+        return truck;
     }
 }

@@ -1,4 +1,4 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import objects.customer.Customer;
@@ -13,10 +13,10 @@ public class GrabShoppingCart implements CustomerState {
     public void update(Customer c, double delta, long now, Simulation s) {
         // If path has not been set
         if(path == null){
-            path = s.graph.getShortestPath(c.getCurrentVertexID(), VertexID.SHOPPING_CART_PICKUP);
+            path = s.getGraph().getShortestPath(c.getCurrentVertexID(), VertexID.SHOPPING_CART_PICKUP);
         }
 
-        if(c.followPath(path, s.graph, delta, now)){
+        if(c.followPath(path, s.getGraph(), delta, now)){
             // If done following path -> customer grab shopping cart
             c.setShoppingCart(new ShoppingCart());
 

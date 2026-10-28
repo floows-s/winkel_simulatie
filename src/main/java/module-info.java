@@ -8,12 +8,13 @@ module com.example.winkel_simulatie {
     requires org.junit.jupiter.api;
 
 
-    opens core to javafx.fxml;
     exports core;
 
-    opens objects.shelf to com.google.gson;
     opens objects.graph to com.google.gson, org.junit.platform.commons;
     opens objects.graph.Vertex to com.google.gson;
     exports core.orientation;
     opens core.orientation to javafx.fxml;
+    exports objects.shelf;
+    opens objects.shelf to com.google.gson, javafx.fxml;
+    opens core to com.google.gson, javafx.fxml;
 }

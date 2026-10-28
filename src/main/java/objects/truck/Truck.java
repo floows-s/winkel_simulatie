@@ -152,6 +152,10 @@ public class Truck implements Renderable, Updatable {
         return 0;
     }
 
+    public boolean isReadyToUnload(){
+        return !isMoving && isTruckSpawned  && boxes.isEmpty();
+    }
+
     // ==== interface updatable ====.
 
     /// checks if the truck is done moving and if the truck can be removed
@@ -169,7 +173,7 @@ public class Truck implements Renderable, Updatable {
 
         // remove the truck if the truck is completely empty and is there
         if (isMoving == false && isTruckSpawned == true && boxes.isEmpty()){
-            ReplenishStock(s.stockManager);
+            ReplenishStock(s.getStockManager());
             RemoveTruck();
             System.out.println("the truck is leaving");
         }

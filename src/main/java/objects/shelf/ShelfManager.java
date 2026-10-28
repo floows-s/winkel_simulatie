@@ -84,7 +84,7 @@ public class ShelfManager {
     /// Gets the shelf that correspond with the given VertexID.
     /// @param accessPoint of the shelf to retrief.
     /// @return The shelf that corresponds with the given {@code accessPoint}, or null if non is found
-    public Shelf getShelf(VertexID accessPoint){
+    public Shelf get(VertexID accessPoint){
         Shelf foundShelf = shelves.get(accessPoint);
 
         if(foundShelf == null){
@@ -111,9 +111,27 @@ public class ShelfManager {
         return null;
     }
 
+    public VertexID getAccessPointOfStorageShelfWithBox(){
+        for(Shelf s : shelves.values()){
+            if(s.getType() != Shelf.ShelfType.STORAGE) continue;
+
+            if(s.hasProduct())
+        }
+    }
+
     /// Execute an action on every shelf.
     /// @param action the action to be executed
     public void forEach(Consumer<Shelf> action){
         shelves.forEach((_, shelf) -> action.accept(shelf));
+    }
+
+    /// Execute an action on every shelf of a certain type.
+    /// @param action the action to be executed
+    public void forEach(Shelf.ShelfType type, Consumer<Shelf> action){
+        shelves.forEach((_, shelf) -> {
+            if(shelf.getType() == type) {
+                action.accept(shelf);
+            }
+        });
     }
 }

@@ -3,7 +3,6 @@ package objects.register;
 import core.Renderable;
 import core.Simulation;
 import core.Updatable;
-import core.orientation.Coordinates;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.customer.Customer;
@@ -143,7 +142,7 @@ public class Register implements Renderable, Updatable {
             Stats.IncrementMoneyEarned(currentProduct.GetPrice());
 
             // access the stock manager from within the simulation and alter it
-            s.stockManager.ChangeProductStock(currentProduct.getpType(), -1);
+            s.getStockManager().ChangeProductStock(currentProduct.getpType(), -1);
             currentProduct = null;
             System.out.println("current product has been checked out");
         }

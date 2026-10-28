@@ -1,12 +1,10 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import core.logger.Logger;
 import core.logger.TagLogger;
 import objects.customer.Customer;
-import objects.groceryList.GroceryList;
 import objects.groceryList.GroceryListItem;
-import objects.product.ProductType;
 
 public class PickNextGroceryListItem implements CustomerState {
 

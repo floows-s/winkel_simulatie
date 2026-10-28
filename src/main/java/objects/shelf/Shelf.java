@@ -11,8 +11,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.product.ProductType;
 
-import java.util.Arrays;
-
 public class Shelf implements Renderable, Updatable {
 
     // ==== VARIABLES ====
@@ -26,7 +24,7 @@ public class Shelf implements Renderable, Updatable {
     private final int width = 64;
     private final int height = 80;
 
-    // list products per shelf
+    // list items per shelf
     private final Product[] products = new Product[9];
 
     // using a type per shelf

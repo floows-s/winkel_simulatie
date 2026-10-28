@@ -8,10 +8,9 @@ import core.orientation.Direction;
 import core.timer.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import objects.customer.States.CustomerState;
-import objects.customer.States.SpawnedIn;
+import objects.customer.states.CustomerState;
+import objects.customer.states.SpawnedIn;
 import objects.groceryList.GroceryListItem;
-import objects.movement.Movement;
 import objects.product.Product;
 import objects.shoppingCart.ShoppingCart;
 import objects.graph.Graph;
@@ -22,7 +21,6 @@ import objects.graph.Vertex.VertexID;
 import utilities.ImageLoader;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Customer implements Renderable, Updatable {
     // Constants

@@ -6,7 +6,7 @@ import objects.product.ProductType;
 
 import java.util.EnumMap;
 
-public class StockManager implements Updatable {
+public class StockManager {
     // 12 shelves wood      -- 54 apples | 54 Bread
     //  6 shelves cool      -- 27 meat   | 27 milk
     //  6 shelves freeze    -- 27 pizza  | 27 ice_scream
@@ -66,18 +66,10 @@ public class StockManager implements Updatable {
             int current = stock.getOrDefault(type, 0);
 
             // if the current stock is less then half add it to the order
-            if (current * 2 <= max) {
+            if (current * 1.2  <= max) {
                 order.put(type, max - current);
             }
         }
         return order;
-    }
-
-
-    @Override
-    public void update(double delta, long now, Simulation s) {
-        if(!s.getTruck().isReadyToUnload() && !s.getTruck().isMoving()){
-            s.getTruck().SpawnTruck(GetRestockOrder());
-        }
     }
 }

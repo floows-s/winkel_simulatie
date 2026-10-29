@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Stocker implements Renderable, Updatable {
     // Constants
-    private final int WALKING_SPEED = 1000;
+    private final int WALKING_SPEED = 120;
     private final int WALKING_FRAME_TIME_MS = 100;
 
     // Fields

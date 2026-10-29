@@ -59,6 +59,9 @@ public class Truck implements Renderable, Updatable {
     /// spawns a truck filled with boxes which are filled with products from the order
     /// @param order a enumMap with product types and the amount needed per product
     public void SpawnTruck(EnumMap<ProductType, Integer> order){
+        if(isTruckSpawned) return;
+
+        if(order.isEmpty()) return;
 
         // save a copy to use for restocking
         this.restockOrder = new EnumMap<>(order);
@@ -182,6 +185,10 @@ public class Truck implements Renderable, Updatable {
             RemoveTruck();
             System.out.println("the truck is leaving");
         }
+    }
+
+    public boolean isTruckSpawned() {
+        return isTruckSpawned;
     }
 }
 

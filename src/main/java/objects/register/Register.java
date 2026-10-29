@@ -5,12 +5,14 @@ import core.Simulation;
 import core.Updatable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import objects.StockManager;
 import objects.customer.Customer;
 import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import objects.movement.Movement;
 import objects.product.Product;
 import objects.stats.Stats;
+import objects.truck.Truck;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -111,6 +113,10 @@ public class Register implements Renderable, Updatable {
     /// @param s        the simulation
     @Override
     public void update(double delta, long now, Simulation s) {
+        if(Stats.GetProductsSold() % 10 == 0){
+            handleTruckSpawning(s.getTruck(), s.getStockManager());
+        }
+
         if (currentProduct == null){
             currentProduct = products.poll();
 
@@ -145,6 +151,12 @@ public class Register implements Renderable, Updatable {
             s.getStockManager().ChangeProductStock(currentProduct.getpType(), -1);
             currentProduct = null;
             System.out.println("current product has been checked out");
+        }
+    }
+
+    private void handleTruckSpawning(Truck t, StockManager stockManager){
+        if(!t.isTruckSpawned()){
+            t.SpawnTruck(stockManager.GetRestockOrder());
         }
     }
 

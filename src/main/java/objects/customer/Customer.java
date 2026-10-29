@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Customer implements Renderable, Updatable {
     // Constants
-    private final int WALKING_SPEED = 300;
+    private final int WALKING_SPEED = 80;
     private final int WALKING_FRAME_TIME_MS = 100;
 
     // Fields

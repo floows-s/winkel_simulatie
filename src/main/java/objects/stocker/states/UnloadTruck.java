@@ -9,7 +9,6 @@ import objects.path.Path;
 import objects.shelf.Shelf;
 import objects.stocker.Stocker;
 import objects.truck.Truck;
-import objects.graph.Vertex.VertexID;
 
 public class UnloadTruck implements StockerState{
     Path pathToLoadingDock = null;
@@ -34,11 +33,13 @@ public class UnloadTruck implements StockerState{
 
         // If holding box -> put on shelf
         if(st.isHoldingBox()){
+
             if(st.getCurrentVertexID() == shelfAccessPoint){
                 putBoxOnShelf(st, s, delta, now);
 
                 // Continue to unload truck
                 st.setState(new UnloadTruck());
+                return;
             }
 
             walkToShelf(st, s, delta, now);

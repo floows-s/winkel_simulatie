@@ -30,7 +30,8 @@ public class Truck implements Renderable, Updatable {
 
     // moving
     private boolean isMoving    = false;
-    private Movement movement   = new Movement(50);
+    private boolean isLeaving   = false;
+    private Movement movement   = new Movement(x, y,50);
 
     // width and height of the sprite
     private final double width  = 84;
@@ -59,7 +60,7 @@ public class Truck implements Renderable, Updatable {
     /// spawns a truck filled with boxes which are filled with products from the order
     /// @param order a enumMap with product types and the amount needed per product
     public void SpawnTruck(EnumMap<ProductType, Integer> order){
-        if(isTruckSpawned) return;
+        if(isTruckSpawned || isLeaving) return;
 
         if(order.isEmpty()) return;
 
@@ -103,9 +104,10 @@ public class Truck implements Renderable, Updatable {
         if(boxes.isEmpty()){
             // if there are no more boxes change the sprite and move away
             SetSpriteToEmpty();
-            movement.start(23, 64, 23,-300);
+            movement.start(23, 64, 23, -300);
             isTruckSpawned = false;
-
+            isLeaving = true;
+            isMoving = true;
         }
     }
 
@@ -175,8 +177,15 @@ public class Truck implements Renderable, Updatable {
 
         // check if the animation is done
         if (movement.update(delta)){
-            SetSpriteToFull();
             isMoving = false;
+
+            if (isLeaving){
+                // the truck has driven off screen, a new one may spawn now
+                isLeaving = false;
+            } else {
+                // the truck has arrived
+                SetSpriteToFull();
+            }
         }
 
         // remove the truck if the truck is completely empty and is there

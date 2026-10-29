@@ -2,6 +2,7 @@ package objects.box;
 
 import javafx.scene.image.Image;
 import objects.product.Product;
+import objects.product.ProductType;
 import objects.shelf.Shelf;
 
 import java.lang.reflect.Array;
@@ -20,13 +21,6 @@ public class Box implements core.ShelfItem {
     /// creates a box
     /// requires an array of type products
     public Box() {
-
-    }
-
-    public Box(Box box){
-        this.products = Arrays.stream(box.products)
-                .map(p -> new Product(p.getpType()))
-                .toArray(Product[]::new);
     }
 
     // ==== FUNCTIONS ====
@@ -40,28 +34,36 @@ public class Box implements core.ShelfItem {
     /// @return the first item in the box that is not null
     public Product GetProduct(){
         for(int i = 0; i < products.length; i ++){
-            if (products[i] != null) return products[i];
+            if (products[i] == null) continue;
+
+            Product p = new Product(products[i]);
+            products[i] = null;
+
+            return p;
         }
+
+        return null;
+    }
+
+    /// Looks at the first product in the box WITHOUT removing it.
+    /// @return the type of the first product, or null if the box is empty
+    public ProductType getProductType(){
+        for(Product p : products){
+            if(p != null) return p.getpType();
+        }
+
         return null;
     }
 
     /// adds a product if there is space
     /// @param p product
     public void AddProduct(Product p, int amount){
-        if (amount <= 0){
-            // Cannot be zero
-        }
-        else
-        {
-            for(Product pro: products){
-                if(pro == null){
-                    pro = p;
-                    amount =- 1;
-                    if(amount <= 0) break;
-                }
+        for (int i = 0; i < products.length && amount > 0; i++){
+            if (products[i] == null){
+                products[i] = p;
+                amount--;
             }
         }
-
     }
 
 

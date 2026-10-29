@@ -13,6 +13,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import objects.product.ProductType;
 
+import java.util.function.Predicate;
+
 public class Shelf implements Renderable, Updatable {
 
     // ==== VARIABLES ====
@@ -85,35 +87,60 @@ public class Shelf implements Renderable, Updatable {
         return null;
     }
 
+    /// @return true if the shelf holds a box that passes the given filter
+    public boolean hasBoxMatching(Predicate<Box> filter){
+        for(ShelfItem item : shelfItems){
+            if(item instanceof Box b && filter.test(b)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// Removes and returns the first box that passes the given filter.
+    /// @return the box, or null if no box matches
+    public Box grabBoxMatching(Predicate<Box> filter){
+        for(int i = 0; i < shelfItems.length; i++){
+            if(shelfItems[i] instanceof Box b && filter.test(b)){
+                removeItem(i);
+                return b;
+            }
+        }
+
+        return null;
+    }
+
     /// Adds a item to the shelf, if the shelf is full prints error message
     /// @param item is the item that needs to be added
-    public void addItem(ShelfItem item){
+    public boolean addItem(ShelfItem item){
         if(isFull()){
             log.logWarning("Could not add item, shelf is full.");
-            return;
+            return false;
         }
 
         if(item instanceof Product p){
             if(p.getType() != getType()){
                 log.logWarning("Could not add product, type does not match");
-                return;
+                return false;
             }
         }
 
         if(item instanceof Box b){
             if(getType() != ShelfType.STORAGE){
                 log.logWarning("Could not add box, shelf is not of type store");
-                return;
+                return false;
             }
         }
 
         for(int i = 0; i < shelfItems.length; i++){
             if (shelfItems[i] == null){
                 shelfItems[i] = item;
-                return;
+                return true;
             }
         }
 
+        return false;
     }
 
     /// removes a product from the list products and returns said product
@@ -210,10 +237,9 @@ public class Shelf implements Renderable, Updatable {
             if(item == null) continue;
 
             if(item instanceof Box b){
+                removeItem(i);
                 return b;
             }
-
-            removeItem(i);
         }
 
         return null;

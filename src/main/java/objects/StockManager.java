@@ -3,10 +3,11 @@ package objects;
 import core.Simulation;
 import core.Updatable;
 import objects.product.ProductType;
+import objects.truck.Truck;
 
 import java.util.EnumMap;
 
-public class StockManager {
+public class StockManager implements Updatable{
     // 12 shelves wood      -- 54 apples | 54 Bread
     //  6 shelves cool      -- 27 meat   | 27 milk
     //  6 shelves freeze    -- 27 pizza  | 27 ice_scream
@@ -71,5 +72,16 @@ public class StockManager {
             }
         }
         return order;
+    }
+
+    @Override
+    public void update(double delta, long now, Simulation s) {
+        handleTruckSpawning(s.getTruck());
+    }
+
+    private void handleTruckSpawning(Truck t){
+        if(!t.isTruckSpawned()){
+            t.SpawnTruck(GetRestockOrder());
+        }
     }
 }

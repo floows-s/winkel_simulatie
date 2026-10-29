@@ -3,6 +3,7 @@ package objects.shelf;
 import core.Game;
 import core.logger.Logger;
 import core.logger.TagLogger;
+import objects.box.Box;
 import objects.graph.Vertex.VertexID;
 import objects.product.ProductType;
 import utilities.JsonFileParser;
@@ -130,6 +131,57 @@ public class ShelfManager {
             if(s.getType() != Shelf.ShelfType.STORAGE) continue;
 
             if(s.amountOfItems() < s.MAX_ITEM_AMOUNT){
+                return s.getAccessPoint();
+            }
+        }
+
+        return null;
+    }
+
+    public VertexID getAccessPointOfShelfWichNeedRestocking(){
+        for(Shelf s : shelves.values()){
+            if(s.getType() == Shelf.ShelfType.STORAGE) continue;
+
+            if(s.amountOfItems() < s.MAX_ITEM_AMOUNT){
+                return s.getAccessPoint();
+            }
+        }
+
+        return null;
+    }
+
+    /// Finds a non-storage shelf of the given shelf type that still has room.
+    /// @param type the shelf type the product belongs on (WOOD, METAL, COOL)
+    /// @return access point of a matching shelf with room, or null if there is none
+    public VertexID getAccessPointOfShelfNeedingRestocking(Shelf.ShelfType type){
+        if(type == Shelf.ShelfType.STORAGE) return null;
+
+        for(Shelf s : shelves.values()){
+            if(s.getType() != type) continue;
+
+            if(!s.isFull()){
+                return s.getAccessPoint();
+            }
+        }
+
+        return null;
+    }
+
+    /// A box can be unpacked if it still has products AND a shelf of the right type has room.
+    public boolean canBeUnpacked(Box box){
+        ProductType type = box.getProductType();
+        if(type == null) return false;
+
+        return getAccessPointOfShelfNeedingRestocking(type.shelfType) != null;
+    }
+
+    /// Finds a storage shelf that holds a box which can actually be unpacked right now.
+    /// @return access point of that storage shelf, or null if there is none
+    public VertexID getAccessPointOfStorageShelfWithUnpackableBox(){
+        for(Shelf s : shelves.values()){
+            if(s.getType() != Shelf.ShelfType.STORAGE) continue;
+
+            if(s.hasBoxMatching(this::canBeUnpacked)){
                 return s.getAccessPoint();
             }
         }

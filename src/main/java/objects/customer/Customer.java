@@ -126,6 +126,7 @@ public class Customer implements Renderable, Updatable {
     /// @param path to get the current step to move towards.
     /// @param graph to move on
     /// @param delta between this and the last frame
+    /// @param now time since program is running
     /// @return if the last step on the path is reached
     public Boolean followPath(Path path, Graph graph, double delta, long now){
         if(path.isFinished()) return true;

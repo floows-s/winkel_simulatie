@@ -24,10 +24,12 @@ public class GrabBoxFromShelf implements StockerState {
         if(st.getCurrentVertexID() == shelfAccessPoint){
             Shelf shelf = s.getShelfManager().get(shelfAccessPoint);
 
-            Box box = shelf.grabBox();
+            // Only grab a box that can actually be unpacked
+            Box box = shelf.grabBoxMatching(s.getShelfManager()::canBeUnpacked);
             if(box == null){
-                log.logWarning("Attempted to grab a box from shelf which doesnt contain a box!");
+                log.logWarning("Attempted to grab a box from shelf which doesnt contain a usable box!");
                 st.setState(new DecideNextTask());
+                return;     // <-- this return was missing before
             }
 
             st.holdBox(box);

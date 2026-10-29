@@ -34,7 +34,7 @@ public class Register implements Renderable, Updatable {
     private Product currentProduct = null;
 
     // create an object for movement and give it its speed
-    private final Movement movement = new Movement(50);
+    private final Movement movement = new Movement(0,0, 50);
 
     // sprite animation logic
     private int offsetXStartPosition    = 16;       // the amount of pixels to the right from the start position top left
@@ -113,10 +113,6 @@ public class Register implements Renderable, Updatable {
     /// @param s        the simulation
     @Override
     public void update(double delta, long now, Simulation s) {
-        if(Stats.GetProductsSold() % 10 == 0){
-            handleTruckSpawning(s.getTruck(), s.getStockManager());
-        }
-
         if (currentProduct == null){
             currentProduct = products.poll();
 
@@ -151,12 +147,6 @@ public class Register implements Renderable, Updatable {
             s.getStockManager().ChangeProductStock(currentProduct.getpType(), -1);
             currentProduct = null;
             System.out.println("current product has been checked out");
-        }
-    }
-
-    private void handleTruckSpawning(Truck t, StockManager stockManager){
-        if(!t.isTruckSpawned()){
-            t.SpawnTruck(stockManager.GetRestockOrder());
         }
     }
 

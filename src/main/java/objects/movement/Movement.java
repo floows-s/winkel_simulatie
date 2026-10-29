@@ -11,7 +11,9 @@ public class Movement {
     private boolean moving = false;
 
     // ==== Constructor ====
-    public Movement(double speed) {
+    public Movement(double startX, double startY, double speed) {
+        this.x = startX;
+        this.y = startY;
         this.speed = speed;
     }
 

@@ -6,6 +6,7 @@ import core.orientation.Coordinates;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
 import objects.StockManager;
+import objects.box.Box;
 import objects.customer.Customer;
 import objects.customer.CustomerFactory;
 import objects.graph.Vertex.Vertex;
@@ -23,6 +24,8 @@ import objects.stats.Stats;
 import objects.stocker.Stocker;
 import objects.truck.Truck;
 import utilities.Randomizer;
+
+import java.util.Arrays;
 
 public class Simulation implements Updatable{
     // ==== Variables ====
@@ -136,10 +139,9 @@ public class Simulation implements Updatable{
         );
         game.addObject(lookupKioskStand);
 
-        // add stock manager and remove stock
+        // add stock manager
         game.addObject(stockManager);
-        stockManager.ChangeProductStock(ProductType.APPLE, -10);
-        
+
         // checks if something is lower than half of the stock if so spawn a truck
         truck = new Truck();
         game.addObject(truck);
@@ -148,14 +150,6 @@ public class Simulation implements Updatable{
         // Create stocker
         stocker = new Stocker(graph.get(VertexID.STOCKROOM_MIDDLE));
         game.addObject(stocker);
-//        game.addObject(
-//                new Customer(
-//                        graph.get(VertexID.SPAWN_POINT),
-//                        new GroceryList(
-//                                List.of(new GroceryListItem(ProductType.BREAD, null), new GroceryListItem(ProductType.APPLE, null), new GroceryListItem(ProductType.MEAT, null))
-//                        )
-//                )
-//        );
     }
 
     public void spawnNewCustomer(){

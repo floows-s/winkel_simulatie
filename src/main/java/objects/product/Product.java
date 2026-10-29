@@ -13,6 +13,11 @@ public class Product implements ShelfItem {
 
     private ProductType pType;
 
+
+    public Product(Product product){
+        this(product.getpType());
+    }
+
     // ==== constructor ====
     /// Constructor
     /// @param pType is an enum based on a product containing the necessary information

@@ -38,7 +38,7 @@ public class DijkstraCachePathFinderStrategy implements PathFinderStrategy {
             Vertex targetVertex = graph.get(target);
 
             if(sourceVertex == null || targetVertex == null){
-                log.logError("Given source or target VertexID is not part of the given Graph. Can't find shortest path.");
+                log.logError("Given source or target VertexID is not part of the given Graph. Can't find shortest path. Given source: [" + source + "] | Given target: [" + target + "]");
                 return new Path();
             }
         }

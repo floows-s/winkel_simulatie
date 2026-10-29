@@ -1,4 +1,4 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import core.logger.Logger;
@@ -28,18 +28,18 @@ public class GrabProductFromShelf implements CustomerState{
     @Override
     public void update(Customer c, double delta, long now, Simulation s) {
         if(pathToShelf == null){
-            pathToShelf = s.graph.getShortestPath(
+            pathToShelf = s.getGraph().getShortestPath(
                     c.getCurrentVertexID(),
                     shelfAccessPoint
             );
         }
 
-        boolean atDestination = c.followPath(pathToShelf, s.graph, delta, now);
+        boolean atDestination = c.followPath(pathToShelf, s.getGraph(), delta, now);
         if(!atDestination) return;
 
         c.setSpriteToIdle();
 
-        Shelf shelf = s.shelfManager.getShelf(shelfAccessPoint);
+        Shelf shelf = s.getShelfManager().get(shelfAccessPoint);
         if(!shelf.hasProduct(productType)){
             log.logWarning("Couldn't grab product. Not in shelf.");
             c.setState(new PickNextGroceryListItem());
@@ -57,7 +57,7 @@ public class GrabProductFromShelf implements CustomerState{
                 log.logWarning("Couldn't add item to shopping cart. It is full. Putting item back on shelf and checking out at register.");
 
                 // Put product back on shelf
-                shelf.AddProduct(product);
+                shelf.addItem(product);
                 c.setState(new CheckoutItemsAtRegister());
                 return;
             }

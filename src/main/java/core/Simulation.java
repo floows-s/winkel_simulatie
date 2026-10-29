@@ -6,6 +6,7 @@ import core.orientation.Coordinates;
 import core.timer.IntervalTimer;
 import objects.FloatingText.FloatingNumber;
 import objects.StockManager;
+import objects.box.Box;
 import objects.customer.Customer;
 import objects.customer.CustomerFactory;
 import objects.graph.Vertex.Vertex;
@@ -20,8 +21,11 @@ import objects.path.pathfinder.dijkstracache.DijkstraCachePathFinderStrategy;
 import objects.shelf.ShelfManager;
 import objects.background.BackgroundLoader;
 import objects.stats.Stats;
+import objects.stocker.Stocker;
 import objects.truck.Truck;
 import utilities.Randomizer;
+
+import java.util.Arrays;
 
 public class Simulation implements Updatable{
     // ==== Variables ====
@@ -30,8 +34,8 @@ public class Simulation implements Updatable{
     private final int MAX_CUSTOMER_COUNT = 10;
 
     private final Game game;
-    public Graph graph;
-    private IntervalTimer customerSpawnTimer = new IntervalTimer(0, this::spawnNewCustomer);
+    private Graph graph;
+    private IntervalTimer customerSpawnTimer = new IntervalTimer(2000, this::spawnNewCustomer);
 
     private int woodCount       = 0;
     private int metalCount      = 0;
@@ -39,17 +43,19 @@ public class Simulation implements Updatable{
     private int customerCount   = 0;
 
     // Managers
-    public ShelfManager shelfManager;
-    public final StockManager stockManager = new StockManager();
+    private ShelfManager shelfManager;
+    private final StockManager stockManager = new StockManager();
 
     // Factories
-    public GroceryListFactory groceryListFactory;
-    public CustomerFactory customerFactory;
+    private GroceryListFactory groceryListFactory;
+    private CustomerFactory customerFactory;
 
     // Objects
     private LookupKioskStand lookupKioskStand;
     private Register register1;
     private Register register2;
+    private Truck truck;
+    private Stocker stocker;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
@@ -96,7 +102,7 @@ public class Simulation implements Updatable{
             }
 
             for(int i = 0; i < 9; i ++){
-                s.AddProduct(new Product(productType));
+                s.addItem(new Product(productType));
             }
         });
 
@@ -133,23 +139,17 @@ public class Simulation implements Updatable{
         );
         game.addObject(lookupKioskStand);
 
-        // add stock manager and remove stock
-        stockManager.ChangeProductStock(ProductType.APPLE, -40);
-        // checks if something is lower than half of the stock if so spawn a truck
-        Truck truck = new Truck();
-        game.addObject(truck);
+        // add stock manager
+        game.addObject(stockManager);
 
+        // checks if something is lower than half of the stock if so spawn a truck
+        truck = new Truck();
+        game.addObject(truck);
         truck.SpawnTruck(stockManager.GetRestockOrder());
 
-
-//        game.addObject(
-//                new Customer(
-//                        graph.get(VertexID.SPAWN_POINT),
-//                        new GroceryList(
-//                                List.of(new GroceryListItem(ProductType.BREAD, null), new GroceryListItem(ProductType.APPLE, null), new GroceryListItem(ProductType.MEAT, null))
-//                        )
-//                )
-//        );
+        // Create stocker
+        stocker = new Stocker(graph.get(VertexID.STOCKROOM_MIDDLE));
+        game.addObject(stocker);
     }
 
     public void spawnNewCustomer(){
@@ -183,5 +183,21 @@ public class Simulation implements Updatable{
     public void despawnCustomer(Customer c){
         game.removeObject(c);
         customerCount--;
+    }
+
+    public StockManager getStockManager() {
+        return stockManager;
+    }
+
+    public ShelfManager getShelfManager() {
+        return shelfManager;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public Truck getTruck() {
+        return truck;
     }
 }

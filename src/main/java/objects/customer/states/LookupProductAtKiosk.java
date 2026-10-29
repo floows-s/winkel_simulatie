@@ -1,4 +1,4 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import core.logger.Logger;
@@ -27,13 +27,13 @@ public class LookupProductAtKiosk implements CustomerState{
         LookupKioskStand kioskStand = s.getLookupKioskStand();
 
         if(pathToKiosk == null){
-            pathToKiosk = s.graph.getShortestPath(
+            pathToKiosk = s.getGraph().getShortestPath(
                     c.getCurrentVertexID(),
                     kioskStand.getAccessPoint()
             );
         }
 
-        boolean atDestination = c.followPath(pathToKiosk, s.graph, delta, now);
+        boolean atDestination = c.followPath(pathToKiosk, s.getGraph(), delta, now);
         if(!atDestination) return;
 
         // Wait before looking up so it doesn't "instantly" find the item.

@@ -30,7 +30,8 @@ public class Truck implements Renderable, Updatable {
 
     // moving
     private boolean isMoving    = false;
-    private Movement movement   = new Movement(50);
+    private boolean isLeaving   = false;
+    private Movement movement   = new Movement(x, y,50);
 
     // width and height of the sprite
     private final double width  = 84;
@@ -59,6 +60,9 @@ public class Truck implements Renderable, Updatable {
     /// spawns a truck filled with boxes which are filled with products from the order
     /// @param order a enumMap with product types and the amount needed per product
     public void SpawnTruck(EnumMap<ProductType, Integer> order){
+        if(isTruckSpawned || isLeaving) return;
+
+        if(order.isEmpty()) return;
 
         // save a copy to use for restocking
         this.restockOrder = new EnumMap<>(order);
@@ -100,11 +104,17 @@ public class Truck implements Renderable, Updatable {
         if(boxes.isEmpty()){
             // if there are no more boxes change the sprite and move away
             SetSpriteToEmpty();
-            movement.start(23, 64, 23,-300);
+            movement.start(23, 64, 23, -300);
             isTruckSpawned = false;
-
+            isLeaving = true;
+            isMoving = true;
         }
     }
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
 
     /// replenish the current added products to the stock
     /// @param stockManager the current stock manager inside the simulation
@@ -152,6 +162,10 @@ public class Truck implements Renderable, Updatable {
         return 0;
     }
 
+    public boolean isReadyToUnload(){
+        return !isMoving && isTruckSpawned  && !boxes.isEmpty();
+    }
+
     // ==== interface updatable ====.
 
     /// checks if the truck is done moving and if the truck can be removed
@@ -163,16 +177,27 @@ public class Truck implements Renderable, Updatable {
 
         // check if the animation is done
         if (movement.update(delta)){
-            SetSpriteToFull();
             isMoving = false;
+
+            if (isLeaving){
+                // the truck has driven off screen, a new one may spawn now
+                isLeaving = false;
+            } else {
+                // the truck has arrived
+                SetSpriteToFull();
+            }
         }
 
         // remove the truck if the truck is completely empty and is there
         if (isMoving == false && isTruckSpawned == true && boxes.isEmpty()){
-            ReplenishStock(s.stockManager);
+            ReplenishStock(s.getStockManager());
             RemoveTruck();
             System.out.println("the truck is leaving");
         }
+    }
+
+    public boolean isTruckSpawned() {
+        return isTruckSpawned;
     }
 }
 

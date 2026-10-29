@@ -8,10 +8,9 @@ import core.orientation.Direction;
 import core.timer.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import objects.customer.States.CustomerState;
-import objects.customer.States.SpawnedIn;
+import objects.customer.states.CustomerState;
+import objects.customer.states.SpawnedIn;
 import objects.groceryList.GroceryListItem;
-import objects.movement.Movement;
 import objects.product.Product;
 import objects.shoppingCart.ShoppingCart;
 import objects.graph.Graph;
@@ -22,11 +21,10 @@ import objects.graph.Vertex.VertexID;
 import utilities.ImageLoader;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Customer implements Renderable, Updatable {
     // Constants
-    private final int WALKING_SPEED = 200;
+    private final int WALKING_SPEED = 80;
     private final int WALKING_FRAME_TIME_MS = 100;
 
     // Fields
@@ -51,7 +49,7 @@ public class Customer implements Renderable, Updatable {
 
     private Image sprite;
     private Direction direction = Direction.EAST;
-    private VertexID currentVertexID = VertexID.SPAWN_POINT;
+    private VertexID currentVertexID;
 
     private final Logger log = new TagLogger(this.getClass().getSimpleName());
 
@@ -128,6 +126,7 @@ public class Customer implements Renderable, Updatable {
     /// @param path to get the current step to move towards.
     /// @param graph to move on
     /// @param delta between this and the last frame
+    /// @param now time since program is running
     /// @return if the last step on the path is reached
     public Boolean followPath(Path path, Graph graph, double delta, long now){
         if(path.isFinished()) return true;
@@ -170,19 +169,21 @@ public class Customer implements Renderable, Updatable {
         int width, height;
 
         // Correct for direction
+        // Correct for direction
         if(direction == Direction.EAST){
             x_center = x - getWidth() / 2;
-            y_center = y - getHeight() / 2;;
+            y_center = y - getHeight();
 
             width = getWidth();
             height = getHeight();
         }else{
             x_center = x + getWidth() / 2;
-            y_center = y - getHeight() / 2;
+            y_center = y - getHeight();
 
             width = -getWidth();
             height= getHeight();
         }
+
 
         g.drawImage(sprite, x_center, y_center, width, height);
     }

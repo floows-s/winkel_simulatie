@@ -1,4 +1,4 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import objects.customer.Customer;
@@ -15,9 +15,9 @@ public class DespawnMyself implements CustomerState {
         }
 
         if(pathToDespawnPoint == null){
-            pathToDespawnPoint = s.graph.getShortestPath(c.getCurrentVertexID(), VertexID.DESPAWN_POINT);
+            pathToDespawnPoint = s.getGraph().getShortestPath(c.getCurrentVertexID(), VertexID.DESPAWN_POINT);
         }
 
-        c.followPath(pathToDespawnPoint, s.graph, delta, now);
+        c.followPath(pathToDespawnPoint, s.getGraph(), delta, now);
     }
 }

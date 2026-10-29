@@ -3,15 +3,16 @@ package objects.register;
 import core.Renderable;
 import core.Simulation;
 import core.Updatable;
-import core.orientation.Coordinates;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import objects.StockManager;
 import objects.customer.Customer;
 import objects.graph.Vertex.Vertex;
 import objects.graph.Vertex.VertexID;
 import objects.movement.Movement;
 import objects.product.Product;
 import objects.stats.Stats;
+import objects.truck.Truck;
 
 import java.util.ArrayDeque;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Register implements Renderable, Updatable {
     private Product currentProduct = null;
 
     // create an object for movement and give it its speed
-    private final Movement movement = new Movement(50);
+    private final Movement movement = new Movement(0,0, 50);
 
     // sprite animation logic
     private int offsetXStartPosition    = 16;       // the amount of pixels to the right from the start position top left
@@ -143,7 +144,7 @@ public class Register implements Renderable, Updatable {
             Stats.IncrementMoneyEarned(currentProduct.GetPrice());
 
             // access the stock manager from within the simulation and alter it
-            s.stockManager.ChangeProductStock(currentProduct.getpType(), -1);
+            s.getStockManager().ChangeProductStock(currentProduct.getpType(), -1);
             currentProduct = null;
             System.out.println("current product has been checked out");
         }

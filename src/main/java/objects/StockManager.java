@@ -1,11 +1,13 @@
 package objects;
 
-import objects.product.Product;
+import core.Simulation;
+import core.Updatable;
 import objects.product.ProductType;
+import objects.truck.Truck;
 
 import java.util.EnumMap;
 
-public class StockManager {
+public class StockManager implements Updatable{
     // 12 shelves wood      -- 54 apples | 54 Bread
     //  6 shelves cool      -- 27 meat   | 27 milk
     //  6 shelves freeze    -- 27 pizza  | 27 ice_scream
@@ -48,7 +50,7 @@ public class StockManager {
     public void ChangeProductStock(ProductType pType, int amount){
         // add amount of product to stock (can remove products by using negative numbers)
         stock.merge(pType, amount, Integer::sum);
-}
+    }
 
     /// Checks on product type both enum maps stock and max stock and uses this to check if more than half of the products are sold, if so adds this to a new enum map
     /// @return an enum map containing the amount of products that need to get restocked
@@ -65,14 +67,21 @@ public class StockManager {
             int current = stock.getOrDefault(type, 0);
 
             // if the current stock is less then half add it to the order
-            if (current * 2 <= max) {
+            if (current * 1.2  <= max) {
                 order.put(type, max - current);
             }
         }
         return order;
     }
 
+    @Override
+    public void update(double delta, long now, Simulation s) {
+        handleTruckSpawning(s.getTruck());
+    }
 
-
-
+    private void handleTruckSpawning(Truck t){
+        if(!t.isTruckSpawned()){
+            t.SpawnTruck(GetRestockOrder());
+        }
+    }
 }

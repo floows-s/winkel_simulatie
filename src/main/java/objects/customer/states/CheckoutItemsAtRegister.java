@@ -1,10 +1,9 @@
-package objects.customer.States;
+package objects.customer.states;
 
 import core.Simulation;
 import objects.customer.Customer;
 import objects.path.Path;
 import objects.register.Register;
-import objects.shoppingCart.ShoppingCart;
 
 public class CheckoutItemsAtRegister implements CustomerState {
     Register register = null;
@@ -20,13 +19,13 @@ public class CheckoutItemsAtRegister implements CustomerState {
         }
 
         if(pathToRegister == null){
-            pathToRegister = s.graph.getShortestPath(
+            pathToRegister = s.getGraph().getShortestPath(
                     c.getCurrentVertexID(),
                     register.getAccessPoint()
             );
         }
 
-        boolean atDestination = c.followPath(pathToRegister, s.graph, delta, now);
+        boolean atDestination = c.followPath(pathToRegister, s.getGraph(), delta, now);
         if(!atDestination) return;
 
         // Enter register queue

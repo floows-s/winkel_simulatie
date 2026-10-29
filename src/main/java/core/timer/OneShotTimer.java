@@ -28,4 +28,8 @@ public class OneShotTimer {
 
         return false;
     }
+
+    public void reset(){
+        firstTickTimeNS = -1;
+    }
 }

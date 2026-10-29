@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Customer implements Renderable, Updatable {
     // Constants
-    private final int WALKING_SPEED = 200;
+    private final int WALKING_SPEED = 300;
     private final int WALKING_FRAME_TIME_MS = 100;
 
     // Fields
@@ -168,19 +168,21 @@ public class Customer implements Renderable, Updatable {
         int width, height;
 
         // Correct for direction
+        // Correct for direction
         if(direction == Direction.EAST){
             x_center = x - getWidth() / 2;
-            y_center = y - getHeight() / 2;;
+            y_center = y - getHeight();
 
             width = getWidth();
             height = getHeight();
         }else{
             x_center = x + getWidth() / 2;
-            y_center = y - getHeight() / 2;
+            y_center = y - getHeight();
 
             width = -getWidth();
             height= getHeight();
         }
+
 
         g.drawImage(sprite, x_center, y_center, width, height);
     }

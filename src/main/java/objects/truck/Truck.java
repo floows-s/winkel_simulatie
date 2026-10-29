@@ -106,6 +106,11 @@ public class Truck implements Renderable, Updatable {
         }
     }
 
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+
     /// replenish the current added products to the stock
     /// @param stockManager the current stock manager inside the simulation
     private void ReplenishStock(StockManager stockManager) {

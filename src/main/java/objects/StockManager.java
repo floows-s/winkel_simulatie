@@ -1,10 +1,12 @@
 package objects;
 
+import core.Simulation;
+import core.Updatable;
 import objects.product.ProductType;
 
 import java.util.EnumMap;
 
-public class StockManager {
+public class StockManager implements Updatable {
     // 12 shelves wood      -- 54 apples | 54 Bread
     //  6 shelves cool      -- 27 meat   | 27 milk
     //  6 shelves freeze    -- 27 pizza  | 27 ice_scream
@@ -72,6 +74,10 @@ public class StockManager {
     }
 
 
-
-
+    @Override
+    public void update(double delta, long now, Simulation s) {
+        if(!s.getTruck().isReadyToUnload() && !s.getTruck().isMoving()){
+            s.getTruck().SpawnTruck(GetRestockOrder());
+        }
+    }
 }

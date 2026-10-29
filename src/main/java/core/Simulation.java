@@ -28,11 +28,11 @@ public class Simulation implements Updatable{
     // ==== Variables ====
 
     // Constants
-    private final int MAX_CUSTOMER_COUNT = 10;
+    private final int MAX_CUSTOMER_COUNT = 1000000000;
 
     private final Game game;
     private Graph graph;
-    private IntervalTimer customerSpawnTimer = new IntervalTimer(0, this::spawnNewCustomer);
+    private IntervalTimer customerSpawnTimer = new IntervalTimer(5, this::spawnNewCustomer);
 
     private int woodCount       = 0;
     private int metalCount      = 0;
@@ -137,8 +137,10 @@ public class Simulation implements Updatable{
         game.addObject(lookupKioskStand);
 
         // add stock manager and remove stock
+        game.addObject(stockManager);
         stockManager.ChangeProductStock(ProductType.APPLE, -40);
         stockManager.ChangeProductStock(ProductType.BREAD, -40);
+
 
 
         // checks if something is lower than half of the stock if so spawn a truck

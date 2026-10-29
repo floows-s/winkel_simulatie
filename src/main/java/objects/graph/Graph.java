@@ -69,12 +69,12 @@ public class Graph implements Renderable {
     @Override
     public void render(GraphicsContext g) {
 
-        for(var kv : vertices.entrySet()){
-            Vertex v = kv.getValue();
-
-            v.render(g);
-            drawEdges(v, g);
-        }
+//        for(var kv : vertices.entrySet()){
+//            Vertex v = kv.getValue();
+//
+//            v.render(g);
+//            drawEdges(v, g);
+//        }
     }
 
     /// Draw the outgoing edges for the given {@code Vertex}.

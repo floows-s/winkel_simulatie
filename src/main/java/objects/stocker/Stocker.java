@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Stocker implements Renderable, Updatable {
     // Constants
-    private final int WALKING_SPEED = 200;
+    private final int WALKING_SPEED = 1000;
     private final int WALKING_FRAME_TIME_MS = 100;
 
     // Fields
@@ -205,13 +205,13 @@ public class Stocker implements Renderable, Updatable {
         // Correct for direction
         if(direction == Direction.EAST){
             x_center = x - getWidth() / 2;
-            y_center = y - getHeight() / 2;;
+            y_center = y - getHeight();
 
             width = getWidth();
             height = getHeight();
         }else{
             x_center = x + getWidth() / 2;
-            y_center = y - getHeight() / 2;
+            y_center = y - getHeight();
 
             width = -getWidth();
             height= getHeight();

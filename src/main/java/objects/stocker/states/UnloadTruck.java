@@ -21,7 +21,7 @@ public class UnloadTruck implements StockerState{
     @Override
     public void update(Stocker st, double delta, long now, Simulation s) {
         // If truck is unloaded
-        if(!s.getTruck().isReadyToUnload()){
+        if(!s.getTruck().isReadyToUnload() && !st.isHoldingBox()){
             st.setState(new DecideNextTask());
             return;
         }

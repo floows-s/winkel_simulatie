@@ -144,7 +144,6 @@ public class Shelf implements Renderable, Updatable {
     }
 
     /// removes a product from the list products and returns said product
-    /// TODO needs to remove the current sprite
     /// @param i is the location of the current product in the shelf starting at 0
     public ShelfItem removeItem(int i){
         if(shelfItems[i] != null){

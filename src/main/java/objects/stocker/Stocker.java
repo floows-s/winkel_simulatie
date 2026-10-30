@@ -151,7 +151,7 @@ public class Stocker implements Renderable, Updatable {
         return false;
     }
 
-    /// TODO here is a explanation of this method
+    /// Moves along the given path, one step toward the current vertex per call.
     /// <p>
     /// Side effects:
     /// - Updates {@link x} & {@link y} to move towards the current step
@@ -248,12 +248,8 @@ public class Stocker implements Renderable, Updatable {
         return heldBox != null;
     }
 
-    public StockerState getState() {
-        return state; // TODO: copy?
-    }
-
     public void setState(StockerState state) {
-        this.state = state; // TODO: copy?
+        this.state = state;
     }
 
     public VertexID getCurrentVertexID() {

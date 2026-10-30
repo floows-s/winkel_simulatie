@@ -116,7 +116,7 @@ public class Customer implements Renderable, Updatable {
 
     // Actions
 
-    /// TODO here is a explanation of this method
+    /// Moves along the given path, one step toward the current vertex per call.
     /// <p>
     /// Side effects:
     /// - Updates {@link x} & {@link y} to move towards the current step
@@ -137,6 +137,7 @@ public class Customer implements Renderable, Updatable {
         if(v == null){
             log.logError("Vertex with ID [" + currentStep + "] not found in given Graph. Skipping step. This will possibly lead to not following the edges of the graph properly.");
             path.next();
+            return false;
         }
 
         // Move in the direction of the current step
@@ -212,12 +213,8 @@ public class Customer implements Renderable, Updatable {
         return (int) sprite.getHeight();
     }
 
-    public CustomerState getState() {
-        return state; // TODO: copy?
-    }
-
     public void setState(CustomerState state) {
-        this.state = state; // TODO: copy?
+        this.state = state;
     }
 
 

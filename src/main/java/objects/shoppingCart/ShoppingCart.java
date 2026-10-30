@@ -24,8 +24,8 @@ public class ShoppingCart {
         return true;
     }
 
-
-    ///TODO: say: remove all items from shopping cart and return them.
+    /// Removes all products from this shopping cart and returns them.
+    /// @return a list of all products that were in the shopping cart, empty if there were none
     public List<Product> takeOutAllProducts(){
         List<Product> takenProducts = storage.stream().toList();
         storage.clear();

@@ -38,9 +38,7 @@ public class DecideNextTask implements StockerState{
                 );
             }
 
-            if(pathToMiddleOfStockroom != null){
-                st.followPath(pathToMiddleOfStockroom, s.getGraph(), delta, now);
-            }
+            st.followPath(pathToMiddleOfStockroom, s.getGraph(), delta, now);
             return;
         }
 

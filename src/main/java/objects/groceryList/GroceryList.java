@@ -24,7 +24,7 @@ public class GroceryList {
                 .map(GroceryListItem::new)
                 .collect(Collectors.toList());
 
-        this.iterator = this.groceries.iterator(); // TODO: revisit after implementing walking through grocery list. Is this the right way?
+        this.iterator =  this.groceries.iterator();
     }
 
     /// Gets the next item on the grocery list, or null if there isn't a next item.

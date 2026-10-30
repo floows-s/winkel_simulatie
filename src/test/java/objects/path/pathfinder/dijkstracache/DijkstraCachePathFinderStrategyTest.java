@@ -28,8 +28,4 @@ class DijkstraCachePathFinderStrategyTest {
         // Assert
         Assertions.assertEquals(expected, result);
     }
-
-    // TODO: get path, check if first step is source
-
-    // TODO: get path, check if last step is target
 }

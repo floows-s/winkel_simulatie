@@ -40,8 +40,6 @@ public class Graph implements Renderable {
                     v.id(),
                     v
             );
-
-            // TODO [TEST]: Create test to test there isn't duplicate entry's
         }
     }
 

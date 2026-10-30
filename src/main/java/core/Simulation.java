@@ -44,7 +44,7 @@ public class Simulation implements Updatable{
 
     // Managers
     private ShelfManager shelfManager;
-    private final StockManager stockManager = new StockManager();
+    private StockManager stockManager;
 
     // Factories
     private GroceryListFactory groceryListFactory;
@@ -70,10 +70,92 @@ public class Simulation implements Updatable{
         // add background to the game as a gameObject
         game.addObject(new BackgroundLoader());
 
-        // create test text
+        setupStats();
+
+        // Create shelfManager and spawn in shelfs
+        setupShelfManager();
+
+        // Create and initialize graph from json file
+        setupGraph();
+
+        // Create and spawn in register1 and register2
+        setupRegisters();
+
+        // Create factories
+        setupFactories();
+
+        // Create and spawn in lookup kiosk stand
+        setupLookupKioskStand();
+
+        // Create stock manager
+        setupStockManager();
+
+        // Create truck
+        setupTruck();
+
+        // Create and spawn in stocker
+        setupStocker();
+    }
+
+    private void setupFactories() {
+        groceryListFactory = new GroceryListFactory(shelfManager);
+        customerFactory = new CustomerFactory(groceryListFactory, graph.get(VertexID.SPAWN_POINT));
+    }
+
+    private void setupStats() {
         FloatingNumber priceTotal   = new FloatingNumber(() ->"money earned = " + String.valueOf(Stats.GetMoneyEarned() + " €"), 1153, 52);
         FloatingNumber productTotal = new FloatingNumber(()->"products = " + String.valueOf(Stats.GetProductsSold()), 1153, 72);
+        game.addObject(priceTotal);
+        game.addObject(productTotal);
+    }
 
+    private void setupStocker() {
+        stocker = new Stocker(graph.get(VertexID.STOCKROOM_MIDDLE));
+        game.addObject(stocker);
+    }
+
+    private void setupTruck() {
+        truck = new Truck();
+        game.addObject(truck);
+        truck.SpawnTruck(stockManager.GetRestockOrder());
+    }
+
+    private void setupStockManager() {
+        stockManager = new StockManager();
+        game.addObject(stockManager);
+    }
+
+    private void setupLookupKioskStand() {
+        lookupKioskStand = new LookupKioskStand(
+                new Coordinates(696, 26),
+                shelfManager
+        );
+        game.addObject(lookupKioskStand);
+    }
+
+    private void setupRegisters() {
+        // create register
+        Vertex register1EndOfQueue = graph.get(VertexID.REGISTER_1_QUEUE_END);
+        Vertex register2EndOfQueue = graph.get(VertexID.REGISTER_2_QUEUE_END);
+        register1 = new Register(738, 531, VertexID.REGISTER_1_QUEUE_START, register1EndOfQueue);
+        register2 = new Register(590, 531, VertexID.REGISTER_2_QUEUE_START, register2EndOfQueue);
+        game.addObject(register1);
+        game.addObject(register2);
+    }
+
+    private void setupGraph() {
+        // Create graph
+        GraphData graphData = GraphData.fromJson("/json/graph/graph.json");
+
+        graph = new Graph(
+                graphData,
+                new DijkstraCachePathFinderStrategy()
+        );
+
+        game.addObject(graph);
+    }
+
+    private void setupShelfManager() {
         // Create shelf manager
         shelfManager = new ShelfManager("/json/shelfs/shelfs.json", game);
 
@@ -105,53 +187,9 @@ public class Simulation implements Updatable{
                 s.addItem(new Product(productType));
             }
         });
-
-        // add the text
-        game.addObject(priceTotal);
-        game.addObject(productTotal);
-
-        // Create graph
-        GraphData graphData = GraphData.fromJson("/json/graph/graph.json");
-
-        graph = new Graph(
-                graphData,
-                new DijkstraCachePathFinderStrategy()
-        );
-
-        game.addObject(graph);
-
-        // create register
-        Vertex register1EndOfQueue = graph.get(VertexID.REGISTER_1_QUEUE_END);
-        Vertex register2EndOfQueue = graph.get(VertexID.REGISTER_2_QUEUE_END);
-        register1 = new Register(738, 531, VertexID.REGISTER_1_QUEUE_START, register1EndOfQueue);
-        register2 = new Register(590, 531, VertexID.REGISTER_2_QUEUE_START, register2EndOfQueue);
-        game.addObject(register1);
-        game.addObject(register2);
-
-        // Create factories
-        groceryListFactory = new GroceryListFactory(shelfManager);
-        customerFactory = new CustomerFactory(groceryListFactory, graph.get(VertexID.SPAWN_POINT));
-
-        // Add lookup kiosk stand
-        lookupKioskStand = new LookupKioskStand(
-                new Coordinates(696, 26),
-                shelfManager
-        );
-        game.addObject(lookupKioskStand);
-
-        // add stock manager
-        game.addObject(stockManager);
-
-        // checks if something is lower than half of the stock if so spawn a truck
-        truck = new Truck();
-        game.addObject(truck);
-        truck.SpawnTruck(stockManager.GetRestockOrder());
-
-        // Create stocker
-        stocker = new Stocker(graph.get(VertexID.STOCKROOM_MIDDLE));
-        game.addObject(stocker);
     }
 
+    // Actions
     public void spawnNewCustomer(){
         if(customerCount >= MAX_CUSTOMER_COUNT) return;
 
@@ -168,6 +206,8 @@ public class Simulation implements Updatable{
         customerSpawnTimer.tick(now);
     }
 
+
+    // Getters and setters
     public LookupKioskStand getLookupKioskStand() {
         return lookupKioskStand;
     }
